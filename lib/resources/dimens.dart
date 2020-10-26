@@ -9,3 +9,4 @@ const dimen8 = 24.0;
 const dimen9 = 16.0;
 const dimen10 = 0.655;
 const dimen11 = 60;
+const dimen12 = 18.0;

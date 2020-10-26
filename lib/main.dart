@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project/screens/login/login.dart';
+import 'package:project/screens/login/ui.dart';
+import 'package:project/screens/register/ui.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,8 +11,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        color: Colors.blue,
-        home: Login.withDependency(),
-        debugShowCheckedModeBanner: false);
+        color: Colors.blue, home: Test(), debugShowCheckedModeBanner: false);
+  }
+}
+
+class Test extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (_) {
+            return Register.withDependency();
+          }));
+        },
+        child: Text('Enter'));
   }
 }
