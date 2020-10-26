@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project/screens/login/ui.dart';
-import 'package:project/screens/questions/single_choice/ui.dart';
-import 'package:project/screens/register/ui.dart';
+import 'package:project/screens/questions/order_sentence/ui.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,7 +20,7 @@ class Test extends StatelessWidget {
     return TextButton(
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return SingleChoice.withDependency();
+            return OrderSentence.withDependency();
           }));
         },
         child: Text('Enter'));

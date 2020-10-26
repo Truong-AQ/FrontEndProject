@@ -1,18 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
-import 'package:project/resources/styles.dart';
-import 'package:project/widgets/loading.dart';
-import 'package:provider/provider.dart';
-import 'package:project/screens/login/controller.dart';
-import 'package:project/screens/login/data.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:project/screens/questions/single_choice/controller.dart';
+import 'package:project/screens/questions/single_choice/data.dart';
 
 class SingleChoice extends StatelessWidget {
   static withDependency() {
-    return StateNotifierProvider<LoginController, LoginData>(
-        create: (_) => LoginController(), child: SingleChoice());
+    return StateNotifierProvider<SingleChoiceController, SingleChoiceData>(
+        create: (_) => SingleChoiceController(), child: SingleChoice());
   }
 
   @override
@@ -54,21 +52,47 @@ class SingleChoice extends StatelessWidget {
   }
 
   Widget _buildAnswer(BuildContext context) {
+    List<String> answers = [
+      'assets/images/kettle.png',
+      'assets/images/bowl.png',
+      'assets/images/water_bottle.png',
+      'assets/images/dish.png'
+    ];
     return Table(
       children: [
         TableRow(children: [
-          _buildCellRow(Icon(Icons.home, size: dimen13)),
-          _buildCellRow(Icon(Icons.home, size: dimen13))
+          _buildCellRow(answers[0], context),
+          _buildCellRow(answers[1], context)
         ]),
         TableRow(children: [
-          _buildCellRow(Icon(Icons.home, size: dimen13)),
-          _buildCellRow(Icon(Icons.home, size: dimen13))
+          _buildCellRow(answers[2], context),
+          _buildCellRow(answers[3], context)
         ])
       ],
     );
   }
 
-  Widget _buildCellRow(Widget child) {
-    return Container(padding: EdgeInsets.all(dimen12), child: child);
+  Widget _buildCellRow(String url, BuildContext context) {
+    return Container(
+        padding: EdgeInsets.all(dimen12),
+        child: GestureDetector(
+          onTap: () {
+            context.read<SingleChoiceController>().setAnswer(url);
+          },
+          child: Selector<SingleChoiceData, String>(
+              selector: (_, scd) => scd.answerChoice,
+              builder: (context, answer, __) {
+                return Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: answer == url
+                                ? (context.select(
+                                        (SingleChoiceData scd) => scd.isCorrect)
+                                    ? color9
+                                    : color7)
+                                : color3)),
+                    child: Image.asset(url, fit: BoxFit.fill));
+              }),
+        ));
   }
 }
