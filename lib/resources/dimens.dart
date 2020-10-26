@@ -16,3 +16,7 @@ const dimen15 = 90.0;
 const dimen16 = 1.0;
 const dimen17 = 42.0;
 const dimen18 = 2.0;
+const dimen19 = 4.0;
+const dimen20 = 60.0;
+const dimen21 = 8.0;
+const dimen22 = 7.0;

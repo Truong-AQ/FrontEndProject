@@ -11,3 +11,5 @@ const color6 = Color(0xFF5CF286);
 const color7 = Colors.red;
 const color8 = Colors.grey;
 const color9 = Colors.greenAccent;
+const color10 = Colors.blueAccent;
+final color11 = color10.withOpacity(0.3);

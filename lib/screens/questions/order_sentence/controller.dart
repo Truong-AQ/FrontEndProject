@@ -19,7 +19,6 @@ class OrderSentenceController extends StateNotifier<OrderSentenceData> {
         state.answers[i] = state.answerUser[index];
         break;
       }
-      ;
     }
     state.answerUser[index] = '';
     for (int i = index; i < state.correctAnswer.length; i++) {
