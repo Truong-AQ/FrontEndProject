@@ -2,15 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
-import 'package:project/screens/questions/order_sentence/controller.dart';
-import 'package:project/screens/questions/order_sentence/data.dart';
+import 'package:project/screens/questions/complete_sentence/controller.dart';
+import 'package:project/screens/questions/complete_sentence/data.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 
-class OrderSentence extends StatelessWidget {
+class CompleteSentence extends StatelessWidget {
   static withDependency() {
-    return StateNotifierProvider<OrderSentenceController, OrderSentenceData>(
-        create: (_) => OrderSentenceController(), child: OrderSentence());
+    return StateNotifierProvider<CompleteSentenceController,
+            CompleteSentenceData>(
+        create: (_) => CompleteSentenceController(), child: CompleteSentence());
   }
 
   @override
@@ -41,7 +42,7 @@ class OrderSentence extends StatelessWidget {
       padding: EdgeInsets.all(dimen12),
       child: Container(
         width: dimen14,
-        child: Image.asset('assets/images/dish2.png', fit: BoxFit.fill),
+        child: Image.asset('assets/images/kettle2.png', fit: BoxFit.fill),
       ),
     );
   }
@@ -51,23 +52,24 @@ class OrderSentence extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(horizontal: dimen3),
-      child: Consumer<OrderSentenceData>(builder: (_, osd, __) {
+      child: Consumer<CompleteSentenceData>(builder: (_, csd, __) {
         return Wrap(
             alignment: WrapAlignment.center,
             children: [
-              for (int i = 0; i < osd.questions.length; i++)
-                _buildWord(context, osd.questions, i),
+              for (int i = 0; i < csd.questions.length; i++)
+                _buildWord(context, csd.questions, csd.fixed, i),
             ],
             runSpacing: dimen6);
       }),
     );
   }
 
-  Widget _buildWord(BuildContext context, List<String> questions, int index) {
-    if (questions[index] == '') return SizedBox(width: 0);
+  Widget _buildWord(BuildContext context, List<String> questions,
+      List<bool> fixed, int index) {
+    if (fixed[index] || questions[index] == '') return SizedBox(width: 0);
     return GestureDetector(
       onTap: () {
-        context.read<OrderSentenceController>().addAnswer(index);
+        context.read<CompleteSentenceController>().addAnswer(index);
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: dimen5),
@@ -86,13 +88,16 @@ class OrderSentence extends StatelessWidget {
         alignment: Alignment.center,
         padding: EdgeInsets.only(
             left: dimen3, right: dimen3, top: dimen15, bottom: dimen15),
-        child: Consumer<OrderSentenceData>(builder: (_, osd, __) {
+        child: Consumer<CompleteSentenceData>(builder: (_, csd, __) {
           final colorAnswer =
-              osd.isComplete ? (osd.isCorrect ? color9 : color7) : color2;
-          return Wrap(children: [
-            for (int i = 0; i < osd.answerUser.length - 1; i++)
-              _buildUserWord(context, i, osd.answerUser, colorAnswer),
-          ], runSpacing: dimen6, alignment: WrapAlignment.center);
+              csd.isComplete ? (csd.isCorrect ? color9 : color7) : color2;
+          return Wrap(
+              alignment: WrapAlignment.center,
+              children: [
+                for (int i = 0; i < csd.answerUser.length; i++)
+                  _buildUserWord(context, i, csd.answerUser, colorAnswer),
+              ],
+              runSpacing: dimen6);
         }));
   }
 
@@ -111,7 +116,9 @@ class OrderSentence extends StatelessWidget {
             ? Container()
             : GestureDetector(
                 onTap: () {
-                  context.read<OrderSentenceController>().removeAnswer(index);
+                  context
+                      .read<CompleteSentenceController>()
+                      .removeAnswer(index);
                 },
                 child: Text(answers[index],
                     style: TextStyle(

@@ -1,5 +1,5 @@
 class OrderSentenceData {
-  List<String> answers = ['LA', 'DAY', 'CAI', 'DIA'];
+  List<String> questions = ['LA', 'DAY', 'CAI', 'DIA'];
   List<String> correctAnswer = ['DAY', 'LA', 'CAI', 'DIA'];
   List<String> answerUser = ['', '', '', '', ''];
   bool isCorrect = false;
@@ -7,7 +7,7 @@ class OrderSentenceData {
   int nWordsChoosed = 0;
   OrderSentenceData copy() {
     final clone = OrderSentenceData();
-    clone.answers = answers;
+    clone.questions = questions;
     clone.correctAnswer = correctAnswer;
     clone.answerUser = answerUser;
     clone.isCorrect = isCorrect;

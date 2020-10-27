@@ -2,28 +2,33 @@ import 'package:state_notifier/state_notifier.dart';
 
 import 'data.dart';
 
-class OrderSentenceController extends StateNotifier<OrderSentenceData> {
-  OrderSentenceController() : super(OrderSentenceData());
+class CompleteSentenceController extends StateNotifier<CompleteSentenceData> {
+  CompleteSentenceController() : super(CompleteSentenceData());
 
   addAnswer(int index) {
-    state.answerUser[state.nWordsChoosed++] = state.questions[index];
-    state.questions[index] = '';
+    if (state.fixed[index]) return;
+    for (int i = 0; i < state.answerUser.length; i++) {
+      if (!state.fixed[i] && state.answerUser[i] == '') {
+        state.answerUser[i] = state.questions[index];
+        state.questions[index] = '';
+        state.nWordsChoosed++;
+        break;
+      }
+    }
     state.isCorrect = checkCorrect(state.answerUser, state.correctAnswer);
     state.isComplete = (state.nWordsChoosed == state.correctAnswer.length);
     state = state.copy();
   }
 
   removeAnswer(int index) {
+    if (state.fixed[index]) return;
     for (int i = 0; i < state.questions.length; i++) {
-      if (state.questions[i] == '') {
+      if (!state.fixed[i] && state.questions[i] == '') {
         state.questions[i] = state.answerUser[index];
         break;
       }
     }
     state.answerUser[index] = '';
-    for (int i = index; i < state.correctAnswer.length; i++) {
-      state.answerUser[i] = state.answerUser[i + 1];
-    }
     state.nWordsChoosed--;
     state.isComplete = (state.nWordsChoosed == state.correctAnswer.length);
     state = state.copy();
