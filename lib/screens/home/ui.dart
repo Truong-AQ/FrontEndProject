@@ -17,18 +17,13 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: _buildDrawer(),
+        appBar: AppBar(),
         body: SafeArea(
           child: LayoutBuilder(builder: (context, constraint) {
             return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraint.maxHeight),
-                child: IntrinsicHeight(
-                    child: Column(
-                  children: [
-                    _buildSearch(context),
-                    Expanded(child: _buildBody(context))
-                  ],
-                )),
+              child: Column(
+                children: [_buildBody(context)],
               ),
             );
           }),
@@ -36,60 +31,136 @@ class Home extends StatelessWidget {
         bottomNavigationBar: _buildBottomNavigationBar());
   }
 
-  Widget _buildSearch(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(horizontal: dimen6, vertical: dimen5),
-      height: dimen20,
-      color: color10,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(dimen3),
-          color: color4,
-        ),
-        child: Row(
-          children: [
-            SizedBox(width: dimen21),
-            Icon(Icons.search, color: color2),
-            SizedBox(width: dimen21),
-            Expanded(
-                child: TextField(
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(bottom: dimen22)))),
-            SizedBox(width: dimen21)
-          ],
-        ),
+  Widget _buildDrawer() {
+    return Column(children: [
+      Container(
+          alignment: Alignment.center,
+          margin: EdgeInsets.only(bottom: 45, top: 70),
+          child: Image.asset('assets/images/dish2.png')),
+      Container(
+        padding: EdgeInsets.all(14),
+        width: 250,
+        color: Colors.grey,
+        margin: EdgeInsets.symmetric(vertical: 15),
+        child: Text('PROFILE',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontFamily: 'monospace')),
       ),
-    );
+      Container(
+        padding: EdgeInsets.all(14),
+        color: Colors.grey,
+        width: 250,
+        margin: EdgeInsets.symmetric(vertical: 15),
+        child: Text('DANG KY TAI KHOAN BENH NHAN',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontFamily: 'monospace')),
+      ),
+      Container(
+        padding: EdgeInsets.all(14),
+        width: 250,
+        color: Colors.grey,
+        margin: EdgeInsets.symmetric(vertical: 15),
+        child: Text('THEO DOI BENH NHAN',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontFamily: 'monospace')),
+      ),
+      Container(
+        padding: EdgeInsets.all(14),
+        width: 250,
+        color: Colors.grey,
+        margin: EdgeInsets.symmetric(vertical: 15),
+        child: Text('LOGOUT',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontFamily: 'monospace')),
+      )
+    ]);
   }
 
   Widget _buildBody(BuildContext context) {
     return Container(
       alignment: Alignment.topLeft,
       color: color11,
-      padding: EdgeInsets.only(
-          top: dimen17, left: dimen9, right: dimen9, bottom: dimen12),
+      padding: EdgeInsets.only(top: dimen17, bottom: dimen12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('CHU DE', style: style4),
+          Row(
+            children: [SizedBox(width: dimen9), Text('CHU DE', style: style4)],
+          ),
           SizedBox(height: dimen12),
-          for (int i = 0; i < resultSearch.length; i++)
-            _buildResultSearch(resultSearch[i]),
+          SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  for (String key in topics.keys)
+                    _buildTopic(context, key, topics[key]),
+                ],
+              )),
+          SizedBox(height: dimen12),
+          Row(
+            children: [
+              SizedBox(width: dimen9),
+              Text('BENH NHAN', style: style4)
+            ],
+          ),
+          SizedBox(height: dimen12),
+          SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  for (String key in patients.keys)
+                    _buildPatient(context, key, patients[key]),
+                ],
+              )),
         ],
       ),
     );
   }
 
-  Widget _buildResultSearch(String text) {
+  Widget _buildPatient(BuildContext context, String url, String name) {
     return Container(
-      decoration: style5,
-      alignment: Alignment.topLeft,
-      margin: EdgeInsets.only(bottom: dimen12),
-      padding: EdgeInsets.all(dimen3),
-      child: Text(text, style: style4),
-    );
+        margin: EdgeInsets.all(16),
+        child: Column(children: [
+          Container(
+              width: 250,
+              height: 250,
+              child: Image.asset(url, fit: BoxFit.fill)),
+          Container(
+            width: 250,
+            padding: EdgeInsets.symmetric(vertical: 15),
+            alignment: Alignment.center,
+            decoration:
+                BoxDecoration(color: Colors.greenAccent, border: Border.all()),
+            child: Text(name,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, fontFamily: 'monospace')),
+          )
+        ]));
+  }
+
+  Widget _buildTopic(BuildContext context, String url, String name) {
+    return Container(
+        margin: EdgeInsets.all(16),
+        child: Column(children: [
+          Container(
+              width: 250,
+              height: 250,
+              child: Image.asset(url, fit: BoxFit.fill)),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 15),
+            alignment: Alignment.center,
+            width: 250,
+            decoration:
+                BoxDecoration(color: Colors.greenAccent, border: Border.all()),
+            child: Text(name,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, fontFamily: 'monospace')),
+          )
+        ]));
   }
 
   Widget _buildBottomNavigationBar() {
@@ -101,5 +172,12 @@ class Home extends StatelessWidget {
     ]);
   }
 
-  List<String> resultSearch = ['TRONG NHA', 'NGOAI TROI', 'DONG VAT'];
+  Map<String, String> patients = {
+    'assets/images/dish.png': 'TRAN TUAN',
+    'assets/images/bowl.png': 'NGOC THUYET'
+  };
+  Map<String, String> topics = {
+    'assets/images/kettle.png': 'TRONG NHA',
+    'assets/images/kettle2.png': 'NGOAI TROI'
+  };
 }
