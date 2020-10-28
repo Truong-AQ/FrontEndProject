@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:project/util/mixin.dart';
 import 'package:project/screens/login/ui.dart';
 
@@ -12,9 +13,10 @@ class Splash extends StatelessWidget with PortraitModeMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    Timer(Duration(seconds: 2), () {
-      Navigator.push(
+    Timer(Duration(seconds: 2), () async {
+      await Navigator.push(
           context, MaterialPageRoute(builder: (_) => Login.withDependency()));
+      SystemNavigator.pop();
     });
     return Scaffold(
       body: Stack(children: [
