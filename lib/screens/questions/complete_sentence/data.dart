@@ -1,5 +1,5 @@
 class CompleteSentenceData {
-  List<String> questions = ['DAY', '', 'CAI', 'AM', '', 'NUOC'];
+  List<String> questions = ['CAI', '', 'DAY', 'NUOC', '', 'AM'];
   List<String> correctAnswer = ['DAY', 'LA', 'CAI', 'AM', 'DUN', 'NUOC'];
   List<String> answerUser = ['', 'LA', '', '', 'DUN', ''];
   List<bool> fixed = [false, true, false, false, true, false];

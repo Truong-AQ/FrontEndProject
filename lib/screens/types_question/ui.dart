@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 import 'package:project/resources/styles.dart';
-import 'package:project/screens/login/controller.dart';
-import 'package:project/screens/login/data.dart';
-import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:project/screens/types_question/ui.dart';
+import 'package:project/screens/navigation_home/data.dart';
+import 'package:project/screens/navigation_home/ui.dart';
+import 'package:provider/provider.dart';
+import 'package:project/screens/questions/complete_sentence/ui.dart';
+import 'package:project/screens/questions/order_sentence/ui.dart';
+import 'package:project/screens/questions/pairing/ui.dart';
+import 'package:project/screens/questions/single_choice/ui.dart';
 
 // ignore: must_be_immutable
-class Search extends StatelessWidget {
-  static withDependency() {
-    return StateNotifierProvider<LoginController, LoginData>(
-        create: (_) => LoginController(), child: Search());
+class TypesQuestion extends StatelessWidget {
+  static Widget withDependency() {
+    return TypesQuestion();
   }
 
   @override
@@ -72,21 +74,49 @@ class Search extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('CHU DE', style: style4),
+          Text('LOAI CAU HOI', style: style4),
           SizedBox(height: dimen12),
           for (int i = 0; i < resultSearch.length; i++)
-            _buildResultSearch(resultSearch[i], context),
+            _buildResultSearch(resultSearch[i], context)
         ],
       ),
     );
   }
 
   Widget _buildResultSearch(String text, BuildContext context) {
+    Function onTap;
+    switch (text) {
+      case 'LUA CHON':
+        onTap = () {
+          Navigator.push(context.read<NavigationHomeData>().context,
+              MaterialPageRoute(builder: (_) => SingleChoice.withDependency()));
+        };
+        break;
+      case 'SAP XEP CAU':
+        onTap = () {
+          Navigator.push(
+              context.read<NavigationHomeData>().context,
+              MaterialPageRoute(
+                  builder: (_) => OrderSentence.withDependency()));
+        };
+        break;
+      case 'HOAN THANH CAU':
+        onTap = () {
+          Navigator.push(
+              context.read<NavigationHomeData>().context,
+              MaterialPageRoute(
+                  builder: (_) => CompleteSentence.withDependency()));
+        };
+        break;
+      case 'NOI TU':
+        onTap = () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (_) => Pairing.withDependency()));
+        };
+        break;
+    }
     return GestureDetector(
-      onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (_) => TypesQuestion.withDependency()));
-      },
+      onTap: onTap,
       child: Container(
         decoration: style5,
         alignment: Alignment.topLeft,
@@ -97,5 +127,10 @@ class Search extends StatelessWidget {
     );
   }
 
-  List<String> resultSearch = ['TRONG NHA', 'NGOAI TROI', 'DONG VAT'];
+  List<String> resultSearch = [
+    'LUA CHON',
+    'SAP XEP CAU',
+    'HOAN THANH CAU',
+    'NOI TU'
+  ];
 }
