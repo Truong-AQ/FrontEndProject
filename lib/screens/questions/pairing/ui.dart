@@ -61,13 +61,14 @@ class Pairing extends StatelessWidget {
         context.read<PairingController>().addAnswer(index);
       },
       child: Container(
-        decoration: BoxDecoration(border: Border(bottom: BorderSide())),
+        decoration: BoxDecoration(
+            color: Colors.pink.withAlpha(45),
+            borderRadius: BorderRadius.circular(10)),
         margin: EdgeInsets.symmetric(horizontal: dimen5),
-        padding: EdgeInsets.only(bottom: 4),
-        width: dimen6 * questions[index].length,
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
         child: Text(questions[index],
             style: TextStyle(
-                color: color2, fontSize: dimen12, fontWeight: FontWeight.bold),
+                color: color2, fontSize: 17, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center),
       ),
     );

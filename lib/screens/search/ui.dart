@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 import 'package:project/resources/styles.dart';
+import 'package:project/screens/home/ui.dart';
 import 'package:project/screens/login/controller.dart';
 import 'package:project/screens/login/data.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
@@ -84,8 +85,10 @@ class Search extends StatelessWidget {
   Widget _buildResultSearch(String text, BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (_) => TypesQuestion.withDependency()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => TypesQuestion.withDependency(Home)));
       },
       child: Container(
         decoration: style5,

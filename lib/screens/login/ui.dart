@@ -107,11 +107,11 @@ class Login extends StatelessWidget {
                 final error = await context.read<LoginController>().login();
                 Navigator.pop(context);
                 if (error == '') {
-                  await Navigator.push(
+                  String logout = await Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (_) => NavigationHome.withDependency()));
-                  SystemNavigator.pop();
+                  if (logout != 'logout') SystemNavigator.pop();
                   return;
                 }
                 showDialog(

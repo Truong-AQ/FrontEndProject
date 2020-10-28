@@ -9,6 +9,9 @@ import 'package:project/screens/login/controller.dart';
 import 'package:project/screens/login/data.dart';
 import 'package:project/screens/navigation_home/controller.dart';
 import 'package:project/screens/navigation_home/data.dart';
+import 'package:project/screens/profile/ui.dart';
+import 'package:project/screens/search/ui.dart';
+import 'package:project/screens/types_question/ui.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 
@@ -44,15 +47,21 @@ class Home extends StatelessWidget {
             alignment: Alignment.center,
             margin: EdgeInsets.only(bottom: 45, top: 70),
             child: Image.asset('assets/images/dish2.png')),
-        Container(
-          padding: EdgeInsets.all(14),
-          width: 250,
-          color: Colors.grey,
-          margin: EdgeInsets.symmetric(vertical: 15),
-          child: Text('PROFILE',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontFamily: 'monospace')),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(context.read<NavigationHomeData>().context,
+                MaterialPageRoute(builder: (_) => Profile.withDependency()));
+          },
+          child: Container(
+            padding: EdgeInsets.all(14),
+            width: 250,
+            color: Colors.grey,
+            margin: EdgeInsets.symmetric(vertical: 15),
+            child: Text('PROFILE',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, fontFamily: 'monospace')),
+          ),
         ),
         GestureDetector(
           onTap: () {
@@ -87,15 +96,20 @@ class Home extends StatelessWidget {
                     fontWeight: FontWeight.bold, fontFamily: 'monospace')),
           ),
         ),
-        Container(
-          padding: EdgeInsets.all(14),
-          width: 250,
-          color: Colors.grey,
-          margin: EdgeInsets.symmetric(vertical: 15),
-          child: Text('LOGOUT',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontFamily: 'monospace')),
+        GestureDetector(
+          onTap: () {
+            Navigator.pop(context.read<NavigationHomeData>().context, 'logout');
+          },
+          child: Container(
+            padding: EdgeInsets.all(14),
+            width: 250,
+            color: Colors.grey,
+            margin: EdgeInsets.symmetric(vertical: 15),
+            child: Text('LOGOUT',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, fontFamily: 'monospace')),
+          ),
         )
       ]),
     );
@@ -170,24 +184,32 @@ class Home extends StatelessWidget {
   }
 
   Widget _buildTopic(BuildContext context, String url, String name) {
-    return Container(
-        margin: EdgeInsets.all(16),
-        child: Column(children: [
-          Container(
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context.read<NavigationHomeData>().context,
+            MaterialPageRoute(
+                builder: (_) => TypesQuestion.withDependency(Search)));
+      },
+      child: Container(
+          margin: EdgeInsets.all(16),
+          child: Column(children: [
+            Container(
+                width: 250,
+                height: 250,
+                child: Image.asset(url, fit: BoxFit.fill)),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 15),
+              alignment: Alignment.center,
               width: 250,
-              height: 250,
-              child: Image.asset(url, fit: BoxFit.fill)),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 15),
-            alignment: Alignment.center,
-            width: 250,
-            decoration:
-                BoxDecoration(color: Colors.greenAccent, border: Border.all()),
-            child: Text(name,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, fontFamily: 'monospace')),
-          )
-        ]));
+              decoration: BoxDecoration(
+                  color: Colors.greenAccent, border: Border.all()),
+              child: Text(name,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: 'monospace')),
+            )
+          ])),
+    );
   }
 
   Map<String, String> patients = {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:project/screens/splash/ui.dart';
-import 'package:project/screens/types_question/ui.dart';
 
 void main() {
   runApp(MyApp());
