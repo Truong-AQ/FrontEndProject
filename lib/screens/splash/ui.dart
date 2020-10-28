@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:project/util/mixin.dart';
 import 'package:project/screens/login/ui.dart';
@@ -10,6 +12,10 @@ class Splash extends StatelessWidget with PortraitModeMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    Timer(Duration(seconds: 2), () {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (_) => Login.withDependency()));
+    });
     return Scaffold(
       body: Stack(children: [
         Container(
@@ -20,19 +26,13 @@ class Splash extends StatelessWidget with PortraitModeMixin {
             bottom: 40,
             left: 25,
             right: 25,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => Login.withDependency()));
-              },
-              child: Text('Ung dung dieu tri ngon ngu - You play - We care',
-                  style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'monospace'),
-                  textAlign: TextAlign.center),
-            ))
+            child: Text('Ung dung dieu tri ngon ngu - You play - We care',
+                style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'monospace'),
+                textAlign: TextAlign.center))
       ]),
     );
   }
