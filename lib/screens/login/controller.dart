@@ -19,7 +19,7 @@ class LoginController extends StateNotifier<LoginData> {
         htmlBody.indexOf('\'error\': ""') != -1) {
       return 'Vui long dien du ten dang nhap va mat khau';
     } else {
-      return response.headers['set-cookie'];
+      return '';
     }
   }
 

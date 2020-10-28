@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 import 'package:project/resources/styles.dart';
+import 'package:project/screens/info_patient/ui.dart';
 import 'package:project/screens/login/controller.dart';
 import 'package:project/screens/login/data.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
@@ -81,22 +82,28 @@ class ListPatient extends StatelessWidget {
   }
 
   Widget _buildPatient(BuildContext context, String url, String name) {
-    return Container(
-        margin: EdgeInsets.symmetric(vertical: 20),
-        child: Column(children: [
-          Container(
-              width: double.infinity,
-              child: Image.asset(url, fit: BoxFit.fill)),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 15),
-            alignment: Alignment.center,
-            decoration:
-                BoxDecoration(color: Colors.greenAccent, border: Border.all()),
-            child: Text(name,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, fontFamily: 'monospace')),
-          )
-        ]));
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (_) => InfoPatient.withDependency()));
+      },
+      child: Container(
+          margin: EdgeInsets.symmetric(vertical: 20),
+          child: Column(children: [
+            Container(
+                width: double.infinity,
+                child: Image.asset(url, fit: BoxFit.fill)),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 15),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: Colors.greenAccent, border: Border.all()),
+              child: Text(name,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: 'monospace')),
+            )
+          ])),
+    );
   }
 
   Map<String, String> patients = {

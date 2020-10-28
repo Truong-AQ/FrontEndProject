@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 import 'package:project/resources/styles.dart';
+import 'package:project/screens/navigation_home/data.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:project/screens/login/controller.dart';
@@ -21,7 +22,15 @@ class Register extends StatelessWidget {
         backgroundColor: color1,
         appBar: AppBar(
             backgroundColor: color3,
-            leading: Icon(Icons.arrow_back_sharp, color: color2),
+            leading: GestureDetector(
+                onTap: () {
+                  try {
+                    Navigator.pop(context.read<NavigationHomeData>().context);
+                  } on Exception catch (_) {
+                    Navigator.pop(context);
+                  }
+                },
+                child: Icon(Icons.arrow_back_sharp, color: color2)),
             elevation: 0),
         body: LayoutBuilder(builder: (context, constraint) {
           return SingleChildScrollView(
@@ -111,7 +120,7 @@ class Register extends StatelessWidget {
             SizedBox(height: dimen4),
             Container(
               margin: style1,
-              child: Text('EMAIL HOAC SO DIEN THOAI', style: style3),
+              child: Text('EMAIL', style: style3),
             ),
             SizedBox(height: dimen5),
             Container(
@@ -150,18 +159,28 @@ class Register extends StatelessWidget {
                       );
                     });
               },
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(vertical: dimen5),
-                margin: style1,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: color5, borderRadius: BorderRadius.circular(dimen3)),
-                child: Text('DANG KY',
-                    style: TextStyle(
-                        color: color4,
-                        fontWeight: FontWeight.bold,
-                        fontSize: dimen8)),
+              child: GestureDetector(
+                onTap: () {
+                  try {
+                    context.read<NavigationHomeData>();
+                  } on Exception catch (_) {
+                    Navigator.pop(context);
+                  }
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(vertical: dimen5),
+                  margin: style1,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: color5,
+                      borderRadius: BorderRadius.circular(dimen3)),
+                  child: Text('DANG KY',
+                      style: TextStyle(
+                          color: color4,
+                          fontWeight: FontWeight.bold,
+                          fontSize: dimen8)),
+                ),
               ),
             ),
             SizedBox(height: dimen4)

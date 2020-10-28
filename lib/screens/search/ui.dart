@@ -16,24 +16,22 @@ class Search extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
-          child: LayoutBuilder(builder: (context, constraint) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraint.maxHeight),
-                child: IntrinsicHeight(
-                    child: Column(
-                  children: [
-                    _buildSearch(context),
-                    Expanded(child: _buildBody(context))
-                  ],
-                )),
-              ),
-            );
-          }),
-        ),
-        bottomNavigationBar: _buildBottomNavigationBar());
+    return Scaffold(body: SafeArea(
+      child: LayoutBuilder(builder: (context, constraint) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraint.maxHeight),
+            child: IntrinsicHeight(
+                child: Column(
+              children: [
+                _buildSearch(context),
+                Expanded(child: _buildBody(context))
+              ],
+            )),
+          ),
+        );
+      }),
+    ));
   }
 
   Widget _buildSearch(BuildContext context) {
@@ -90,15 +88,6 @@ class Search extends StatelessWidget {
       padding: EdgeInsets.all(dimen3),
       child: Text(text, style: style4),
     );
-  }
-
-  Widget _buildBottomNavigationBar() {
-    return BottomNavigationBar(items: [
-      BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-      BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add'),
-      BottomNavigationBarItem(
-          icon: Icon(Icons.search_rounded), label: 'Search'),
-    ]);
   }
 
   List<String> resultSearch = ['TRONG NHA', 'NGOAI TROI', 'DONG VAT'];

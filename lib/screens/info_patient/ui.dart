@@ -17,7 +17,11 @@ class InfoPatient extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: color3,
-          leading: Icon(Icons.arrow_back, color: color2),
+          leading: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.arrow_back, color: color2)),
           elevation: 0),
       body: SingleChildScrollView(
           child: Column(

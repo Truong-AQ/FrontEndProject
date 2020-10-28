@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 import 'package:project/resources/styles.dart';
+import 'package:project/screens/navigation_home/ui.dart';
+import 'package:project/screens/register/ui.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:project/screens/login/controller.dart';
@@ -21,7 +24,11 @@ class Login extends StatelessWidget {
         backgroundColor: color1,
         appBar: AppBar(
             backgroundColor: color3,
-            leading: Icon(Icons.arrow_back_sharp, color: color2),
+            leading: GestureDetector(
+                onTap: () {
+                  SystemNavigator.pop();
+                },
+                child: Icon(Icons.arrow_back_sharp, color: color2)),
             elevation: 0),
         body: LayoutBuilder(builder: (context, constraint) {
           return SingleChildScrollView(
@@ -99,17 +106,25 @@ class Login extends StatelessWidget {
                 showDialog(context: context, builder: (_) => Loading());
                 final error = await context.read<LoginController>().login();
                 Navigator.pop(context);
+                if (error == '') {
+                  await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => NavigationHome.withDependency()));
+                  SystemNavigator.pop();
+                  return;
+                }
                 showDialog(
                     context: context,
                     barrierDismissible: false,
                     builder: (_) {
-                      return AlertDialog(
-                        title: error != ''
-                            ? Text(error,
-                                style:
-                                    TextStyle(fontSize: dimen9, color: color7))
-                            : Text('Dang nhap thanh cong',
-                                style: TextStyle(fontSize: dimen9)),
+                      return CupertinoAlertDialog(
+                        title: Text(error,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: dimen9,
+                                color: color7,
+                                fontFamily: 'roboto')),
                         actions: [
                           TextButton(
                               onPressed: () {
@@ -135,15 +150,23 @@ class Login extends StatelessWidget {
               ),
             ),
             SizedBox(height: dimen4),
-            Container(
-                alignment: Alignment.centerRight,
-                margin: EdgeInsets.only(right: dimen3, bottom: dimen4),
-                child: Text('DANG KY / QUEN MAT KHAU',
-                    style: TextStyle(
-                        color: color6,
-                        fontSize: dimen9,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic))),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => Register.withDependency()));
+              },
+              child: Container(
+                  alignment: Alignment.centerRight,
+                  margin: EdgeInsets.only(right: 30, bottom: dimen4),
+                  child: Text('DANG KY',
+                      style: TextStyle(
+                          color: Colors.green,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic))),
+            ),
           ],
         ),
       ),
