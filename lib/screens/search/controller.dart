@@ -1,33 +1,32 @@
-import 'package:project/screens/login/api.dart' as api;
-import 'package:project/screens/login/data.dart';
+import 'dart:convert';
+
+import 'package:project/screens/search/api/api.dart' as api;
+import 'package:project/screens/search/api/response.dart';
 import 'package:state_notifier/state_notifier.dart';
 
-class LoginController extends StateNotifier<LoginData> {
-  LoginController() : super(LoginData());
-  Future<String> login() async {
+import 'data.dart';
+
+class SearchController extends StateNotifier<SearchData> {
+  SearchController() : super(SearchData());
+  Future<void> getTopics({String classUri}) async {
+    print('start get topic');
     state.process = true;
     state = state.copy();
-    final response =
-        await api.login(login: state.name, password: state.password);
+    state.topic = await _getTopics(classUri: classUri);
     state.process = false;
     state = state.copy();
-    final htmlBody = response.body;
-    if (htmlBody.indexOf("Invalid login or password. Please try again.") !=
-        -1) {
-      return 'Sai ten dang nhap hoac mat khau';
-    } else if (htmlBody.indexOf("This field is required") != -1 ||
-        htmlBody.indexOf('\'error\': ""') != -1) {
-      return 'Vui long dien du ten dang nhap va mat khau';
-    } else {
-      return response.headers['set-cookie'];
+    print('done get topic');
+  }
+
+  Future<Topic> _getTopics({String classUri}) async {
+    final response = await api.getTopics(classUri: classUri);
+    Topic topic = Topic();
+    topic.child = ResponseTopic.fromJson(jsonDecode(response.body));
+    for (int i = 0; i < topic.child.tree.length; i++) {
+      print(topic.child.tree[i].data);
+      topic.topics.add(
+          await _getTopics(classUri: topic.child.tree[i].attributes.dataUri));
     }
-  }
-
-  setName(String name) {
-    state.name = name;
-  }
-
-  setPassword(String password) {
-    state.password = password;
+    return topic;
   }
 }

@@ -2,38 +2,51 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
+import 'package:project/widgets/expansion.dart';
+import 'package:project/widgets/loading.dart';
+import 'package:provider/provider.dart';
 import 'package:project/resources/styles.dart';
-import 'package:project/screens/home/ui.dart';
-import 'package:project/screens/login/controller.dart';
-import 'package:project/screens/login/data.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:project/screens/types_question/ui.dart';
+import 'package:project/screens/search/controller.dart';
+import 'package:project/screens/search/data.dart';
 
 // ignore: must_be_immutable
 class Search extends StatelessWidget {
   static withDependency() {
-    return StateNotifierProvider<LoginController, LoginData>(
-        create: (_) => LoginController(), child: Search());
+    return StateNotifierProvider<SearchController, SearchData>(
+        create: (_) => SearchController()..getTopics(), child: Search());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: SafeArea(
-      child: LayoutBuilder(builder: (context, constraint) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: constraint.maxHeight),
-            child: IntrinsicHeight(
-                child: Column(
-              children: [
-                _buildSearch(context),
-                Expanded(child: _buildBody(context))
-              ],
-            )),
-          ),
-        );
-      }),
-    ));
+    return Stack(children: [
+      Scaffold(body: SafeArea(
+        child: LayoutBuilder(builder: (context, constraint) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraint.maxHeight),
+              child: IntrinsicHeight(
+                  child: Column(
+                children: [
+                  GestureDetector(
+                      onTap: () {
+                        context.read<SearchController>().getTopics();
+                      },
+                      child: _buildSearch(context)),
+                  Expanded(child: _buildBody(context))
+                ],
+              )),
+            ),
+          );
+        }),
+      )),
+      Selector<SearchData, bool>(
+        selector: (_, dt) => dt.process,
+        builder: (_, process, __) {
+          return process ? Loading() : Container();
+        },
+      )
+    ]);
   }
 
   Widget _buildSearch(BuildContext context) {
@@ -75,30 +88,38 @@ class Search extends StatelessWidget {
         children: [
           Text('CHU DE', style: style4),
           SizedBox(height: dimen12),
-          for (int i = 0; i < resultSearch.length; i++)
-            _buildResultSearch(resultSearch[i], context),
+          Selector<SearchData, Topic>(
+              selector: (_, dt) => dt.topic,
+              builder: (_, topic, __) {
+                if (topic != null) {
+                  List<Widget> widgetTopic = [];
+                  for (int i = 0; i < topic.child.tree.length; i++) {
+                    widgetTopic.add(_buildResultSearch(
+                        topic.child.tree[i].data, context, 1, topic.topics[i]));
+                  }
+                  return Column(children: widgetTopic);
+                }
+                return Container();
+              })
         ],
       ),
     );
   }
 
-  Widget _buildResultSearch(String text, BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => TypesQuestion.withDependency(Home)));
-      },
-      child: Container(
-        decoration: style5,
-        alignment: Alignment.topLeft,
-        margin: EdgeInsets.only(bottom: dimen12),
-        padding: EdgeInsets.all(dimen3),
-        child: Text(text, style: style4),
-      ),
-    );
+  Widget _buildResultSearch(
+      String text, BuildContext context, int order, Topic topicChild) {
+    return Expansion(
+        title: Container(
+          decoration: style5,
+          alignment: Alignment.topLeft,
+          margin: EdgeInsets.only(bottom: dimen12, left: (order - 1) * 9.0),
+          padding: EdgeInsets.all(dimen3),
+          child: Text(text, style: style4),
+        ),
+        body: Column(children: [
+          for (int i = 0; i < topicChild.child.tree.length; i++)
+            _buildResultSearch(topicChild.child.tree[i].data, context,
+                order + 1, topicChild.topics[i]),
+        ]));
   }
-
-  List<String> resultSearch = ['TRONG NHA', 'NGOAI TROI', 'DONG VAT'];
 }

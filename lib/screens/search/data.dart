@@ -1,11 +1,17 @@
-class LoginData {
-  String name, password;
+import 'package:project/screens/search/api/response.dart';
+
+class SearchData {
   bool process = false;
-  LoginData copy() {
-    final clone = LoginData();
-    clone.name = name;
-    clone.password = password;
+  Topic topic;
+  SearchData copy() {
+    final clone = SearchData();
     clone.process = process;
+    clone.topic = topic;
     return clone;
   }
+}
+
+class Topic {
+  ResponseTopic child;
+  List<Topic> topics = [];
 }

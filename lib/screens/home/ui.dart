@@ -7,6 +7,7 @@ import 'package:project/screens/info_patient/ui.dart';
 import 'package:project/screens/list_patient/ui.dart';
 import 'package:project/screens/login/controller.dart';
 import 'package:project/screens/login/data.dart';
+import 'package:project/screens/login/ui.dart';
 import 'package:project/screens/navigation_home/controller.dart';
 import 'package:project/screens/navigation_home/data.dart';
 import 'package:project/screens/profile/ui.dart';
@@ -98,7 +99,9 @@ class Home extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            Navigator.pop(context.read<NavigationHomeData>().context, 'logout');
+            Navigator.pushReplacement(
+                context.read<NavigationHomeData>().context,
+                MaterialPageRoute(builder: (_) => Login.withDependency()));
           },
           child: Container(
             padding: EdgeInsets.all(14),

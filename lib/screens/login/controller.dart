@@ -1,5 +1,7 @@
+import 'package:project/resources/strings.dart';
 import 'package:project/screens/login/api.dart' as api;
 import 'package:project/screens/login/data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 class LoginController extends StateNotifier<LoginData> {
@@ -19,6 +21,9 @@ class LoginController extends StateNotifier<LoginData> {
         htmlBody.indexOf('\'error\': ""') != -1) {
       return 'Vui long dien du ten dang nhap va mat khau';
     } else {
+      cookie = response.headers['set-cookie'];
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('cookie', cookie);
       return '';
     }
   }

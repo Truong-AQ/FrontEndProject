@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/screens/login/ui.dart';
+import 'package:project/screens/navigation_home/ui.dart';
 import 'package:project/screens/splash/controller.dart';
 import 'package:project/screens/splash/data.dart';
 import 'package:project/util/mixin.dart';
@@ -9,7 +10,7 @@ import 'package:provider/provider.dart';
 class Splash extends StatelessWidget with PortraitModeMixin {
   static Widget withDependency() {
     return StateNotifierProvider<SplashController, SplashData>(
-      create: (_) => SplashController(),
+      create: (_) => SplashController()..initDataSet(),
       child: Splash(),
     );
   }
@@ -17,8 +18,10 @@ class Splash extends StatelessWidget with PortraitModeMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return context.watch<SplashData>().init
-        ? Login.withDependency()
+    return context.select((SplashData dt) => dt.init)
+        ? (context.select((SplashData dt) => dt.cookie) == ''
+            ? Login.withDependency()
+            : NavigationHome.withDependency())
         : Scaffold(
             body: Stack(children: [
               Container(

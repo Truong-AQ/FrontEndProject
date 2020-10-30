@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 import 'package:project/resources/styles.dart';
@@ -22,14 +21,7 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: color1,
-        appBar: AppBar(
-            backgroundColor: color3,
-            leading: GestureDetector(
-                onTap: () {
-                  SystemNavigator.pop();
-                },
-                child: Icon(Icons.arrow_back_sharp, color: color2)),
-            elevation: 0),
+        appBar: AppBar(backgroundColor: color3, elevation: 0),
         body: LayoutBuilder(builder: (context, constraint) {
           return SingleChildScrollView(
             child: ConstrainedBox(
@@ -107,11 +99,10 @@ class Login extends StatelessWidget {
                 final error = await context.read<LoginController>().login();
                 Navigator.pop(context);
                 if (error == '') {
-                  String logout = await Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (_) => NavigationHome.withDependency()));
-                  if (logout != 'logout') SystemNavigator.pop();
                   return;
                 }
                 showDialog(

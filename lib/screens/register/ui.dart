@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 import 'package:project/resources/styles.dart';
+import 'package:project/screens/navigation_home/controller.dart';
 import 'package:project/screens/navigation_home/data.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,7 @@ class Register extends StatelessWidget {
             leading: GestureDetector(
                 onTap: () {
                   try {
-                    Navigator.pop(context.read<NavigationHomeData>().context);
+                    context.read<NavigationHomeController>().updateTabIndex(0);
                   } on Exception catch (_) {
                     Navigator.pop(context);
                   }
