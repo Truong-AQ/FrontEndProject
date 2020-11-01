@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project/resources/app_context.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
+import 'package:project/resources/strings.dart';
 import 'package:project/resources/styles.dart';
 import 'package:project/screens/info_patient/ui.dart';
 import 'package:project/screens/list_patient/ui.dart';
@@ -14,6 +15,7 @@ import 'package:project/screens/profile/ui.dart';
 import 'package:project/screens/types_question/ui.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class Home extends StatelessWidget {
@@ -97,7 +99,10 @@ class Home extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {
+          onTap: () async {
+            SharedPreferences pref = await SharedPreferences.getInstance();
+            cookie = '';
+            pref.setString('cookie', '');
             Navigator.pushReplacement(contextHome,
                 MaterialPageRoute(builder: (_) => Login.withDependency()));
           },
