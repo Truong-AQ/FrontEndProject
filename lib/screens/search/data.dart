@@ -13,5 +13,5 @@ class SearchData {
 
 class Topic {
   ResponseTopic child;
-  List<Topic> topics = [];
+  List<Topic> topics;
 }

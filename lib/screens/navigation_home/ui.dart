@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project/resources/app_context.dart';
 import 'package:project/screens/home/ui.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
@@ -13,7 +14,10 @@ import 'data.dart';
 class NavigationHome extends StatelessWidget {
   static withDependency() {
     return StateNotifierProvider<NavigationHomeController, NavigationHomeData>(
-        create: (context) => NavigationHomeController(context),
+        create: (context) {
+          contextHome = context;
+          return NavigationHomeController();
+        },
         child: NavigationHome());
   }
 

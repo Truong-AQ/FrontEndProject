@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project/resources/app_context.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 import 'package:project/resources/styles.dart';
@@ -9,9 +10,7 @@ import 'package:project/screens/login/controller.dart';
 import 'package:project/screens/login/data.dart';
 import 'package:project/screens/login/ui.dart';
 import 'package:project/screens/navigation_home/controller.dart';
-import 'package:project/screens/navigation_home/data.dart';
 import 'package:project/screens/profile/ui.dart';
-import 'package:project/screens/search/ui.dart';
 import 'package:project/screens/types_question/ui.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
@@ -50,7 +49,7 @@ class Home extends StatelessWidget {
             child: Image.asset('assets/images/dish2.png')),
         GestureDetector(
           onTap: () {
-            Navigator.push(context.read<NavigationHomeData>().context,
+            Navigator.push(contextHome,
                 MaterialPageRoute(builder: (_) => Profile.withDependency()));
           },
           child: Container(
@@ -82,7 +81,7 @@ class Home extends StatelessWidget {
         GestureDetector(
           onTap: () {
             Navigator.push(
-                context.read<NavigationHomeData>().context,
+                contextHome,
                 MaterialPageRoute(
                     builder: (_) => ListPatient.withDependency()));
           },
@@ -99,8 +98,7 @@ class Home extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            Navigator.pushReplacement(
-                context.read<NavigationHomeData>().context,
+            Navigator.pushReplacement(contextHome,
                 MaterialPageRoute(builder: (_) => Login.withDependency()));
           },
           child: Container(
@@ -189,10 +187,8 @@ class Home extends StatelessWidget {
   Widget _buildTopic(BuildContext context, String url, String name) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context.read<NavigationHomeData>().context,
-            MaterialPageRoute(
-                builder: (_) => TypesQuestion.withDependency(Search)));
+        Navigator.push(contextHome,
+            MaterialPageRoute(builder: (_) => TypesQuestion.withDependency()));
       },
       child: Container(
           margin: EdgeInsets.all(16),

@@ -14,7 +14,7 @@ import 'package:project/screens/search/data.dart';
 class Search extends StatelessWidget {
   static withDependency() {
     return StateNotifierProvider<SearchController, SearchData>(
-        create: (_) => SearchController()..getTopics(), child: Search());
+        create: (_) => SearchController()..initTopics(), child: Search());
   }
 
   @override
@@ -95,7 +95,14 @@ class Search extends StatelessWidget {
                   List<Widget> widgetTopic = [];
                   for (int i = 0; i < topic.child.tree.length; i++) {
                     widgetTopic.add(_buildResultSearch(
-                        topic.child.tree[i].data, context, 1, topic.topics[i]));
+                        topic.child.tree[i].data,
+                        context,
+                        1,
+                        topic,
+                        i,
+                        topic.child.tree[i].attributes.dataUri,
+                        topic.child.tree[i].attributes.classAttribute !=
+                            'node-class'));
                   }
                   return Column(children: widgetTopic);
                 }
@@ -106,20 +113,29 @@ class Search extends StatelessWidget {
     );
   }
 
-  Widget _buildResultSearch(
-      String text, BuildContext context, int order, Topic topicChild) {
+  Widget _buildResultSearch(String text, BuildContext context, int order,
+      Topic topic, int index, String classUri, bool isQuestion) {
     return Expansion(
-        title: Container(
-          decoration: style5,
-          alignment: Alignment.topLeft,
-          margin: EdgeInsets.only(bottom: dimen12, left: (order - 1) * 9.0),
-          padding: EdgeInsets.all(dimen3),
-          child: Text(text, style: style4),
-        ),
-        body: Column(children: [
-          for (int i = 0; i < topicChild.child.tree.length; i++)
-            _buildResultSearch(topicChild.child.tree[i].data, context,
-                order + 1, topicChild.topics[i]),
-        ]));
+        isQuestion: isQuestion,
+        marginLeft: (order - 1) * 9.0,
+        label: text,
+        generateBody: () async {
+          await context
+              .read<SearchController>()
+              .updateTopics(classUri: classUri);
+          Topic topicThis = topic.topics[index];
+          return Column(children: [
+            for (int i = 0; i < topicThis.child.tree.length; i++)
+              _buildResultSearch(
+                  topicThis.child.tree[i].data,
+                  context,
+                  order + 1,
+                  topic.topics[index],
+                  i,
+                  topicThis.child.tree[i].attributes.dataUri,
+                  topicThis.child.tree[i].attributes.classAttribute !=
+                      'node-class'),
+          ]);
+        });
   }
 }

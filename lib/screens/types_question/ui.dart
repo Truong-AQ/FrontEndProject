@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 import 'package:project/resources/styles.dart';
-import 'package:project/screens/home/ui.dart';
-import 'package:project/screens/navigation_home/data.dart';
-import 'package:provider/provider.dart';
 import 'package:project/screens/questions/complete_sentence/ui.dart';
 import 'package:project/screens/questions/order_sentence/ui.dart';
 import 'package:project/screens/questions/pairing/ui.dart';
@@ -13,19 +10,12 @@ import 'package:project/screens/questions/single_choice/ui.dart';
 
 // ignore: must_be_immutable
 class TypesQuestion extends StatelessWidget {
-  static Widget withDependency(Type fromWidget) {
-    return TypesQuestion(fromWidget: fromWidget);
+  static Widget withDependency() {
+    return TypesQuestion();
   }
 
-  TypesQuestion({this.fromWidget});
-  Type fromWidget;
-  BuildContext contextPush;
   @override
   Widget build(BuildContext context) {
-    fromWidget == Home
-        ? contextPush =
-            Provider.of<NavigationHomeData>(context, listen: false).context
-        : contextPush = context;
     return Scaffold(body: SafeArea(
       child: LayoutBuilder(builder: (context, constraint) {
         return SingleChildScrollView(
@@ -84,25 +74,25 @@ class TypesQuestion extends StatelessWidget {
           Text('LOAI CAU HOI', style: style4),
           SizedBox(height: dimen12),
           for (int i = 0; i < resultSearch.length; i++)
-            _buildResultSearch(resultSearch[i])
+            _buildResultSearch(resultSearch[i], context)
         ],
       ),
     );
   }
 
-  Widget _buildResultSearch(String text) {
+  Widget _buildResultSearch(String text, BuildContext context) {
     Function onTap;
     switch (text) {
       case 'LUA CHON':
         onTap = () {
-          Navigator.push(contextPush,
+          Navigator.push(context,
               MaterialPageRoute(builder: (_) => SingleChoice.withDependency()));
         };
         break;
       case 'SAP XEP CAU':
         onTap = () {
           Navigator.push(
-              contextPush,
+              context,
               MaterialPageRoute(
                   builder: (_) => OrderSentence.withDependency()));
         };
@@ -110,14 +100,14 @@ class TypesQuestion extends StatelessWidget {
       case 'HOAN THANH CAU':
         onTap = () {
           Navigator.push(
-              contextPush,
+              context,
               MaterialPageRoute(
                   builder: (_) => CompleteSentence.withDependency()));
         };
         break;
       case 'NOI TU':
         onTap = () {
-          Navigator.push(contextPush,
+          Navigator.push(context,
               MaterialPageRoute(builder: (_) => Pairing.withDependency()));
         };
         break;

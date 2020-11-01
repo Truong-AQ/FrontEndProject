@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project/resources/app_context.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 import 'package:project/resources/styles.dart';
@@ -14,7 +15,10 @@ import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 class Login extends StatelessWidget {
   static withDependency() {
     return StateNotifierProvider<LoginController, LoginData>(
-        create: (_) => LoginController(), child: Login());
+        create: (context) {
+          contextLogin = context;
+          return LoginController();
+        }, child: Login());
   }
 
   @override
@@ -54,7 +58,6 @@ class Login extends StatelessWidget {
   Widget _buildLoginForm(BuildContext context) {
     return Expanded(
       child: Container(
-        // height: MediaQuery.of(context).size.height * dimen10,
         decoration: BoxDecoration(
             color: color4,
             borderRadius: BorderRadius.only(
@@ -100,7 +103,7 @@ class Login extends StatelessWidget {
                 Navigator.pop(context);
                 if (error == '') {
                   Navigator.pushReplacement(
-                      context,
+                      contextLogin,
                       MaterialPageRoute(
                           builder: (_) => NavigationHome.withDependency()));
                   return;

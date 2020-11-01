@@ -22,6 +22,7 @@ class LoginController extends StateNotifier<LoginData> {
       return 'Vui long dien du ten dang nhap va mat khau';
     } else {
       cookie = response.headers['set-cookie'];
+      cookie = cookie.substring(cookie.indexOf('tao_xS2lIq62'));
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('cookie', cookie);
       return '';

@@ -5,6 +5,7 @@ import 'package:project/resources/dimens.dart';
 import 'package:project/resources/styles.dart';
 import 'package:project/screens/navigation_home/controller.dart';
 import 'package:project/screens/navigation_home/data.dart';
+import 'package:project/screens/navigation_home/ui.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:project/screens/login/controller.dart';
@@ -25,11 +26,11 @@ class Register extends StatelessWidget {
             backgroundColor: color3,
             leading: GestureDetector(
                 onTap: () {
-                  try {
+                  if (context.findAncestorWidgetOfExactType<NavigationHome>() !=
+                      null)
                     context.read<NavigationHomeController>().updateTabIndex(0);
-                  } on Exception catch (_) {
+                  else
                     Navigator.pop(context);
-                  }
                 },
                 child: Icon(Icons.arrow_back_sharp, color: color2)),
             elevation: 0),
