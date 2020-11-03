@@ -5,7 +5,6 @@ import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 import 'package:project/resources/styles.dart';
 import 'package:project/screens/navigation_home/ui.dart';
-import 'package:project/screens/register/ui.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:project/screens/login/controller.dart';
@@ -18,7 +17,8 @@ class Login extends StatelessWidget {
         create: (context) {
           contextLogin = context;
           return LoginController();
-        }, child: Login());
+        },
+        child: Login());
   }
 
   @override
@@ -48,21 +48,14 @@ class Login extends StatelessWidget {
       alignment: Alignment.center,
       child: Text('Dang nhap',
           style: TextStyle(
-              color: color2,
-              fontWeight: FontWeight.bold,
-              fontSize: dimen2,
-              fontStyle: FontStyle.italic)),
+              color: color2, fontWeight: FontWeight.bold, fontSize: dimen2)),
     );
   }
 
   Widget _buildLoginForm(BuildContext context) {
     return Expanded(
       child: Container(
-        decoration: BoxDecoration(
-            color: color4,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(dimen4),
-                topRight: Radius.circular(dimen4))),
+        decoration: BoxDecoration(color: color4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -134,8 +127,7 @@ class Login extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: dimen5),
                 margin: style1,
                 alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: color5, borderRadius: BorderRadius.circular(dimen3)),
+                decoration: BoxDecoration(color: color5),
                 child: Text('DANG NHAP',
                     style: TextStyle(
                         color: color4,
@@ -143,24 +135,7 @@ class Login extends StatelessWidget {
                         fontSize: dimen8)),
               ),
             ),
-            SizedBox(height: dimen4),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => Register.withDependency()));
-              },
-              child: Container(
-                  alignment: Alignment.centerRight,
-                  margin: EdgeInsets.only(right: 30, bottom: dimen4),
-                  child: Text('DANG KY',
-                      style: TextStyle(
-                          color: Colors.green,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic))),
-            ),
+            SizedBox(height: dimen4)
           ],
         ),
       ),
