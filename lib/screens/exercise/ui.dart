@@ -5,6 +5,7 @@ import 'package:project/resources/strings.dart';
 import 'package:project/screens/exercise/controller.dart';
 import 'package:project/screens/login/ui.dart';
 import 'package:project/screens/profile/ui.dart';
+import 'package:project/screens/test/ui.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -110,11 +111,13 @@ class Exercise extends StatelessWidget {
       selector: (_, dt) => dt.testProcess.length,
       builder: (context, length, __) {
         return Column(children: [
-          Text('Trong tien trinh: $length',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 20)),
+          length > 0
+              ? Text('Trong tien trinh: $length',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 20))
+              : Container(),
           SizedBox(height: 10),
           for (int i = 0; i < length; i++)
             _buildExerciseProcessItem(
@@ -133,15 +136,18 @@ class Exercise extends StatelessWidget {
       selector: (_, dt) => dt.testHave.length,
       builder: (context, length, __) {
         return Column(children: [
-          Text('Co san: $length',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 20)),
+          length > 0
+              ? Text('Co san: $length',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 20))
+              : Container(),
           SizedBox(height: 10),
           for (int i = 0; i < length; i++)
             _buildExerciseHaveItem(
-                text: context.select((ExerciseData dt) => dt.testHave[i].label))
+                text: context.select((ExerciseData dt) => dt.testHave[i].label),
+                link: context.select((ExerciseData dt) => dt.testHave[i].link))
         ]);
       },
     );
@@ -171,7 +177,7 @@ class Exercise extends StatelessWidget {
     );
   }
 
-  Widget _buildExerciseHaveItem({String text}) {
+  Widget _buildExerciseHaveItem({String text, String link}) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(10),
@@ -182,11 +188,19 @@ class Exercise extends StatelessWidget {
         SizedBox(height: 4),
         Row(children: [
           Spacer(),
-          Container(
-              padding: EdgeInsets.all(7),
-              color: Colors.orange,
-              child: Text('BAT DAU',
-                  style: TextStyle(color: Colors.white, fontSize: 12)))
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  contextHome,
+                  MaterialPageRoute(
+                      builder: (_) => Test.withDependency(url: link)));
+            },
+            child: Container(
+                padding: EdgeInsets.all(7),
+                color: Colors.orange,
+                child: Text('BAT DAU',
+                    style: TextStyle(color: Colors.white, fontSize: 12))),
+          )
         ])
       ]),
     );

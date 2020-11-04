@@ -43,25 +43,27 @@ class ExerciseController extends StateNotifier<ExerciseData> {
     String htmlTests = (await getTests()).body;
     final document = parse(htmlTests);
     var entrys = document.getElementsByClassName('entry-point-box plain');
-    //load test in process
-    var childrenProcess = entrys[0].getElementsByClassName(
-        'block entry-point entry-point-started-deliveries');
     List<ExerciseProcess> testProcess = [];
     List<ExcerciseHave> testHave = [];
-    for (int i = 0; i < childrenProcess.length; i++) {
-      testProcess.add(ExerciseProcess(
-          link: childrenProcess[i].attributes['data-launch_url'],
-          label: childrenProcess[i].getElementsByTagName('h3')[0].text,
-          time: childrenProcess[i].getElementsByTagName('p')[0].text));
-    }
     //load test have
-    var childrenHave = entrys[1]
+    var childrenHave = entrys[entrys.length-1]
         .getElementsByClassName('block entry-point entry-point-all-deliveries');
 
     for (int i = 0; i < childrenHave.length; i++) {
       testHave.add(ExcerciseHave(
           link: childrenHave[i].attributes['data-launch_url'],
           label: childrenHave[i].getElementsByTagName('h3')[0].text));
+    }
+    //load test in process
+    if (entrys.length == 2) {
+      var childrenProcess = entrys[0].getElementsByClassName(
+          'block entry-point entry-point-started-deliveries');
+      for (int i = 0; i < childrenProcess.length; i++) {
+        testProcess.add(ExerciseProcess(
+            link: childrenProcess[i].attributes['data-launch_url'],
+            label: childrenProcess[i].getElementsByTagName('h3')[0].text,
+            time: childrenProcess[i].getElementsByTagName('p')[0].text));
+      }
     }
     if (state.testProcess.length != testProcess.length)
       state.testProcess = testProcess;
