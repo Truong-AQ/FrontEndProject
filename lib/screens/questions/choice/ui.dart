@@ -53,16 +53,20 @@ class Choice extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class _PlayAudio extends StatefulWidget {
-  _PlayAudio({this.url});
+  _PlayAudio({this.url, this.isPlay = false});
   final String url;
-
+  bool isPlay;
   @override
   __PlayAudioState createState() => __PlayAudioState();
 }
 
 class __PlayAudioState extends State<_PlayAudio> {
-  bool isPlay = false;
+  get isPlay => widget.isPlay;
+  get url => widget.url;
+  set isPlay(bool isPlay) => widget.isPlay = isPlay;
+
   AssetsAudioPlayer audioPlayer;
   @override
   void initState() {
@@ -89,6 +93,11 @@ class __PlayAudioState extends State<_PlayAudio> {
           ? Icon(Icons.pause, size: 35, color: Colors.green)
           : Icon(Icons.play_arrow, size: 35, color: Colors.green),
     );
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    audioPlayer.dispose();
   }
 }
 

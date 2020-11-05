@@ -20,7 +20,6 @@ class TestController extends StateNotifier<TestData> {
     final jsonItem = jsonDecode(responseItem.body);
     readQuestion(jsonItem);
     state.questionCurrent += 1;
-    print('will change');
     state.process = false;
     state = state.copy();
   }

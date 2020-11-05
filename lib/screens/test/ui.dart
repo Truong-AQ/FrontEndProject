@@ -17,7 +17,7 @@ class Test extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return context.select((TestData dt) => dt.process)
-        ? Loading()
+        ? Loading(backgroundColor: Colors.white)
         : Scaffold(body: LayoutBuilder(builder: (context, constraint) {
             return SingleChildScrollView(
               child: ConstrainedBox(
