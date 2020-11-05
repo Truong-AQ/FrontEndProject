@@ -35,6 +35,7 @@ dependencies:
   flutter_html: ^1.0.0
   html: ^0.14.0+4
   visibility_detector: ^0.1.5
+  assets_audio_player: ^2.0.12
 
 dev_dependencies:
   flutter_test:
