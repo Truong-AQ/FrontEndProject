@@ -20,7 +20,8 @@ class Choice extends StatelessWidget {
       children: [
         Container(
             margin: EdgeInsets.only(top: 10),
-            child: _PlayAudio(url: Provider.of<ChoiceData>(context).audio)),
+            child: _PlayAudio(
+                url: Provider.of<ChoiceData>(context, listen: false).audio)),
         _buildQuestion(context),
         _buildAnswer(context),
       ],
@@ -41,14 +42,17 @@ class Choice extends StatelessWidget {
   Widget _buildAnswer(BuildContext context) {
     List<String> answers =
         Provider.of<ChoiceData>(context, listen: false).urlImg;
-    return Table(
-      children: [
-        for (int i = 0; i < answers.length; i += 2)
-          TableRow(children: [
-            _CellRow(url: answers[i]),
-            _CellRow(url: answers[i + 1])
-          ]),
-      ],
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 14),
+      child: Table(
+        children: [
+          for (int i = 0; i < answers.length; i += 2)
+            TableRow(children: [
+              _CellRow(url: answers[i]),
+              _CellRow(url: answers[i + 1])
+            ]),
+        ],
+      ),
     );
   }
 }
@@ -94,6 +98,7 @@ class __PlayAudioState extends State<_PlayAudio> {
           : Icon(Icons.play_arrow, size: 35, color: Colors.green),
     );
   }
+
   @override
   void dispose() {
     super.dispose();
@@ -123,11 +128,11 @@ class __CellRowState extends State<_CellRow> {
         });
       },
       child: Container(
-          padding: EdgeInsets.all(dimen12),
+          padding: EdgeInsets.symmetric(horizontal: 7, vertical: 8),
           child: Container(
               decoration: BoxDecoration(
                   border: choice
-                      ? Border.all(color: Colors.red, width: 2)
+                      ? Border.all(color: Colors.green, width: 3)
                       : Border.all()),
               child: Image.network(url, fit: BoxFit.fill))),
     );

@@ -7,8 +7,6 @@ import 'package:state_notifier/state_notifier.dart';
 class TestController extends StateNotifier<TestData> {
   TestController({String url}) : super(TestData(url: url));
   Future<void> initData() async {
-    state.process = true;
-    state = state.copy();
     state.queryParams = await getBasicInfo(url: state.url);
     final responseInitTest = await initTest(queryParams: state.queryParams);
     final jsonResponseInitTest = jsonDecode(responseInitTest.body);
@@ -20,7 +18,7 @@ class TestController extends StateNotifier<TestData> {
     final jsonItem = jsonDecode(responseItem.body);
     readQuestion(jsonItem);
     state.questionCurrent += 1;
-    state.process = false;
+    state.init = true;
     state = state.copy();
   }
 
@@ -51,12 +49,12 @@ class TestController extends StateNotifier<TestData> {
         dataQuestion['label'] =
             jsonItem['itemData']['data']['attributes']['label'];
         Map<String, dynamic> assets = jsonItem['itemData']['assets'];
-        if (assets['audio'] != '') {
+        if (assets['audio'] != null) {
           final String audio =
               (assets['audio'] as Map<String, dynamic>).values.toList()[0];
           dataQuestion['audio'] = '$baseUrlAssets$audio';
         }
-        if (assets['img'] != '') {
+        if (assets['img'] != null) {
           List<String> urlImage = [];
           Map<String, dynamic> assetsImg = assets['img'];
           for (var img in assetsImg.values) {
@@ -68,5 +66,20 @@ class TestController extends StateNotifier<TestData> {
         break;
       }
     }
+  }
+
+  void getNextItem() async {
+    state.process = true;
+    state = state.copy();
+    final responseItem = await getItem(
+        queryParams: state.queryParams,
+        idItem: state.idQuestions[state.questionCurrent],
+        token: state.token);
+    state.questionCurrent+=1;
+    final jsonItem = jsonDecode(responseItem.body);
+    print(jsonItem.toString());
+    readQuestion(jsonItem);
+    state.process = false;
+    state = state.copy();
   }
 }

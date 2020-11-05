@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 
+// ignore: must_be_immutable
 class Loading extends StatelessWidget {
   Loading({this.backgroundColor});
   Color backgroundColor;

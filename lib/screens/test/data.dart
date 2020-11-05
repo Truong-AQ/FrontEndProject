@@ -1,7 +1,7 @@
 class TestData {
   String url, token = '';
   int questionCurrent = 0;
-  bool process = false;
+  bool process = false, init = false;
   TypeQuestion typeQuestionCurrent;
   List<String> idQuestions = [];
   Map<String, dynamic> queryParams, dataQuestion;
@@ -16,6 +16,7 @@ class TestData {
     clone.dataQuestion = dataQuestion;
     clone.questionCurrent = questionCurrent;
     clone.typeQuestionCurrent = typeQuestionCurrent;
+    clone.init = init;
     return clone;
   }
 }

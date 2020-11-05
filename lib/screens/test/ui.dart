@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/screens/questions/choice/ui.dart';
@@ -16,7 +18,7 @@ class Test extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return context.select((TestData dt) => dt.process)
+    return !context.select((TestData dt) => dt.init)
         ? Loading(backgroundColor: Colors.white)
         : Scaffold(body: LayoutBuilder(builder: (context, constraint) {
             return SingleChildScrollView(
@@ -33,28 +35,38 @@ class Test extends StatelessWidget {
                           Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Thoi gian con lai: 1:23:22',
-                                    style: TextStyle(
-                                        fontSize: 14, fontFamily: 'monospace')),
+                                _TimeTest(time: 5),
                                 SizedBox(height: 4),
-                                Text('Cau hoi thu 1 / 8',
-                                    style: TextStyle(
-                                        fontSize: 14, fontFamily: 'monospace'))
+                                _QuestionCurrent()
                               ]),
                           Spacer(),
                           Container(
                               padding: EdgeInsets.all(8),
                               color: Colors.orange,
-                              child: Text('KE TIEP',
-                                  style: TextStyle(
-                                      fontFamily: 'monospace',
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold)))
+                              child: GestureDetector(
+                                onTap: () {
+                                  context.read<TestController>().getNextItem();
+                                },
+                                child: Text('KE TIEP',
+                                    style: TextStyle(
+                                        fontFamily: 'monospace',
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold)),
+                              ))
                         ],
                       ),
                     ),
-                    _buildQuestion(context)
+                    Selector<TestData, bool>(
+                      selector: (_, dt) => dt.process,
+                      builder: (_, process, __) {
+                        return process
+                            ? Expanded(
+                                child:
+                                    Center(child: CircularProgressIndicator()))
+                            : _buildQuestion(context);
+                      },
+                    )
                   ],
                 )),
               ),
@@ -79,5 +91,77 @@ class Test extends StatelessWidget {
         return Container();
       },
     );
+  }
+}
+
+// ignore: must_be_immutable
+class _TimeTest extends StatefulWidget {
+  _TimeTest({
+    Key key,
+    this.time,
+  }) : super(key: key);
+  int time;
+  Timer timer;
+  @override
+  __TimeTestState createState() => __TimeTestState();
+}
+
+class __TimeTestState extends State<_TimeTest> {
+  get time => widget.time;
+  void downTime() => widget.time -= 1;
+  get timer => widget.timer;
+  set timer(Timer timer) => widget.timer = timer;
+  @override
+  void initState() {
+    super.initState();
+    hour = time ~/ 3600;
+    minute = (time - hour * 3600) ~/ 60;
+    second = (time - hour * 3600 - minute * 60);
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        downTime();
+        second--;
+        if (second == -1) {
+          second = 59;
+          minute--;
+          if (minute == -1) {
+            hour--;
+            minute = 59;
+            if (hour == -1) {
+              hour = minute = second = 0;
+              timer.cancel();
+            }
+            ;
+          }
+        }
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('Thoi gian con lai: $hour:$minute:$second',
+        style: TextStyle(fontSize: 14, fontFamily: 'monospace'));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
+  }
+
+  int hour, minute, second;
+}
+
+class _QuestionCurrent extends StatelessWidget {
+  const _QuestionCurrent({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+        'Cau hoi thu ${context.select((TestData dt) => dt.questionCurrent)} / 8',
+        style: TextStyle(fontSize: 14, fontFamily: 'monospace'));
   }
 }
