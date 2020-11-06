@@ -17,86 +17,90 @@ class OrderSentence extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-          child: Column(
-        children: [
-          Container(
-              margin: EdgeInsets.only(top: 10),
-              child: _buildSuggest(context,
-                  Provider.of<OrderSentenceData>(context, listen: false).suggest)),
-          _buildLabel(
-              context, Provider.of<OrderSentenceData>(context, listen: false).label),
-          _buildAnswer(
-              context, Provider.of<OrderSentenceData>(context, listen: false).answers)
-          _buildUserAnswer(
-              context, Provider.of<OrderSentenceData>(context, listen: false).answers)
-        ],
-      )),
+    return Column(
+      children: [
+        Container(
+            margin: EdgeInsets.only(top: 10),
+            child: _buildSuggest(
+                context,
+                Provider.of<OrderSentenceData>(context, listen: false)
+                    .suggest)),
+        _buildLabel(context,
+            Provider.of<OrderSentenceData>(context, listen: false).label),
+        _buildAnswer(context),
+        _buildUserAnswer(context)
+      ],
     );
   }
 
   Widget _buildSuggest(BuildContext context, AnswerChoice suggest) {
+    if (suggest == null) return Container();
     if (suggest.type == 'audio') return PlayAudio(url: suggest.data);
-    if(suggest.type == 'image') return Container(
-      width: 200,
-      height: 200,
-      child: Image.network(suggest.data, fit: BoxFit.fill,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) {
-              context.read<OrderSentenceController>().updateTime(DateTime.now());
-              return child;
-            }
-            return Center(
-              child: CircularProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes
-                      : null),
-            );
-          }),
-    );
+    if (suggest.type == 'image')
+      return Container(
+        width: 200,
+        height: 200,
+        child: Image.network(suggest.data, fit: BoxFit.fill,
+            loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) {
+            context.read<OrderSentenceController>().updateTime(DateTime.now());
+            return child;
+          }
+          return Center(
+            child: CircularProgressIndicator(
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes
+                    : null),
+          );
+        }),
+      );
     return Container();
   }
 
   Widget _buildLabel(BuildContext context, String label) {
-    if (label == null) return Container();
+    if (label == null || label == '') return Container();
     return Container(
-      margin: EdgeInsets.only(top: 35, bottom: dimen1),
-      padding: EdgeInsets.all(dimen12),
-      decoration: BoxDecoration(border: Border.all()),
-      child: Text(label,
-          style: TextStyle(
-              color: color2, fontWeight: FontWeight.bold, fontSize: 16)),
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      child: Container(
+        margin: EdgeInsets.only(top: 35, bottom: 35),
+        padding: EdgeInsets.all(dimen12),
+        decoration: BoxDecoration(border: Border.all()),
+        child: Text(label,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: color2, fontWeight: FontWeight.bold, fontSize: 16)),
+      ),
     );
   }
-  Widget _buildWordsQuestion(BuildContext context) {
+
+  Widget _buildAnswer(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(horizontal: dimen3),
-      child: Consumer<OrderSentenceData>(builder: (_, osd, __) {
+      child: Consumer<OrderSentenceData>(builder: (_, dt, __) {
         return Wrap(
             alignment: WrapAlignment.center,
             children: [
-              for (int i = 0; i < osd.questions.length; i++)
-                _buildWord(context, osd.questions, i),
+              for (int i = 0; i < dt.answers.length; i++)
+                _buildWord(context, dt.answers[i], i),
             ],
             runSpacing: dimen6);
       }),
     );
   }
 
-  Widget _buildWord(BuildContext context, List<String> questions, int index) {
-    if (questions[index] == '') return SizedBox(width: 0);
+  Widget _buildWord(BuildContext context, AnswerChoice answer, int index) {
+    if (answer == null) return SizedBox(width: 0);
     return GestureDetector(
       onTap: () {
         context.read<OrderSentenceController>().addAnswer(index);
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: dimen5),
-        width: dimen6 * questions[index].length,
-        child: Text(questions[index],
+        width: dimen6 * answer.data.length,
+        child: Text(answer.data,
             style: TextStyle(
                 color: color2, fontSize: dimen12, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center),
@@ -108,40 +112,36 @@ class OrderSentence extends StatelessWidget {
     return Container(
         width: MediaQuery.of(context).size.width,
         alignment: Alignment.center,
-        padding: EdgeInsets.only(
-            left: dimen3, right: dimen3, top: dimen15, bottom: dimen15),
-        child: Consumer<OrderSentenceData>(builder: (_, osd, __) {
-          final colorAnswer =
-              osd.isComplete ? (osd.isCorrect ? color9 : color7) : color2;
+        padding:
+            EdgeInsets.only(left: dimen3, right: dimen3, top: 45, bottom: 45),
+        child: Consumer<OrderSentenceData>(builder: (_, dt, __) {
+          List<AnswerChoice> userAnswer = dt.userAnswer;
           return Wrap(children: [
-            for (int i = 0; i < osd.answerUser.length - 1; i++)
-              _buildUserWord(context, i, osd.answerUser, colorAnswer),
+            for (int i = 0; i < userAnswer.length; i++)
+              _buildUserWord(context, i, userAnswer[i]),
           ], runSpacing: dimen6, alignment: WrapAlignment.center);
         }));
   }
 
-  Widget _buildUserWord(
-      BuildContext context, int index, List<String> answers, Color color) {
+  Widget _buildUserWord(BuildContext context, int index, AnswerChoice answer) {
     return Container(
         height: dimen8,
         margin: EdgeInsets.symmetric(horizontal: dimen5),
         padding: EdgeInsets.only(bottom: dimen18),
         alignment: Alignment.center,
-        width: answers[index] == '' ? dimen17 : answers[index].length * dimen6,
+        width: answer == null ? dimen17 : answer.data.length * dimen6,
         decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: color, width: dimen16)),
+          border: Border(bottom: BorderSide(width: dimen16)),
         ),
-        child: answers[index] == ''
+        child: answer == null
             ? Container()
             : GestureDetector(
                 onTap: () {
                   context.read<OrderSentenceController>().removeAnswer(index);
                 },
-                child: Text(answers[index],
+                child: Text(answer.data,
                     style: TextStyle(
-                        color: color,
-                        fontSize: dimen12,
-                        fontWeight: FontWeight.bold)),
+                        fontSize: dimen12, fontWeight: FontWeight.bold)),
               ));
   }
 }

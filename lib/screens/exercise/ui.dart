@@ -43,7 +43,7 @@ class Exercise extends StatelessWidget {
                 child: Container(
                     margin: EdgeInsets.only(top: 15, left: 12, right: 12),
                     child: Column(children: [
-                      _buildExerciseProcess(),
+                      // _buildExerciseProcess(),
                       _buildExerciseHave()
                     ])),
               )),

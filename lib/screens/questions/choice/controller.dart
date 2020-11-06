@@ -1,15 +1,15 @@
 import 'package:project/screens/questions/choice/data.dart';
+import 'package:project/screens/test/data.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 class ChoiceController extends StateNotifier<ChoiceData> {
   ChoiceController(Map<String, dynamic> data) : super(ChoiceData(data: data));
 
-  void addAnswer(String id) {
-    List<String> userAnswer = state.userAnswer['identifier'];
-    if (userAnswer.contains(id)) {
-      userAnswer.remove(id);
+  void addAnswer(AnswerChoice answer) {
+    if (state.userAnswer.contains(answer)) {
+      state.userAnswer.remove(answer);
     } else {
-      userAnswer.add(id);
+      state.userAnswer.add(answer);
     }
   }
 

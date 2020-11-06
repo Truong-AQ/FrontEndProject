@@ -48,7 +48,7 @@ Future<http.Response> moveItem(
     Map<String, dynamic> listChoice,
     Map<String, String> queryParams,
     String idItem,
-    int timeDuration,
+    double timeDuration,
     String token}) async {
   Map<String, String> requestQueryParams = {
     'testDefinition': queryParams['testDefinition'],
@@ -61,7 +61,10 @@ Future<http.Response> moveItem(
       headers: {
         'Cookie': cookie,
         'X-Requested-With': 'XMLHttpRequest',
-        'X-Auth-Token': token
+        'X-Auth-Token': token,
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Accept': 'application/json, text/javascript, */*; q=0.01',
+        'Accept-Encoding': 'gzip, deflate'
       },
       body: jsonEncode({
         'direction': 'next',
@@ -69,7 +72,7 @@ Future<http.Response> moveItem(
         'itemResponse':
             _createItemForMoveItem(list: listChoice, extra: 'response'),
         'itemState': _createItemForMoveItem(list: listChoice, extra: 'state'),
-        'itemDuration': timeDuration
+        'itemDuration': '$timeDuration'
       }));
   return response;
 }

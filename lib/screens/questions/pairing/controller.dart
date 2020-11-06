@@ -1,48 +1,54 @@
+import 'package:project/screens/test/data.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 import 'data.dart';
 
 class PairingController extends StateNotifier<PairingData> {
-  PairingController() : super(PairingData());
+  PairingController(Map<String, dynamic> data) : super(PairingData(data: data));
 
-  addAnswer(int index) {
-    for (int i = 0; i < state.answerUser.length; i++) {
-      if (state.answerUser[i] == '') {
-        state.answerUser[i] = state.questions[index];
-        state.questions[index] = '';
-        state.nWordsChoosed++;
-        break;
-      }
+  void updateTime(DateTime time) {
+    if (time.isAfter(state.timeStart)) {
+      state.timeStart = time;
     }
-    state.isCorrect = checkCorrect(state.answerUser, state.correctAnswer);
+  }
 
-    state.isComplete = (state.nWordsChoosed == state.correctAnswer.length);
+  void addAnswer(int index) {
+    state.userAnswer[state.nWordsChoose] = state.answers[index];
+    state.nWordsChoose += 1;
+    state.answers[index] = null;
     state = state.copy();
   }
 
-  removeAnswer(int index) {
-    if (state.answerUser[index] == '') return;
-    for (int i = 0; i < state.questions.length; i++) {
-      if (state.questions[i] == '') {
-        state.questions[i] = state.answerUser[index];
-        break;
+  void removeAnswer(int index) {
+    List<AnswerChoice> answerWillRemove = [];
+    answerWillRemove.add(state.userAnswer[index]);
+    state.nWordsChoose -= 1;
+    if (index % 2 == 0 && state.userAnswer[index + 1] != null) {
+      answerWillRemove.add(state.userAnswer[index + 1]);
+      state.nWordsChoose -= 1;
+    } else if (index % 2 == 1 && state.userAnswer[index - 1] != null) {
+      answerWillRemove.add(state.userAnswer[index - 1]);
+      state.nWordsChoose -= 1;
+    }
+    if (index % 2 == 0) {
+      state.userAnswer.removeAt(index);
+      state.userAnswer.removeAt(index);
+      state.userAnswer.add(null);
+      state.userAnswer.add(null);
+    } else {
+      state.userAnswer.removeAt(index - 1);
+      state.userAnswer.removeAt(index - 1);
+      state.userAnswer.add(null);
+      state.userAnswer.add(null);
+    }
+    for (int i = 0;
+        i < state.answers.length && answerWillRemove.length > 0;
+        i++) {
+      if (state.answers[i] == null) {
+        state.answers[i] = answerWillRemove[0];
+        answerWillRemove.removeAt(0);
       }
     }
-    state.answerUser[index] = '';
-    state.nWordsChoosed--;
-    state.isComplete = (state.nWordsChoosed == state.correctAnswer.length);
-
     state = state.copy();
-  }
-
-  bool checkCorrect(List<String> answerUser, List<String> correctAnswer) {
-    for (int i = 0; i < correctAnswer.length; i += 2) {
-      int pos1 = answerUser.indexOf(correctAnswer[i]);
-      int pos2 = answerUser.indexOf(correctAnswer[i + 1]);
-      if (pos1 == -1 || pos2 == -1 || (pos1 - pos2 != 1 && pos1 - pos2 != -1)) {
-        return false;
-      }
-    }
-    return true;
   }
 }

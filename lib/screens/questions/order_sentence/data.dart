@@ -3,12 +3,12 @@ import 'package:project/util/common_data_question.dart';
 
 class OrderSentenceData extends CommonDataQuestion {
   OrderSentenceData({Map<String, dynamic> data}) {
-    if(data != null) {
+    commonDataQuestion = this;
+    if (data != null) {
       label = data['label'];
       suggest = data['suggest'];
       answers = data['answers'];
-      userAnswer = {};
-      userAnswer['identifier'] = [];
+      userAnswer = List.generate(answers.length, (index) => null);
       timeStart = DateTime.now();
     }
   }

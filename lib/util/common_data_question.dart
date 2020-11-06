@@ -1,4 +1,7 @@
+import 'package:project/screens/test/data.dart';
+
 class CommonDataQuestion {
   DateTime timeStart;
-  Map<String, dynamic> userAnswer = {};
+  List<AnswerChoice> userAnswer = [];
 }
+CommonDataQuestion commonDataQuestion;

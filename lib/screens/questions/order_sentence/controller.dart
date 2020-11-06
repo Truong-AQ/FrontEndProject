@@ -12,24 +12,23 @@ class OrderSentenceController extends StateNotifier<OrderSentenceData> {
     }
   }
 
-  addAnswer(int index) {
-    List<String> userAnswer = state.userAnswer['identifier'];
-    userAnswer.add(state.answers[index].id);
+  void addAnswer(int index) {
+    state.userAnswer[state.nWordsChoose] = state.answers[index];
     state.nWordsChoose += 1;
-    state.answers[index].id = '';
+    state.answers[index] = null;
     state = state.copy();
   }
 
-  removeAnswer(int index) {
-    List<String> userAnswer = state.userAnswer['identifier'];
+  void removeAnswer(int index) {
     for (int i = 0; i < state.answers.length; i++) {
-      if (state.answers[i].id == '') {
-        state.answers[i].id = userAnswer[index];
+      if (state.answers[i] == null) {
+        state.answers[i] = state.userAnswer[index];
+        state.userAnswer.removeAt(index);
+        state.userAnswer.add(null);
         state.nWordsChoose -= 1;
         break;
       }
     }
-    userAnswer.removeAt(index);
     state = state.copy();
   }
 }

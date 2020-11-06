@@ -61,7 +61,7 @@ class TestController extends StateNotifier<TestData> {
     Map<String, dynamic> prompt = element['prompt'];
     final elementsPrompt = prompt['elements'];
     if (elementsPrompt is Map<String, dynamic>) {
-      dataQuestion['label'] = (prompt['body'] as String).split(" ")[0];
+      dataQuestion['label'] = (prompt['body'] as String).split("  ")[0].trim();
       Map<String, dynamic> attributes =
           elementsPrompt.values.first['attributes'];
       String type = attributes['type'];
@@ -74,7 +74,7 @@ class TestController extends StateNotifier<TestData> {
       else if (type == "image") data = "$baseUrlAssets${attributes['src']}";
       dataQuestion['suggest'] = AnswerChoice(data: data, type: type);
     } else {
-      dataQuestion['label'] = prompt['body'];
+      dataQuestion['label'] = (prompt['body'] as String).trim();
     }
     //load choice
     Map<String, dynamic> choices = element['choices'];
@@ -120,7 +120,9 @@ class TestController extends StateNotifier<TestData> {
   }
 
   Future<void> moveItemForNextItem(
-      {Map<String, dynamic> listAnswer, int timeDuration}) async {
+      {Map<String, dynamic> listAnswer, double timeDuration}) async {
+    state.process = true;
+    state = state.copy();
     final response = await moveItem(
         typeQuestion: state.typeQuestionCurrent,
         queryParams: state.queryParams,
@@ -129,6 +131,8 @@ class TestController extends StateNotifier<TestData> {
         token: state.token,
         idItem: state.idQuestions[state.questionCurrent - 1]);
     print(response.body);
-    state.token = jsonDecode(response.body);
+    state.token = jsonDecode(response.body)['token'];
+    state.process = false;
+    state = state.copy();
   }
 }

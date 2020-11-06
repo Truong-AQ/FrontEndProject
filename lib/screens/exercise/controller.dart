@@ -29,11 +29,9 @@ class ExerciseController extends StateNotifier<ExerciseData> {
       state.timer = Timer.periodic(Duration(seconds: 5), (timer) async {
         try {
           await _polling();
-          if (mounted) {
-            stopPolling();
-            return;
+          if(mounted) {
+            state = state.copy();
           }
-          state = state.copy();
         } on Exception catch (_) {}
       });
     }
@@ -69,8 +67,10 @@ class ExerciseController extends StateNotifier<ExerciseData> {
             time: childrenProcess[i].getElementsByTagName('p')[0].text));
       }
     }
-    if (state.testProcess.length != testProcess.length)
-      state.testProcess = testProcess;
-    if (state.testHave.length != testHave.length) state.testHave = testHave;
+    if (mounted) {
+      if (state.testProcess.length != testProcess.length)
+        state.testProcess = testProcess;
+      if (state.testHave.length != testHave.length) state.testHave = testHave;
+    }
   }
 }

@@ -3,12 +3,12 @@ import 'package:project/util/common_data_question.dart';
 
 class ChoiceData extends CommonDataQuestion {
   ChoiceData({Map<String, dynamic> data}) {
+    commonDataQuestion = this;
     if (data != null) {
       label = data['label'];
       suggest = data['suggest'];
       answers = data['answers'];
-      userAnswer = {};
-      userAnswer['identifier'] = [];
+      userAnswer = [];
       timeStart = DateTime.now();
     }
   }

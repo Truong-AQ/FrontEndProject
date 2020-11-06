@@ -32,15 +32,17 @@ class Choice extends StatelessWidget {
   }
 
   Widget _buildSuggest(BuildContext context, AnswerChoice suggest) {
+    if (suggest == null) return Container();
     if (suggest.type == 'audio') return PlayAudio(url: suggest.data);
     if (suggest.type == 'image')
       return Container(
+        margin: EdgeInsets.only(top: 50),
         width: 200,
         height: 200,
         child: Image.network(suggest.data, fit: BoxFit.fill,
             loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) {
-            context.read<ChoiceController>().updateTime(DateTime.now());
+            Provider.of<ChoiceController>(context).updateTime(DateTime.now());
             return child;
           }
           return Center(
@@ -56,14 +58,18 @@ class Choice extends StatelessWidget {
   }
 
   Widget _buildLabel(BuildContext context, String label) {
-    if (label == null) return Container();
+    if (label == null || label == '') return Container(height: 70);
     return Container(
-      margin: EdgeInsets.only(top: 35, bottom: dimen1),
-      padding: EdgeInsets.all(dimen12),
-      decoration: BoxDecoration(border: Border.all()),
-      child: Text(label,
-          style: TextStyle(
-              color: color2, fontWeight: FontWeight.bold, fontSize: 16)),
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      child: Container(
+        margin: EdgeInsets.only(top: 35, bottom: dimen1),
+        padding: EdgeInsets.all(dimen12),
+        decoration: BoxDecoration(border: Border.all()),
+        child: Text(label,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: color2, fontWeight: FontWeight.bold, fontSize: 16)),
+      ),
     );
   }
 
@@ -100,7 +106,7 @@ class __CellRowState extends State<_CellRow> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.read<ChoiceController>().addAnswer(answer.id);
+        context.read<ChoiceController>().addAnswer(answer);
         setState(() {
           choice = !choice;
         });
@@ -119,8 +125,7 @@ class __CellRowState extends State<_CellRow> {
                   ? Image.network(answer.data, fit: BoxFit.fill,
                       loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) {
-                        context
-                            .read<ChoiceController>()
+                        Provider.of<ChoiceController>(context)
                             .updateTime(DateTime.now());
                         return child;
                       }
@@ -132,9 +137,12 @@ class __CellRowState extends State<_CellRow> {
                                 : null),
                       );
                     })
-                  : Text(answer.data,
-                      style: TextStyle(
-                          color: Colors.black, fontFamily: 'monospace')))),
+                  : Container(
+                      padding: EdgeInsets.all(10),
+                      child: Text(answer.data,
+                          style: TextStyle(
+                              color: Colors.black, fontFamily: 'monospace')),
+                    ))),
     );
   }
 }

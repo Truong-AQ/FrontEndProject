@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:project/resources/app_context.dart';
 import 'package:project/screens/questions/choice/ui.dart';
 import 'package:project/screens/questions/order_sentence/ui.dart';
+import 'package:project/screens/questions/pairing/ui.dart';
 import 'package:project/screens/test/controller.dart';
 import 'package:project/screens/test/data.dart';
 import 'package:project/util/common_data_question.dart';
+import 'package:project/util/convert_answer.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
@@ -37,8 +40,8 @@ class Test extends StatelessWidget {
                           Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                _TimeTest(time: 5),
-                                SizedBox(height: 4),
+                                // _TimeTest(time: 5),
+                                // SizedBox(height: 4),
                                 _QuestionCurrent()
                               ]),
                           Spacer(),
@@ -70,18 +73,21 @@ class Test extends StatelessWidget {
         child: GestureDetector(
           onTap: () async {
             await context.read<TestController>().moveItemForNextItem(
-                listAnswer: context.read<CommonDataQuestion>().userAnswer,
+                listAnswer: convertListAnswer(
+                    answer: commonDataQuestion.userAnswer,
+                    typeQuestion: context.read<TestData>().typeQuestionCurrent),
                 timeDuration: DateTime.now()
-                    .difference(context.read<CommonDataQuestion>().timeStart)
-                    .inSeconds);
-            await context.read<TestController>().getNextItem();
+                        .difference(commonDataQuestion.timeStart)
+                        .inMicroseconds /
+                    1000000);
+            if (context.read<TestData>().idQuestions.length !=
+                context.read<TestData>().questionCurrent)
+              await context.read<TestController>().getNextItem();
+            else {
+              Navigator.pop(context);
+            }
           },
-          child: Text('KE TIEP',
-              style: TextStyle(
-                  fontFamily: 'monospace',
-                  color: Colors.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold)),
+          child: _TextNextOrEnd(),
         ));
   }
 
@@ -98,11 +104,32 @@ class Test extends StatelessWidget {
             return OrderSentence.withDependency(
                 context.select((TestData dt) => dt.dataQuestion));
           case TypeQuestion.PAIRING:
-            return Container();
+            return Pairing.withDependency(
+                context.select((TestData dt) => dt.dataQuestion));
         }
         return Container();
       },
     );
+  }
+}
+
+class _TextNextOrEnd extends StatelessWidget {
+  const _TextNextOrEnd({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+        context.select(
+                (TestData dt) => dt.questionCurrent == dt.idQuestions.length)
+            ? 'KET THUC'
+            : 'KE TIEP',
+        style: TextStyle(
+            fontFamily: 'monospace',
+            color: Colors.white,
+            fontSize: 12,
+            fontWeight: FontWeight.bold));
   }
 }
 
