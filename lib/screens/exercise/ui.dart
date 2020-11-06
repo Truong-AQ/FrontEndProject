@@ -43,7 +43,7 @@ class Exercise extends StatelessWidget {
                 child: Container(
                     margin: EdgeInsets.only(top: 15, left: 12, right: 12),
                     child: Column(children: [
-                      // _buildExerciseProcess(),
+                      _buildExerciseProcess(),
                       _buildExerciseHave()
                     ])),
               )),
@@ -125,7 +125,9 @@ class Exercise extends StatelessWidget {
                     .select((ExerciseData dt) => dt.testProcess)[i]
                     .label,
                 time:
-                    context.select((ExerciseData dt) => dt.testProcess[i].time))
+                    context.select((ExerciseData dt) => dt.testProcess[i].time),
+                link:
+                    context.select((ExerciseData dt) => dt.testProcess[i].link))
         ]);
       },
     );
@@ -153,7 +155,7 @@ class Exercise extends StatelessWidget {
     );
   }
 
-  Widget _buildExerciseProcessItem({String text, String time}) {
+  Widget _buildExerciseProcessItem({String text, String time, String link}) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(10),
@@ -167,11 +169,19 @@ class Exercise extends StatelessWidget {
         SizedBox(height: 4),
         Row(children: [
           Spacer(),
-          Container(
-              padding: EdgeInsets.all(7),
-              color: Colors.pink,
-              child: Text('TIEP TUC',
-                  style: TextStyle(color: Colors.white, fontSize: 12)))
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  contextHome,
+                  MaterialPageRoute(
+                      builder: (_) => Test.withDependency(url: link)));
+            },
+            child: Container(
+                padding: EdgeInsets.all(7),
+                color: Colors.pink,
+                child: Text('TIEP TUC',
+                    style: TextStyle(color: Colors.white, fontSize: 12))),
+          )
         ])
       ]),
     );

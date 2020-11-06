@@ -57,34 +57,34 @@ Future<http.Response> moveItem(
     'itemDefinition': idItem
   };
   final uri = Uri.http(baseUrl, '/taoQtiTest/Runner/move', requestQueryParams);
-  final response = await http.post(uri,
-      headers: {
-        'Cookie': cookie,
-        'X-Requested-With': 'XMLHttpRequest',
-        'X-Auth-Token': token,
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'Accept': 'application/json, text/javascript, */*; q=0.01',
-        'Accept-Encoding': 'gzip, deflate'
-      },
-      body: jsonEncode({
-        'direction': 'next',
-        'scope': 'item',
-        'itemResponse':
-            _createItemForMoveItem(list: listChoice, extra: 'response'),
-        'itemState': _createItemForMoveItem(list: listChoice, extra: 'state'),
-        'itemDuration': '$timeDuration'
-      }));
+  final response = await http.post(uri, headers: {
+    'Cookie': cookie,
+    'X-Requested-With': 'XMLHttpRequest',
+    'X-Auth-Token': token
+  }, body: {
+    'direction': 'next',
+    'scope': 'item',
+    'itemResponse':
+        _createItemForMoveItem(list: listChoice, extra: 'response').toString(),
+    'itemState':
+        _createItemForMoveItem(list: listChoice, extra: 'state').toString(),
+    'itemDuration': '$timeDuration'
+  });
   return response;
 }
 
 Map<String, dynamic> _createItemForMoveItem(
     {Map<String, dynamic> list, String extra}) {
-  Map<String, dynamic> tmp = {}, item = {};
-  if (extra == 'response') {
-    tmp['list'] = list;
+  Map<String, dynamic> tmp = {}, item = {}, tmp2 = {};
+  tmp['"list"'] = list;
+  if (extra == 'state') {
+    tmp['"list"'] = list;
+    tmp2['"response"'] = tmp;
+    item['"RESPONSE"'] = tmp2;
   } else {
-    tmp['response'] = list;
+    tmp['"list"'] = list;
+    item['"RESPONSE"'] = tmp;
   }
-  item['RESPONSE'] = tmp;
+
   return item;
 }

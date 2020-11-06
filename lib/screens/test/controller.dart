@@ -24,6 +24,7 @@ class TestController extends StateNotifier<TestData> {
 
   void _readIdQuestions(Map<String, dynamic> json) {
     state.token = json['token'];
+    state.questionCurrent = (json['testMap']['stats']['answered'] as int) - 1;
     Map<String, dynamic> jsonPart = json['testMap']['parts'];
     for (var part in jsonPart.values) {
       Map<String, dynamic> sections = part['sections'];
@@ -130,7 +131,6 @@ class TestController extends StateNotifier<TestData> {
         timeDuration: timeDuration,
         token: state.token,
         idItem: state.idQuestions[state.questionCurrent - 1]);
-    print(response.body);
     state.token = jsonDecode(response.body)['token'];
     state.process = false;
     state = state.copy();

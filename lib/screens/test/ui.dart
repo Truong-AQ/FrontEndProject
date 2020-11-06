@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:project/resources/app_context.dart';
 import 'package:project/screens/questions/choice/ui.dart';
 import 'package:project/screens/questions/order_sentence/ui.dart';
 import 'package:project/screens/questions/pairing/ui.dart';
@@ -67,28 +66,28 @@ class Test extends StatelessWidget {
   }
 
   Widget _buildNextButton(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.all(8),
-        color: Colors.orange,
-        child: GestureDetector(
-          onTap: () async {
-            await context.read<TestController>().moveItemForNextItem(
-                listAnswer: convertListAnswer(
-                    answer: commonDataQuestion.userAnswer,
-                    typeQuestion: context.read<TestData>().typeQuestionCurrent),
-                timeDuration: DateTime.now()
-                        .difference(commonDataQuestion.timeStart)
-                        .inMicroseconds /
-                    1000000);
-            if (context.read<TestData>().idQuestions.length !=
-                context.read<TestData>().questionCurrent)
-              await context.read<TestController>().getNextItem();
-            else {
-              Navigator.pop(context);
-            }
-          },
-          child: _TextNextOrEnd(),
-        ));
+    return GestureDetector(
+      onTap: () async {
+        await context.read<TestController>().moveItemForNextItem(
+            listAnswer: convertListAnswer(
+                answer: commonDataQuestion.userAnswer,
+                typeQuestion: context.read<TestData>().typeQuestionCurrent),
+            timeDuration: DateTime.now()
+                    .difference(commonDataQuestion.timeStart)
+                    .inMicroseconds /
+                1000000);
+        if (context.read<TestData>().idQuestions.length !=
+            context.read<TestData>().questionCurrent)
+          await context.read<TestController>().getNextItem();
+        else {
+          Navigator.pop(context);
+        }
+      },
+      child: Container(
+          padding: EdgeInsets.all(8),
+          color: Colors.orange,
+          child: _TextNextOrEnd()),
+    );
   }
 
   Widget _buildQuestion(BuildContext context) {
@@ -199,7 +198,7 @@ class _QuestionCurrent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-        'Cau hoi thu ${context.select((TestData dt) => dt.questionCurrent)} / 8',
+        'Cau hoi thu ${context.select((TestData dt) => dt.questionCurrent)} / ${context.select((TestData dt) => dt.idQuestions.length)}',
         style: TextStyle(fontSize: 14, fontFamily: 'monospace'));
   }
 }

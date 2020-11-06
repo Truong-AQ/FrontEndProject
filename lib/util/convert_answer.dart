@@ -5,7 +5,7 @@ Map<String, dynamic> convertListAnswer(
   switch (typeQuestion) {
     case TypeQuestion.ASSIGNING:
       Map<String, dynamic> item = {};
-      item['identifier'] = answer.map((e) => e.id).toList();
+      item['"identifier"'] = answer.map((e) => '"${e.id}"').toList();
       return item;
     case TypeQuestion.SORT:
       Map<String, dynamic> item = {};
@@ -15,18 +15,18 @@ Map<String, dynamic> convertListAnswer(
           i--;
         }
       }
-      item['identifier'] = answer.map((e) => e.id).toList();
+      item['"identifier"'] = answer.map((e) => '"${e.id}"').toList();
       return item;
       break;
     case TypeQuestion.PAIRING:
       Map<String, dynamic> item = {};
-      item['pair'] = [];
+      item['"pair"'] = [];
       for (int i = 0; i < answer.length; i += 2) {
         if (answer[i] == null || answer[i + 1] == null) break;
         List<AnswerChoice> tmp = [];
         tmp.add(answer[i]);
         tmp.add(answer[i + 1]);
-        (item['pair'] as List).add(tmp.map((e) => e.id).toList());
+        (item['"pair"'] as List).add(tmp.map((e) => '"${e.id}"').toList());
       }
       return item;
       break;
