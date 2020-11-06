@@ -3,38 +3,33 @@ import 'package:state_notifier/state_notifier.dart';
 import 'data.dart';
 
 class OrderSentenceController extends StateNotifier<OrderSentenceData> {
-  OrderSentenceController() : super(OrderSentenceData());
+  OrderSentenceController(Map<String, dynamic> data)
+      : super(OrderSentenceData(data: data));
+
+  void updateTime(DateTime time) {
+    if (time.isAfter(state.timeStart)) {
+      state.timeStart = time;
+    }
+  }
 
   addAnswer(int index) {
-    state.answerUser[state.nWordsChoosed++] = state.questions[index];
-    state.questions[index] = '';
-    state.isCorrect = checkCorrect(state.answerUser, state.correctAnswer);
-    state.isComplete = (state.nWordsChoosed == state.correctAnswer.length);
+    List<String> userAnswer = state.userAnswer['identifier'];
+    userAnswer.add(state.answers[index].id);
+    state.nWordsChoose += 1;
+    state.answers[index].id = '';
     state = state.copy();
   }
 
   removeAnswer(int index) {
-    for (int i = 0; i < state.questions.length; i++) {
-      if (state.questions[i] == '') {
-        state.questions[i] = state.answerUser[index];
+    List<String> userAnswer = state.userAnswer['identifier'];
+    for (int i = 0; i < state.answers.length; i++) {
+      if (state.answers[i].id == '') {
+        state.answers[i].id = userAnswer[index];
+        state.nWordsChoose -= 1;
         break;
       }
     }
-    state.answerUser[index] = '';
-    for (int i = index; i < state.correctAnswer.length; i++) {
-      state.answerUser[i] = state.answerUser[i + 1];
-    }
-    state.nWordsChoosed--;
-    state.isComplete = (state.nWordsChoosed == state.correctAnswer.length);
+    userAnswer.removeAt(index);
     state = state.copy();
-  }
-
-  bool checkCorrect(List<String> answerUser, List<String> correctAnswer) {
-    for (int i = 0; i < correctAnswer.length; i++) {
-      if (answerUser[i] != correctAnswer[i]) {
-        return false;
-      }
-    }
-    return true;
   }
 }

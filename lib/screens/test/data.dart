@@ -21,4 +21,9 @@ class TestData {
   }
 }
 
-enum TypeQuestion { ASSIGNING, SORT, INSERTION }
+enum TypeQuestion { ASSIGNING, SORT, PAIRING }
+
+class AnswerChoice {
+  String data, type, id;
+  AnswerChoice({this.type, this.data, this.id});
+}

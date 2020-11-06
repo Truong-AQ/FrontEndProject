@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/screens/questions/choice/ui.dart';
+import 'package:project/screens/questions/order_sentence/ui.dart';
 import 'package:project/screens/test/controller.dart';
 import 'package:project/screens/test/data.dart';
+import 'package:project/util/common_data_question.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
@@ -40,20 +42,7 @@ class Test extends StatelessWidget {
                                 _QuestionCurrent()
                               ]),
                           Spacer(),
-                          Container(
-                              padding: EdgeInsets.all(8),
-                              color: Colors.orange,
-                              child: GestureDetector(
-                                onTap: () {
-                                  context.read<TestController>().getNextItem();
-                                },
-                                child: Text('KE TIEP',
-                                    style: TextStyle(
-                                        fontFamily: 'monospace',
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold)),
-                              ))
+                          _buildNextButton(context)
                         ],
                       ),
                     ),
@@ -74,6 +63,28 @@ class Test extends StatelessWidget {
           }));
   }
 
+  Widget _buildNextButton(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.all(8),
+        color: Colors.orange,
+        child: GestureDetector(
+          onTap: () async {
+            await context.read<TestController>().moveItemForNextItem(
+                listAnswer: context.read<CommonDataQuestion>().userAnswer,
+                timeDuration: DateTime.now()
+                    .difference(context.read<CommonDataQuestion>().timeStart)
+                    .inSeconds);
+            await context.read<TestController>().getNextItem();
+          },
+          child: Text('KE TIEP',
+              style: TextStyle(
+                  fontFamily: 'monospace',
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold)),
+        ));
+  }
+
   Widget _buildQuestion(BuildContext context) {
     return Selector<TestData, int>(
       selector: (_, dt) => dt.questionCurrent,
@@ -84,8 +95,9 @@ class Test extends StatelessWidget {
             return Choice.withDependency(
                 context.select((TestData dt) => dt.dataQuestion));
           case TypeQuestion.SORT:
-            return Container();
-          case TypeQuestion.INSERTION:
+            return OrderSentence.withDependency(
+                context.select((TestData dt) => dt.dataQuestion));
+          case TypeQuestion.PAIRING:
             return Container();
         }
         return Container();
@@ -131,7 +143,6 @@ class __TimeTestState extends State<_TimeTest> {
               hour = minute = second = 0;
               timer.cancel();
             }
-            ;
           }
         }
       });

@@ -1,4 +1,6 @@
-class PairingData {
+import 'package:project/util/common_data_question.dart';
+
+class PairingData extends CommonDataQuestion{
   List<String> questions = [
     'AO',
     'DUA HAU',

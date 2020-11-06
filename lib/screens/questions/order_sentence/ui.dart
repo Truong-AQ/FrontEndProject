@@ -4,48 +4,72 @@ import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 import 'package:project/screens/questions/order_sentence/controller.dart';
 import 'package:project/screens/questions/order_sentence/data.dart';
+import 'package:project/screens/test/data.dart';
+import 'package:project/widgets/PlayAudio.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 
 class OrderSentence extends StatelessWidget {
-  static withDependency() {
+  static withDependency(Map<String, dynamic> data) {
     return StateNotifierProvider<OrderSentenceController, OrderSentenceData>(
-        create: (_) => OrderSentenceController(), child: OrderSentence());
+        create: (_) => OrderSentenceController(data), child: OrderSentence());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: color8,
-          title: Text('BAI TAP',
-              style: TextStyle(
-                  fontSize: dimen12,
-                  color: color2,
-                  fontWeight: FontWeight.bold)),
-          elevation: 0),
       body: SingleChildScrollView(
           child: Column(
         children: [
-          _buildImageQuestion(context),
-          _buildWordsQuestion(context),
-          _buildUserAnswer(context)
+          Container(
+              margin: EdgeInsets.only(top: 10),
+              child: _buildSuggest(context,
+                  Provider.of<OrderSentenceData>(context, listen: false).suggest)),
+          _buildLabel(
+              context, Provider.of<OrderSentenceData>(context, listen: false).label),
+          _buildAnswer(
+              context, Provider.of<OrderSentenceData>(context, listen: false).answers)
+          _buildUserAnswer(
+              context, Provider.of<OrderSentenceData>(context, listen: false).answers)
         ],
       )),
     );
   }
 
-  Widget _buildImageQuestion(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: dimen2, bottom: dimen2),
-      padding: EdgeInsets.all(dimen12),
-      child: Container(
-        width: dimen14,
-        child: Image.asset('assets/images/dish2.png', fit: BoxFit.fill),
-      ),
+  Widget _buildSuggest(BuildContext context, AnswerChoice suggest) {
+    if (suggest.type == 'audio') return PlayAudio(url: suggest.data);
+    if(suggest.type == 'image') return Container(
+      width: 200,
+      height: 200,
+      child: Image.network(suggest.data, fit: BoxFit.fill,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) {
+              context.read<OrderSentenceController>().updateTime(DateTime.now());
+              return child;
+            }
+            return Center(
+              child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                      loadingProgress.expectedTotalBytes
+                      : null),
+            );
+          }),
     );
+    return Container();
   }
 
+  Widget _buildLabel(BuildContext context, String label) {
+    if (label == null) return Container();
+    return Container(
+      margin: EdgeInsets.only(top: 35, bottom: dimen1),
+      padding: EdgeInsets.all(dimen12),
+      decoration: BoxDecoration(border: Border.all()),
+      child: Text(label,
+          style: TextStyle(
+              color: color2, fontWeight: FontWeight.bold, fontSize: 16)),
+    );
+  }
   Widget _buildWordsQuestion(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
