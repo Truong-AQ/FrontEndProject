@@ -29,7 +29,7 @@ class ExerciseController extends StateNotifier<ExerciseData> {
       state.timer = Timer.periodic(Duration(seconds: 5), (timer) async {
         try {
           await _polling();
-          if(mounted) {
+          if (mounted) {
             state = state.copy();
           }
         } on Exception catch (_) {}
@@ -48,13 +48,15 @@ class ExerciseController extends StateNotifier<ExerciseData> {
     List<ExerciseProcess> testProcess = [];
     List<ExcerciseHave> testHave = [];
     //load test have
-    var childrenHave = entrys[entrys.length - 1]
-        .getElementsByClassName('block entry-point entry-point-all-deliveries');
+    if (entrys.length > 0) {
+      var childrenHave = entrys[entrys.length - 1].getElementsByClassName(
+          'block entry-point entry-point-all-deliveries');
 
-    for (int i = 0; i < childrenHave.length; i++) {
-      testHave.add(ExcerciseHave(
-          link: childrenHave[i].attributes['data-launch_url'],
-          label: childrenHave[i].getElementsByTagName('h3')[0].text));
+      for (int i = 0; i < childrenHave.length; i++) {
+        testHave.add(ExcerciseHave(
+            link: childrenHave[i].attributes['data-launch_url'],
+            label: childrenHave[i].getElementsByTagName('h3')[0].text));
+      }
     }
     //load test in process
     if (entrys.length == 2) {
