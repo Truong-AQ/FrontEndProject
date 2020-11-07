@@ -68,19 +68,21 @@ class Test extends StatelessWidget {
   Widget _buildNextButton(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        await context.read<TestController>().moveItemForNextItem(
-            listAnswer: convertListAnswer(
-                answer: commonDataQuestion.userAnswer,
-                typeQuestion: context.read<TestData>().typeQuestionCurrent),
-            timeDuration: DateTime.now()
-                    .difference(commonDataQuestion.timeStart)
-                    .inMicroseconds /
-                1000000);
-        if (context.read<TestData>().idQuestions.length !=
-            context.read<TestData>().questionCurrent)
-          await context.read<TestController>().getNextItem();
-        else {
-          Navigator.pop(context);
+        if (!context.read<TestData>().process) {
+          await context.read<TestController>().moveItemForNextItem(
+              listAnswer: convertListAnswer(
+                  answer: commonDataQuestion.userAnswer,
+                  typeQuestion: context.read<TestData>().typeQuestionCurrent),
+              timeDuration: DateTime.now()
+                      .difference(commonDataQuestion.timeStart)
+                      .inMicroseconds /
+                  1000000);
+          if (context.read<TestData>().idQuestions.length !=
+              context.read<TestData>().questionCurrent)
+            await context.read<TestController>().getNextItem();
+          else {
+            Navigator.pop(context);
+          }
         }
       },
       child: Container(
