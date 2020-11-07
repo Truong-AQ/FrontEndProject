@@ -27,10 +27,10 @@ class Exercise extends StatelessWidget {
     return VisibilityDetector(
       key: GlobalKey(),
       onVisibilityChanged: (VisibilityInfo info) {
-        var visibilePercentage = info.visibleFraction * 100;
-        if (visibilePercentage == 0.0)
+        var visiblePercentage = info.visibleFraction * 100;
+        if (visiblePercentage == 0.0)
           context.read<ExerciseController>().stopPolling();
-        else if (visibilePercentage == 100.0)
+        else if (visiblePercentage == 100.0)
           context.read<ExerciseController>().startPolling();
       },
       child: Stack(
@@ -120,7 +120,7 @@ class Exercise extends StatelessWidget {
               : Container(),
           SizedBox(height: 10),
           for (int i = 0; i < length; i++)
-            _buildExerciseProcessItem(
+            _buildExerciseProcessItem(context,
                 text: context
                     .select((ExerciseData dt) => dt.testProcess)[i]
                     .label,
@@ -147,7 +147,7 @@ class Exercise extends StatelessWidget {
               : Container(),
           SizedBox(height: 10),
           for (int i = 0; i < length; i++)
-            _buildExerciseHaveItem(
+            _buildExerciseHaveItem(context,
                 text: context.select((ExerciseData dt) => dt.testHave[i].label),
                 link: context.select((ExerciseData dt) => dt.testHave[i].link))
         ]);
@@ -155,7 +155,8 @@ class Exercise extends StatelessWidget {
     );
   }
 
-  Widget _buildExerciseProcessItem({String text, String time, String link}) {
+  Widget _buildExerciseProcessItem(BuildContext context,
+      {String text, String time, String link}) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(10),
@@ -170,11 +171,16 @@ class Exercise extends StatelessWidget {
         Row(children: [
           Spacer(),
           GestureDetector(
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              bool isComplete = await Navigator.push(
                   contextHome,
                   MaterialPageRoute(
                       builder: (_) => Test.withDependency(url: link)));
+              if (isComplete != null) {
+                context.read<ExerciseController>().stopPolling();
+                await context.read<ExerciseController>().initTests();
+                context.read<ExerciseController>().startPolling();
+              }
             },
             child: Container(
                 padding: EdgeInsets.all(7),
@@ -187,7 +193,8 @@ class Exercise extends StatelessWidget {
     );
   }
 
-  Widget _buildExerciseHaveItem({String text, String link}) {
+  Widget _buildExerciseHaveItem(BuildContext context,
+      {String text, String link}) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(10),
@@ -199,11 +206,16 @@ class Exercise extends StatelessWidget {
         Row(children: [
           Spacer(),
           GestureDetector(
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              bool isComplete = await Navigator.push(
                   contextHome,
                   MaterialPageRoute(
                       builder: (_) => Test.withDependency(url: link)));
+              if (isComplete != null) {
+                context.read<ExerciseController>().stopPolling();
+                await context.read<ExerciseController>().initTests();
+                context.read<ExerciseController>().startPolling();
+              }
             },
             child: Container(
                 padding: EdgeInsets.all(7),

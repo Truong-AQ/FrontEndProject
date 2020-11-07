@@ -81,7 +81,7 @@ class Test extends StatelessWidget {
               context.read<TestData>().questionCurrent)
             await context.read<TestController>().getNextItem();
           else {
-            Navigator.pop(context);
+            Navigator.pop(context, true);
           }
         }
       },
