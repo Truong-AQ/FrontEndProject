@@ -88,7 +88,7 @@ class TestController extends StateNotifier<TestData> {
         Map<String, dynamic> attributesChoice = (elementsBodyChoice.values.first
             as Map<String, dynamic>)['attributes'];
         String type = attributesChoice['type'];
-        if (type.indexOf("image") >= 0)
+        if (type == null|| type.indexOf("image") >= 0)
           type = "image";
         else if (type.indexOf("audio") >= 0) type = "audio";
         String data = "";

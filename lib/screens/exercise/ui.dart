@@ -176,11 +176,9 @@ class Exercise extends StatelessWidget {
                   contextHome,
                   MaterialPageRoute(
                       builder: (_) => Test.withDependency(url: link)));
-              if (isComplete != null) {
-                context.read<ExerciseController>().stopPolling();
-                await context.read<ExerciseController>().initTests();
-                context.read<ExerciseController>().startPolling();
-              }
+              context.read<ExerciseController>().stopPolling();
+              await context.read<ExerciseController>().initTests();
+              context.read<ExerciseController>().startPolling();
             },
             child: Container(
                 padding: EdgeInsets.all(7),
@@ -207,15 +205,13 @@ class Exercise extends StatelessWidget {
           Spacer(),
           GestureDetector(
             onTap: () async {
-              bool isComplete = await Navigator.push(
+              await Navigator.push(
                   contextHome,
                   MaterialPageRoute(
                       builder: (_) => Test.withDependency(url: link)));
-              if (isComplete != null) {
-                context.read<ExerciseController>().stopPolling();
-                await context.read<ExerciseController>().initTests();
-                context.read<ExerciseController>().startPolling();
-              }
+              context.read<ExerciseController>().stopPolling();
+              await context.read<ExerciseController>().initTests();
+              context.read<ExerciseController>().startPolling();
             },
             child: Container(
                 padding: EdgeInsets.all(7),
