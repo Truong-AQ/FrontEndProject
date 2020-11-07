@@ -172,7 +172,7 @@ class Exercise extends StatelessWidget {
           Spacer(),
           GestureDetector(
             onTap: () async {
-              bool isComplete = await Navigator.push(
+              await Navigator.push(
                   contextHome,
                   MaterialPageRoute(
                       builder: (_) => Test.withDependency(url: link)));
