@@ -24,7 +24,7 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: color1,
+        backgroundColor: color10,
         appBar: AppBar(backgroundColor: color3, elevation: 0),
         body: LayoutBuilder(builder: (context, constraint) {
           return SingleChildScrollView(
@@ -44,9 +44,9 @@ class Login extends StatelessWidget {
 
   Widget _buildTextLogin(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: dimen1, bottom: dimen4),
+      margin: EdgeInsets.only(top: 80, bottom: dimen4),
       alignment: Alignment.center,
-      child: Text('Dang nhap',
+      child: Text('Đăng nhập',
           style: TextStyle(
               color: color2, fontWeight: FontWeight.bold, fontSize: dimen2)),
     );
@@ -55,20 +55,20 @@ class Login extends StatelessWidget {
   Widget _buildLoginForm(BuildContext context) {
     return Expanded(
       child: Container(
-        decoration: BoxDecoration(color: color4),
+        decoration: BoxDecoration(color: color4,borderRadius: BorderRadius.only(topLeft: Radius.circular(24),topRight: Radius.circular(24))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: dimen2),
             Container(
               margin: style1,
-              child: Text('TEN DANG NHAP', style: style3),
+              child: Text('Tên Đăng Nhập:', style: style3),
             ),
             SizedBox(height: dimen5),
             Container(
                 margin: style1,
                 child: TextFormField(
-                  decoration: style2,
+                  decoration: InputDecoration(hintText: 'Nhập tên đăng nhập'),
                   onChanged: (name) {
                     context.read<LoginController>().setName(name);
                   },
@@ -76,14 +76,15 @@ class Login extends StatelessWidget {
             SizedBox(height: dimen4),
             Container(
               margin: style1,
-              child: Text('MAT KHAU', style: style3),
+              child: Text('Mật khẩu:', style: style3),
             ),
             SizedBox(height: dimen5),
             Container(
                 margin: style1,
                 child: TextFormField(
+                  decoration: InputDecoration(hintText: 'Nhập Mật khẩu'),
                   obscureText: true,
-                  decoration: style2,
+
                   onChanged: (password) {
                     context.read<LoginController>().setPassword(password);
                   },
@@ -125,14 +126,15 @@ class Login extends StatelessWidget {
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.symmetric(vertical: dimen5),
-                margin: style1,
+                margin: EdgeInsets.only(left: 60, right: 60),
                 alignment: Alignment.center,
-                decoration: BoxDecoration(color: color5),
-                child: Text('DANG NHAP',
+                decoration: BoxDecoration(
+                    color: color5, borderRadius: BorderRadius.circular(20)),
+                child: Text('ĐĂNG NHẬP',
                     style: TextStyle(
                         color: color4,
                         fontWeight: FontWeight.bold,
-                        fontSize: dimen8)),
+                        fontSize: 20)),
               ),
             ),
             SizedBox(height: dimen4)

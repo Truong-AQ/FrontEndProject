@@ -9,7 +9,7 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Profile')),
+      appBar: AppBar(title: Text('Tài khoản')),
       body: SingleChildScrollView(
           child: Column(
         children: [
@@ -68,7 +68,7 @@ class Profile extends StatelessWidget {
               children: [
                 Container(
                   width: 150,
-                  child: Text('Ten dang nhap',
+                  child: Text('Tên đăng nhập',
                       style: TextStyle(fontFamily: 'monospace', fontSize: 16)),
                 ),
                 Expanded(

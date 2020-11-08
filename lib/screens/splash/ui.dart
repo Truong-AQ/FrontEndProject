@@ -33,7 +33,7 @@ class Splash extends StatelessWidget with PortraitModeMixin {
                   bottom: 40,
                   left: 25,
                   right: 25,
-                  child: Text('Ung dung dieu tri ngon ngu - You play - We care',
+                  child: Text('Ứng dụng trị liệu ngôn ngữ\nYou play - We care',
                       style: TextStyle(
                           color: Colors.red,
                           fontSize: 14,

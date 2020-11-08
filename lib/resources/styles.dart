@@ -8,7 +8,8 @@ import 'dimens.dart';
 const style1 = EdgeInsets.symmetric(horizontal: dimen3);
 final style2 = InputDecoration(
   contentPadding: EdgeInsets.all(10),
-  border: OutlineInputBorder(),
+
+
 );
 const style3 = TextStyle(fontWeight: FontWeight.bold, fontSize: dimen6);
 final style4 =

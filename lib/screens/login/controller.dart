@@ -16,10 +16,10 @@ class LoginController extends StateNotifier<LoginData> {
     final htmlBody = response.body;
     if (htmlBody.indexOf("Invalid login or password. Please try again.") !=
         -1) {
-      return 'Sai ten dang nhap hoac mat khau';
+      return 'Sai tên đăng nhập hoặc mật khẩu';
     } else if (htmlBody.indexOf("This field is required") != -1 ||
         htmlBody.indexOf('\'error\': ""') != -1) {
-      return 'Vui long dien du ten dang nhap va mat khau';
+      return 'Vui lòng điền đủ tên đăng nhập và mật khẩu';
     } else {
       cookie = response.headers['set-cookie'];
       cookie = cookie.substring(cookie.indexOf('tao_xS2lIq62'));

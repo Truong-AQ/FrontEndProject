@@ -51,8 +51,8 @@ class NavigationHome extends StatelessWidget {
     return BottomNavigationBar(
         currentIndex: index,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Bai tap'),
-          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Ket qua')
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Bài tập'),
+          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Kết quả')
         ],
         onTap: (tabIndex) {
           context.read<NavigationHomeController>().updateTabIndex(tabIndex);

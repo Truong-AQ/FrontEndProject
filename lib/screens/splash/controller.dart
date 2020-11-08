@@ -8,7 +8,7 @@ class SplashController extends StateNotifier<SplashData> {
 
   void initDataSet() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds:2 ));
     state.cookie = prefs.getString('cookie') ?? '';
     cookie = state.cookie;
     state.init = true;

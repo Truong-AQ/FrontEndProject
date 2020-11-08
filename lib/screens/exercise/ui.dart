@@ -38,7 +38,7 @@ class Exercise extends StatelessWidget {
           Scaffold(
               drawer: _buildDrawer(context),
               appBar: AppBar(
-                  title: Text('Bai kiem tra cua toi'), centerTitle: true),
+                  title: Text('Bài kiểm tra của tôi'), centerTitle: true),
               body: SingleChildScrollView(
                 child: Container(
                     margin: EdgeInsets.only(top: 15, left: 12, right: 12),
@@ -76,7 +76,7 @@ class Exercise extends StatelessWidget {
             width: 250,
             color: Colors.grey,
             margin: EdgeInsets.symmetric(vertical: 15),
-            child: Text('PROFILE',
+            child: Text('Tài khoản',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.bold, fontFamily: 'monospace')),
@@ -95,7 +95,7 @@ class Exercise extends StatelessWidget {
             width: 250,
             color: Colors.grey,
             margin: EdgeInsets.symmetric(vertical: 15),
-            child: Text('LOGOUT',
+            child: Text('Đăng xuất',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.bold, fontFamily: 'monospace')),
@@ -109,7 +109,7 @@ class Exercise extends StatelessWidget {
     return Selector<ExerciseData, List>(
       selector: (_, dt) => dt.test,
       builder: (context, test, __) {
-        if(test.length == 0) return Container();
+        if (test.length == 0) return Container();
         return Column(children: [
           SizedBox(height: 10),
           for (int i = 0; i < test.length; i++)
@@ -154,8 +154,10 @@ class Exercise extends StatelessWidget {
             },
             child: Container(
                 padding: EdgeInsets.all(7),
-                color: Colors.pink,
-                child: Text(isProcess ? 'TIEP TUC' : 'BAT DAU',
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: isProcess ? Colors.pink : Colors.greenAccent),
+                child: Text(isProcess ? 'TIẾP TỤC' : 'BẮT ĐẦU',
                     style: TextStyle(color: Colors.white, fontSize: 12))),
           )
         ])
