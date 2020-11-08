@@ -43,8 +43,7 @@ class Exercise extends StatelessWidget {
                 child: Container(
                     margin: EdgeInsets.only(top: 15, left: 12, right: 12),
                     child: Column(children: [
-                      _buildExerciseProcess(),
-                      _buildExerciseHave()
+                      _buildExercise(),
                     ])),
               )),
           Selector<ExerciseData, bool>(
@@ -106,57 +105,27 @@ class Exercise extends StatelessWidget {
     );
   }
 
-  Widget _buildExerciseProcess() {
-    return Selector<ExerciseData, int>(
-      selector: (_, dt) => dt.testProcess.length,
-      builder: (context, length, __) {
+  Widget _buildExercise() {
+    return Selector<ExerciseData, List>(
+      selector: (_, dt) => dt.test,
+      builder: (context, test, __) {
+        if(test.length == 0) return Container();
         return Column(children: [
-          length > 0
-              ? Text('Trong tien trinh: $length',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 20))
-              : Container(),
           SizedBox(height: 10),
-          for (int i = 0; i < length; i++)
-            _buildExerciseProcessItem(context,
-                text: context
-                    .select((ExerciseData dt) => dt.testProcess)[i]
-                    .label,
-                time:
-                    context.select((ExerciseData dt) => dt.testProcess[i].time),
-                link:
-                    context.select((ExerciseData dt) => dt.testProcess[i].link))
+          for (int i = 0; i < test.length; i++)
+            _buildExerciseItem(context,
+                text: context.select((ExerciseData dt) => dt.test[i]).label,
+                time: context.select((ExerciseData dt) => dt.test[i].time),
+                link: context.select((ExerciseData dt) => dt.test[i].link),
+                isProcess:
+                    context.select((ExerciseData dt) => dt.test[i]).isProcess)
         ]);
       },
     );
   }
 
-  Widget _buildExerciseHave() {
-    return Selector<ExerciseData, int>(
-      selector: (_, dt) => dt.testHave.length,
-      builder: (context, length, __) {
-        return Column(children: [
-          length > 0
-              ? Text('Co san: $length',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 20))
-              : Container(),
-          SizedBox(height: 10),
-          for (int i = 0; i < length; i++)
-            _buildExerciseHaveItem(context,
-                text: context.select((ExerciseData dt) => dt.testHave[i].label),
-                link: context.select((ExerciseData dt) => dt.testHave[i].link))
-        ]);
-      },
-    );
-  }
-
-  Widget _buildExerciseProcessItem(BuildContext context,
-      {String text, String time, String link}) {
+  Widget _buildExerciseItem(BuildContext context,
+      {String text, String time, String link, bool isProcess}) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(10),
@@ -165,8 +134,11 @@ class Exercise extends StatelessWidget {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(text, style: TextStyle(fontFamily: 'monospace')),
         SizedBox(height: 4),
-        Text(time,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600)),
+        time != null
+            ? Text(time,
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.w600))
+            : SizedBox(height: 0),
         SizedBox(height: 4),
         Row(children: [
           Spacer(),
@@ -183,40 +155,7 @@ class Exercise extends StatelessWidget {
             child: Container(
                 padding: EdgeInsets.all(7),
                 color: Colors.pink,
-                child: Text('TIEP TUC',
-                    style: TextStyle(color: Colors.white, fontSize: 12))),
-          )
-        ])
-      ]),
-    );
-  }
-
-  Widget _buildExerciseHaveItem(BuildContext context,
-      {String text, String link}) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(10),
-      margin: EdgeInsets.only(bottom: 15),
-      decoration: BoxDecoration(color: Colors.blue.withAlpha(30)),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(text, style: TextStyle(fontFamily: 'monospace')),
-        SizedBox(height: 4),
-        Row(children: [
-          Spacer(),
-          GestureDetector(
-            onTap: () async {
-              await Navigator.push(
-                  contextHome,
-                  MaterialPageRoute(
-                      builder: (_) => Test.withDependency(url: link)));
-              context.read<ExerciseController>().stopPolling();
-              await context.read<ExerciseController>().initTests();
-              context.read<ExerciseController>().startPolling();
-            },
-            child: Container(
-                padding: EdgeInsets.all(7),
-                color: Colors.orange,
-                child: Text('BAT DAU',
+                child: Text(isProcess ? 'TIEP TUC' : 'BAT DAU',
                     style: TextStyle(color: Colors.white, fontSize: 12))),
           )
         ])

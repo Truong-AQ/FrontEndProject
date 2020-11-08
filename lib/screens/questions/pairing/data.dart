@@ -9,21 +9,49 @@ class PairingData extends CommonDataQuestion {
       suggest = data['suggest'];
       answers = data['answers'];
       userAnswer = List.generate(answers.length, (index) => null);
+      int j = 1;
+      for (int i = 0; i < answers.length; i++) {
+        if (answers[i].type == 'image') {
+          userAnswer[j] = answers[i];
+          j += 2;
+          answers[i] = null;
+        }
+      }
+      if (j != 1) {
+        haveImg = true;
+        j = 0;
+        for (int i = 0; i < answers.length; i++) {
+          while (answers[i] == null && i < answers.length) {
+            i++;
+          }
+          if (i < answers.length) {
+            answers[j] = answers[i];
+            j += 2;
+            if (j >= answers.length) break;
+          }
+        }
+        for (int i = 1; i < answers.length; i += 2) {
+          answers[i] = null;
+        }
+        List tmp = answers;
+        answers = userAnswer;
+        userAnswer = tmp;
+      }
       timeStart = DateTime.now();
     }
   }
   String label;
   AnswerChoice suggest;
   List<AnswerChoice> answers;
-  int nWordsChoose = 0;
+  bool haveImg = false;
   PairingData copy() {
     final clone = PairingData();
     clone.label = label;
     clone.suggest = suggest;
     clone.answers = answers;
-    clone.nWordsChoose = nWordsChoose;
     clone.userAnswer = userAnswer;
     clone.timeStart = timeStart;
+    clone.haveImg = haveImg;
     return clone;
   }
 }

@@ -64,7 +64,6 @@ class Choice extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(top: 35, bottom: dimen1),
         padding: EdgeInsets.all(dimen12),
-        decoration: BoxDecoration(border: Border.all()),
         child: Text(label,
             textAlign: TextAlign.center,
             style: TextStyle(

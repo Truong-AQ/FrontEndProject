@@ -64,7 +64,6 @@ class Pairing extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(top: 20, bottom: 20),
         padding: EdgeInsets.all(dimen12),
-        decoration: BoxDecoration(border: Border.all()),
         child: Text(label,
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -100,8 +99,8 @@ class Pairing extends StatelessWidget {
       },
       child: answer.type == 'image'
           ? Container(
-              width: 150,
-              height: 150,
+              width: 80,
+              height: 80,
               child: Image.network(answer.data, fit: BoxFit.fill,
                   loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) {
@@ -140,7 +139,7 @@ class Pairing extends StatelessWidget {
             for (int i = 0; i < dt.userAnswer.length; i += 2)
               Row(children: [
                 _CellPairing(answer: dt.userAnswer[i], index: i),
-                _CellPairing(answer: dt.userAnswer[i + 1], index: i)
+                _CellPairing(answer: dt.userAnswer[i + 1], index: i + 1)
               ]),
           ]);
         }));
@@ -162,15 +161,14 @@ class _CellPairing extends StatelessWidget {
         },
         child: answer == null
             ? Container(
+                child: Text('  '),
                 margin: EdgeInsets.all(12),
                 padding: EdgeInsets.all(20),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(color: Colors.greenAccent))
             : (answer.type == 'image'
                 ? Container(
-                    width: 150,
-                    height: 150,
-                    child: Image.network(answer.data, fit: BoxFit.fill,
+                    child: Image.network(answer.data, width: 80, height: 80,
                         loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) {
                         Provider.of<PairingController>(context)
