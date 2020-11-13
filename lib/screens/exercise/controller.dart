@@ -85,7 +85,6 @@ class ExerciseController extends StateNotifier<ExerciseData> {
       for (int j = i + 1; j < test.length; j++) {
         if (test[j].label == test[i].label) {
           test.removeAt(j);
-          print(j);
           j--;
         }
       }
