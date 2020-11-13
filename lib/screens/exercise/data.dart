@@ -18,5 +18,6 @@ class ExerciseData {
 class Exercise {
   String link, label, time;
   bool isProcess;
-  Exercise({this.link, this.label, this.time, this.isProcess = false});
+  String numAttempts;
+  Exercise({this.numAttempts, this.link, this.label, this.time, this.isProcess = false});
 }

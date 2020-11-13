@@ -46,23 +46,11 @@ class ExerciseController extends StateNotifier<ExerciseData> {
   }
 
   Future<void> _polling() async {
-    print('polling');
     String htmlTests = (await getTests()).body;
     final document = parse(htmlTests);
     String name = document.getElementsByClassName("text")[1].text;
     var entries = document.getElementsByClassName('entry-point-box plain');
     List<Exercise> test = [];
-    //load test have
-    if (entries.length > 0) {
-      var childrenHave = entries[entries.length - 1].getElementsByClassName(
-          'block entry-point entry-point-all-deliveries');
-
-      for (int i = 0; i < childrenHave.length; i++) {
-        test.add(Exercise(
-            link: childrenHave[i].attributes['data-launch_url'],
-            label: childrenHave[i].getElementsByTagName('h3')[0].text));
-      }
-    }
     //load test in process
     if (entries.length == 2) {
       var childrenProcess = entries[0].getElementsByClassName(
@@ -75,12 +63,30 @@ class ExerciseController extends StateNotifier<ExerciseData> {
             time: childrenProcess[i].getElementsByTagName('p')[0].text));
       }
     }
+    //load test have
+    if (entries.length > 0) {
+      var childrenHave = entries[entries.length - 1].getElementsByClassName(
+          'block entry-point entry-point-all-deliveries');
+
+      for (int i = 0; i < childrenHave.length; i++) {
+        test.add(Exercise(
+            link: childrenHave[i].attributes['data-launch_url'],
+            label: childrenHave[i].getElementsByTagName('h3')[0].text));
+        List infoExtra = childrenHave[i].getElementsByTagName('p');
+        if (infoExtra.length > 0) {
+          test[test.length - 1].time = infoExtra[0].text;
+          test[test.length - 1].numAttempts = infoExtra[1].text;
+        }
+      }
+    }
+
     //remove duplicate
-    for (int i = test.length - 1; i >= 1; i--) {
-      for (int j = i - 1; j >= 0; j--) {
+    for (int i = 0; i < test.length - 1; i++) {
+      for (int j = i + 1; j < test.length; j++) {
         if (test[j].label == test[i].label) {
           test.removeAt(j);
-          i--;
+          print(j);
+          j--;
         }
       }
     }

@@ -35,7 +35,7 @@ Future<http.Response> getItem(
   };
   final uri =
       Uri.http(baseUrl, '/taoQtiTest/Runner/getItem', requestQueryParams);
-  final response = await http.get(uri, headers: {
+  final response = await  http.get(uri, headers: {
     'Cookie': cookie,
     'X-Requested-With': 'XMLHttpRequest',
     'X-Auth-Token': token

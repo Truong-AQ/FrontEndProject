@@ -114,14 +114,20 @@ class Exercise extends StatelessWidget {
                 time: context.select((ExerciseData dt) => dt.test[i].time),
                 link: context.select((ExerciseData dt) => dt.test[i].link),
                 isProcess:
-                    context.select((ExerciseData dt) => dt.test[i]).isProcess)
+                    context.select((ExerciseData dt) => dt.test[i]).isProcess,
+                numAttempt:
+                    context.select((ExerciseData dt) => dt.test[i].numAttempts))
         ]);
       },
     );
   }
 
   Widget _buildExerciseItem(BuildContext context,
-      {String text, String time, String link, bool isProcess}) {
+      {String text,
+      String time,
+      String link,
+      bool isProcess,
+      String numAttempt}) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(10),
@@ -132,6 +138,12 @@ class Exercise extends StatelessWidget {
         SizedBox(height: 4),
         time != null
             ? Text(time,
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.w600))
+            : SizedBox(height: 0),
+        if (time != null) SizedBox(height: 4),
+        numAttempt != null
+            ? Text(numAttempt,
                 style:
                     TextStyle(color: Colors.black, fontWeight: FontWeight.w600))
             : SizedBox(height: 0),
