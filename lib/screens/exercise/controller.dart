@@ -26,6 +26,7 @@ class ExerciseController extends StateNotifier<ExerciseData> {
 
   void startPolling() async {
     if (mounted) {
+      if (state.polling) return;
       state.polling = true;
       while (state.polling) {
         try {
