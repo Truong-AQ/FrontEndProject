@@ -24,26 +24,31 @@ class ExerciseController extends StateNotifier<ExerciseData> {
     state = state.copy();
   }
 
-  void startPolling() {
-    if (state.timer == null || !state.timer.isActive) {
-      state.timer = Timer.periodic(Duration(seconds: 5), (timer) async {
+  void startPolling() async {
+    if (mounted) {
+      state.polling = true;
+      while (state.polling) {
         try {
           await _polling();
+          await Future.delayed(Duration(seconds: 2));
           if (mounted) {
             state = state.copy();
-          }
+          } else
+            break;
         } on Exception catch (_) {}
-      });
+      }
     }
   }
 
   void stopPolling() {
-    state.timer.cancel();
+    state.polling = false;
   }
 
   Future<void> _polling() async {
+    print('polling');
     String htmlTests = (await getTests()).body;
     final document = parse(htmlTests);
+    String name = document.getElementsByClassName("text")[1].text;
     var entries = document.getElementsByClassName('entry-point-box plain');
     List<Exercise> test = [];
     //load test have
@@ -79,6 +84,7 @@ class ExerciseController extends StateNotifier<ExerciseData> {
       }
     }
     if (mounted) {
+      state.name = name;
       state.test = test;
     }
   }

@@ -58,11 +58,11 @@ class Choice extends StatelessWidget {
   }
 
   Widget _buildLabel(BuildContext context, String label) {
-    if (label == null || label == '') return Container(height: 70);
+    if (label == null || label == '') return Container(height: 40);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15),
       child: Container(
-        margin: EdgeInsets.only(top: 35, bottom: dimen1),
+        margin: EdgeInsets.only(top: 35, bottom: 59),
         padding: EdgeInsets.all(dimen12),
         child: Text(label,
             textAlign: TextAlign.center,

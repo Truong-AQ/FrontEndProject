@@ -4,7 +4,6 @@ import 'package:project/resources/app_context.dart';
 import 'package:project/resources/strings.dart';
 import 'package:project/screens/exercise/controller.dart';
 import 'package:project/screens/login/ui.dart';
-import 'package:project/screens/profile/ui.dart';
 import 'package:project/screens/test/ui.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
@@ -64,29 +63,26 @@ class Exercise extends StatelessWidget {
       child: Column(children: [
         Container(
             alignment: Alignment.center,
-            margin: EdgeInsets.only(bottom: 45, top: 70),
-            child: Image.asset('assets/images/dish2.png')),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(contextHome,
-                MaterialPageRoute(builder: (_) => Profile.withDependency()));
-          },
-          child: Container(
+            margin: EdgeInsets.only(bottom: 0, top: 70),
+            child: Icon(Icons.person_pin, size: 150)),
+        Container(
             padding: EdgeInsets.all(14),
-            width: 250,
-            color: Colors.grey,
-            margin: EdgeInsets.symmetric(vertical: 15),
-            child: Text('Tài khoản',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, fontFamily: 'monospace')),
-          ),
-        ),
+            margin: EdgeInsets.only(bottom: 15),
+            child: Selector<ExerciseData, String>(
+              selector: (_, dt) => dt.name,
+              builder: (_, name, __) {
+                return Text(name ?? "",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontFamily: 'monospace'));
+              },
+            )),
         GestureDetector(
           onTap: () async {
             SharedPreferences pref = await SharedPreferences.getInstance();
             cookie = '';
             pref.setString('cookie', '');
+            context.read<ExerciseController>().stopPolling();
             Navigator.pushReplacement(contextHome,
                 MaterialPageRoute(builder: (_) => Login.withDependency()));
           },
@@ -142,24 +138,26 @@ class Exercise extends StatelessWidget {
         SizedBox(height: 4),
         Row(children: [
           Spacer(),
-          GestureDetector(
-            onTap: () async {
-              await Navigator.push(
-                  contextHome,
-                  MaterialPageRoute(
-                      builder: (_) => Test.withDependency(url: link)));
-              context.read<ExerciseController>().stopPolling();
-              await context.read<ExerciseController>().initTests();
-              context.read<ExerciseController>().startPolling();
-            },
-            child: Container(
-                padding: EdgeInsets.all(7),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: isProcess ? Colors.pink : Colors.greenAccent),
-                child: Text(isProcess ? 'TIẾP TỤC' : 'BẮT ĐẦU',
-                    style: TextStyle(color: Colors.white, fontSize: 12))),
-          )
+          link == '#'
+              ? Container()
+              : GestureDetector(
+                  onTap: () async {
+                    await Navigator.push(
+                        contextHome,
+                        MaterialPageRoute(
+                            builder: (_) => Test.withDependency(url: link)));
+                    context.read<ExerciseController>().stopPolling();
+                    await context.read<ExerciseController>().initTests();
+                    context.read<ExerciseController>().startPolling();
+                  },
+                  child: Container(
+                      padding: EdgeInsets.all(7),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: isProcess ? Colors.pink : Colors.greenAccent),
+                      child: Text(isProcess ? 'TIẾP TỤC' : 'BẮT ĐẦU',
+                          style: TextStyle(color: Colors.white, fontSize: 12))),
+                )
         ])
       ]),
     );

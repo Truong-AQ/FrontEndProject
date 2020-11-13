@@ -2,14 +2,15 @@ import 'dart:async';
 
 class ExerciseData {
   List<Exercise> test = [];
-  bool process = false;
-  Timer timer;
+  bool process = false, polling = false;
+  String name;
 
   ExerciseData copy() {
     ExerciseData exercise = ExerciseData();
     exercise.test = test;
     exercise.process = process;
-    exercise.timer = timer;
+    exercise.name = name;
+    exercise.polling = polling;
     return exercise;
   }
 }
