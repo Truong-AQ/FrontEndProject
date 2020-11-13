@@ -31,7 +31,7 @@ class ExerciseController extends StateNotifier<ExerciseData> {
       while (state.polling) {
         try {
           await _polling();
-          await Future.delayed(Duration(seconds: 2));
+          await Future.delayed(Duration(seconds: 5));
           if (mounted) {
             state = state.copy();
           } else
