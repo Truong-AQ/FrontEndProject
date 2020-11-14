@@ -75,7 +75,8 @@ class ExerciseController extends StateNotifier<ExerciseData> {
         List infoExtra = childrenHave[i].getElementsByTagName('p');
         if (infoExtra.length > 0) {
           test[test.length - 1].time = infoExtra[0].text;
-          test[test.length - 1].numAttempts = infoExtra[1].text;
+          if (infoExtra.length == 2)
+            test[test.length - 1].numAttempts = infoExtra[1].text;
         }
       }
     }

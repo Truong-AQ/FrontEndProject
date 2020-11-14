@@ -150,26 +150,30 @@ class Exercise extends StatelessWidget {
         SizedBox(height: 4),
         Row(children: [
           Spacer(),
-          link == '#'
-              ? Container()
-              : GestureDetector(
-                  onTap: () async {
-                    await Navigator.push(
-                        contextHome,
-                        MaterialPageRoute(
-                            builder: (_) => Test.withDependency(url: link)));
-                    context.read<ExerciseController>().stopPolling();
-                    await context.read<ExerciseController>().initTests();
-                    context.read<ExerciseController>().startPolling();
-                  },
-                  child: Container(
-                      padding: EdgeInsets.all(7),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: isProcess ? Colors.pink : Colors.greenAccent),
-                      child: Text(isProcess ? 'TIẾP TỤC' : 'BẮT ĐẦU',
-                          style: TextStyle(color: Colors.white, fontSize: 12))),
-                )
+          GestureDetector(
+            onTap: () async {
+              if (link == '#') return;
+              await Navigator.push(
+                  contextHome,
+                  MaterialPageRoute(
+                      builder: (_) => Test.withDependency(url: link)));
+              context.read<ExerciseController>().stopPolling();
+              await context.read<ExerciseController>().initTests();
+              context.read<ExerciseController>().startPolling();
+            },
+            child: Container(
+                padding: EdgeInsets.all(7),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: link == '#'
+                        ? Colors.grey
+                        : (isProcess ? Colors.pink : Colors.greenAccent)),
+                child: Text(
+                    link == '#'
+                        ? 'HOÀN THÀNH'
+                        : (isProcess ? 'TIẾP TỤC' : 'BẮT ĐẦU'),
+                    style: TextStyle(color: Colors.white, fontSize: 12))),
+          )
         ])
       ]),
     );
