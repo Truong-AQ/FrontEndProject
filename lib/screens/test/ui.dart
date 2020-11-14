@@ -7,8 +7,6 @@ import 'package:project/screens/questions/order_sentence/ui.dart';
 import 'package:project/screens/questions/pairing/ui.dart';
 import 'package:project/screens/test/controller.dart';
 import 'package:project/screens/test/data.dart';
-import 'package:project/util/common_data_question.dart';
-import 'package:project/util/convert_answer.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
