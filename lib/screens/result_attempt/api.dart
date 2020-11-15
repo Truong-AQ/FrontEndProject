@@ -6,7 +6,7 @@ import 'package:project/resources/strings.dart';
     'rows': '25',
     'page': '1',
     'sortby': 'id',
-    'classUri': classUri ?? 'http://www.tao.lu/Ontologies/TAODelivery.rdf#AssembledDelivery',
+    'classUri': classUri,
     'sortorder': 'asc',
     'sorttype': 'string'
   };
