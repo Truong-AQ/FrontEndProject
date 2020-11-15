@@ -27,9 +27,12 @@ class Exercise extends StatelessWidget {
       key: GlobalKey(),
       onVisibilityChanged: (VisibilityInfo info) {
         var visiblePercentage = info.visibleFraction * 100;
-        if (visiblePercentage == 0.0)
-          context.read<ExerciseController>().stopPolling();
-        else if (visiblePercentage == 100.0)
+
+        if (visiblePercentage == 0.0) {
+          try {
+            context.read<ExerciseController>().stopPolling();
+          } on Error catch (_) {}
+        } else if (visiblePercentage == 100.0)
           context.read<ExerciseController>().startPolling();
       },
       child: Stack(
@@ -64,10 +67,11 @@ class Exercise extends StatelessWidget {
         Container(
             alignment: Alignment.center,
             margin: EdgeInsets.only(bottom: 0, top: 70),
-            child: Icon(Icons.person_pin, size: 150)),
+            child:
+                Image.asset('assets/images/ic_profile.png', scale: 128 / 150)),
         Container(
             padding: EdgeInsets.all(14),
-            margin: EdgeInsets.only(bottom: 15),
+            margin: EdgeInsets.only(top: 15),
             child: Selector<ExerciseData, String>(
               selector: (_, dt) => dt.name,
               builder: (_, name, __) {

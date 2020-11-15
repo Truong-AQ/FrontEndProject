@@ -90,7 +90,7 @@ class ExerciseController extends StateNotifier<ExerciseData> {
         }
       }
     }
-    if (mounted) {
+    if (mounted && !state.equalTest(test)) {
       state.name = name;
       state.test = test;
     }

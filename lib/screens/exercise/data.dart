@@ -1,5 +1,3 @@
-import 'dart:async';
-
 class ExerciseData {
   List<Exercise> test = [];
   bool process = false, polling = false;
@@ -13,11 +11,30 @@ class ExerciseData {
     exercise.polling = polling;
     return exercise;
   }
+
+  bool equalTest(List<Exercise> otherTest) {
+    if (test.length != otherTest.length) return false;
+    for (int i = 0; i < test.length; i++)
+      if (!test[i].equal(otherTest[i])) return false;
+    return true;
+  }
 }
 
 class Exercise {
   String link, label, time;
   bool isProcess;
   String numAttempts;
-  Exercise({this.numAttempts, this.link, this.label, this.time, this.isProcess = false});
+  Exercise(
+      {this.numAttempts,
+      this.link,
+      this.label,
+      this.time,
+      this.isProcess = false});
+  bool equal(Exercise other) {
+    return (this.link == other.link) &&
+        (this.label == other.label) &&
+        (this.time == other.time) &&
+        (this.isProcess = other.isProcess) &&
+        (this.numAttempts == other.numAttempts);
+  }
 }

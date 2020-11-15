@@ -23,123 +23,87 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: color10,
-        appBar: AppBar(backgroundColor: color3, elevation: 0),
-        body: LayoutBuilder(builder: (context, constraint) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraint.maxHeight),
-              child: IntrinsicHeight(
-                  child: Column(
-                children: [
-                  _buildTextLogin(context),
-                  _buildLoginForm(context),
-                ],
-              )),
-            ),
-          );
-        }));
-  }
-
-  Widget _buildTextLogin(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 80, bottom: dimen4),
-      alignment: Alignment.center,
-      child: Text('Đăng nhập',
-          style: TextStyle(
-              color: color2, fontWeight: FontWeight.bold, fontSize: dimen2)),
-    );
+    return Scaffold(body: _buildLoginForm(context));
   }
 
   Widget _buildLoginForm(BuildContext context) {
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(color: color4,borderRadius: BorderRadius.only(topLeft: Radius.circular(24),topRight: Radius.circular(24))),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: dimen2),
-            Container(
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24), topRight: Radius.circular(24))),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/images/ic_profile.png'),
+          SizedBox(height: 25),
+          Container(
               margin: style1,
-              child: Text('Tên Đăng Nhập:', style: style3),
-            ),
-            SizedBox(height: dimen5),
-            Container(
-                margin: style1,
-                child: TextFormField(
-                  decoration: InputDecoration(hintText: 'Nhập tên đăng nhập'),
-                  onChanged: (name) {
-                    context.read<LoginController>().setName(name);
-                  },
-                )),
-            SizedBox(height: dimen4),
-            Container(
+              child: TextFormField(
+                decoration: InputDecoration(hintText: 'Nhập tên đăng nhập'),
+                onChanged: (name) {
+                  context.read<LoginController>().setName(name);
+                },
+              )),
+          SizedBox(height: 30),
+          Container(
               margin: style1,
-              child: Text('Mật khẩu:', style: style3),
+              child: TextFormField(
+                decoration: InputDecoration(hintText: 'Nhập Mật khẩu'),
+                obscureText: true,
+                onChanged: (password) {
+                  context.read<LoginController>().setPassword(password);
+                },
+              )),
+          SizedBox(height: 40),
+          GestureDetector(
+            onTap: () async {
+              showDialog(context: context, builder: (_) => Loading());
+              final error = await context.read<LoginController>().login();
+              Navigator.pop(context);
+              if (error == '') {
+                Navigator.pushReplacement(
+                    contextLogin,
+                    MaterialPageRoute(
+                        builder: (_) => NavigationHome.withDependency()));
+                return;
+              }
+              showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) {
+                    return CupertinoAlertDialog(
+                      title: Text(error,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: dimen9,
+                              color: color7,
+                              fontFamily: 'roboto')),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('OK'))
+                      ],
+                    );
+                  });
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(vertical: 15),
+              margin: EdgeInsets.only(left: 60, right: 60),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15), color: color5),
+              child: Text('ĐĂNG NHẬP',
+                  style: TextStyle(
+                      color: color4,
+                      fontFamily: 'monospace',
+                      fontWeight: FontWeight.bold)),
             ),
-            SizedBox(height: dimen5),
-            Container(
-                margin: style1,
-                child: TextFormField(
-                  decoration: InputDecoration(hintText: 'Nhập Mật khẩu'),
-                  obscureText: true,
-
-                  onChanged: (password) {
-                    context.read<LoginController>().setPassword(password);
-                  },
-                )),
-            SizedBox(height: dimen2),
-            GestureDetector(
-              onTap: () async {
-                showDialog(context: context, builder: (_) => Loading());
-                final error = await context.read<LoginController>().login();
-                Navigator.pop(context);
-                if (error == '') {
-                  Navigator.pushReplacement(
-                      contextLogin,
-                      MaterialPageRoute(
-                          builder: (_) => NavigationHome.withDependency()));
-                  return;
-                }
-                showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (_) {
-                      return CupertinoAlertDialog(
-                        title: Text(error,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: dimen9,
-                                color: color7,
-                                fontFamily: 'roboto')),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('OK'))
-                        ],
-                      );
-                    });
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(vertical: dimen5),
-                margin: EdgeInsets.only(left: 60, right: 60),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: color5, borderRadius: BorderRadius.circular(20)),
-                child: Text('ĐĂNG NHẬP',
-                    style: TextStyle(
-                        color: color4,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20)),
-              ),
-            ),
-            SizedBox(height: dimen4)
-          ],
-        ),
+          ),
+          SizedBox(height: dimen4)
+        ],
       ),
     );
   }
