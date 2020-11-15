@@ -1,3 +1,4 @@
+import 'package:project/screens/exercise/data.dart';
 import 'package:project/screens/test/data.dart';
 
 class CommonDataQuestion {
@@ -6,3 +7,4 @@ class CommonDataQuestion {
 }
 CommonDataQuestion commonDataQuestion;
 bool formatOther = false;
+List<Exercise> testDone = [];

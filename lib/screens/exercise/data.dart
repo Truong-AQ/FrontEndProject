@@ -1,3 +1,5 @@
+import 'package:project/util/variable.dart';
+
 class ExerciseData {
   List<Exercise> test = [];
   bool process = false, polling = false;
@@ -6,6 +8,9 @@ class ExerciseData {
   ExerciseData copy() {
     ExerciseData exercise = ExerciseData();
     exercise.test = test;
+    testDone = [];
+    for (int i = 0; i < test.length; i++)
+      if (test[i].link == '#') testDone.add(test[i]);
     exercise.process = process;
     exercise.name = name;
     exercise.polling = polling;

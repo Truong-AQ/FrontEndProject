@@ -4,7 +4,7 @@ import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:project/resources/strings.dart';
 import 'package:project/screens/test/data.dart';
-import 'package:project/util/common_data_question.dart';
+import 'package:project/util/variable.dart';
 
 Future<Map<String, String>> getBasicInfo({String url}) async {
   final response = await http.get(url, headers: {'Cookie': cookie});

@@ -1,5 +1,5 @@
 import 'package:project/screens/test/data.dart';
-import 'package:project/util/common_data_question.dart';
+import 'package:project/util/variable.dart';
 
 class ChoiceData extends CommonDataQuestion {
   ChoiceData({Map<String, dynamic> data}) {

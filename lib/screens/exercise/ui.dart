@@ -5,7 +5,7 @@ import 'package:project/resources/strings.dart';
 import 'package:project/screens/exercise/controller.dart';
 import 'package:project/screens/login/ui.dart';
 import 'package:project/screens/test/ui.dart';
-import 'package:project/util/common_data_question.dart';
+import 'package:project/util/variable.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
