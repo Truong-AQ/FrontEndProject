@@ -5,12 +5,16 @@ import 'package:state_notifier/state_notifier.dart';
 class ChoiceController extends StateNotifier<ChoiceData> {
   ChoiceController(Map<String, dynamic> data) : super(ChoiceData(data: data));
 
-  void addAnswer(AnswerChoice answer) {
+  bool addAnswer(AnswerChoice answer) {
     if (state.userAnswer.contains(answer)) {
       state.userAnswer.remove(answer);
     } else {
-      state.userAnswer.add(answer);
+      if (state.userAnswer.length < state.maxChoice || state.maxChoice == 0)
+        state.userAnswer.add(answer);
+      else
+        return false;
     }
+    return true;
   }
 
   void updateTime(DateTime time) {

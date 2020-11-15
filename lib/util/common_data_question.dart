@@ -5,3 +5,4 @@ class CommonDataQuestion {
   List<AnswerChoice> userAnswer = [];
 }
 CommonDataQuestion commonDataQuestion;
+bool formatOther = false;

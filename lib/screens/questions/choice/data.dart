@@ -8,11 +8,17 @@ class ChoiceData extends CommonDataQuestion {
       label = data['label'];
       suggest = data['suggest'];
       answers = data['answers'];
+      maxChoice = data['maxChoice'];
+      if (maxChoice == 1)
+        formatOther = true;
+      else
+        formatOther = false;
       userAnswer = [];
       timeStart = DateTime.now();
     }
   }
   String label;
+  int maxChoice;
   AnswerChoice suggest;
   List<AnswerChoice> answers;
   ChoiceData copy() {
@@ -22,6 +28,7 @@ class ChoiceData extends CommonDataQuestion {
     clone.answers = answers;
     clone.userAnswer = userAnswer;
     clone.timeStart = timeStart;
+    clone.maxChoice = maxChoice;
     return clone;
   }
 }

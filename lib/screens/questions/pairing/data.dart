@@ -4,6 +4,7 @@ import 'package:project/util/common_data_question.dart';
 class PairingData extends CommonDataQuestion {
   PairingData({Map<String, dynamic> data}) {
     commonDataQuestion = this;
+    formatOther = false;
     if (data != null) {
       label = data['label'];
       suggest = data['suggest'];

@@ -88,7 +88,7 @@ class TestController extends StateNotifier<TestData> {
         Map<String, dynamic> attributesChoice = (elementsBodyChoice.values.first
             as Map<String, dynamic>)['attributes'];
         String type = attributesChoice['type'];
-        if (type == null|| type.indexOf("image") >= 0)
+        if (type == null || type.indexOf("image") >= 0)
           type = "image";
         else if (type.indexOf("audio") >= 0) type = "audio";
         String data = "";
@@ -101,6 +101,9 @@ class TestController extends StateNotifier<TestData> {
         answers
             .add(AnswerChoice(id: id, data: bodyChoice['body'], type: 'text'));
       }
+    }
+    if (state.typeQuestionCurrent == TypeQuestion.ASSIGNING) {
+      dataQuestion['maxChoice'] = element['attributes']['maxChoices'];
     }
     dataQuestion['answers'] = answers;
     state.dataQuestion = dataQuestion;

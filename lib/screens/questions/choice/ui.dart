@@ -105,10 +105,11 @@ class __CellRowState extends State<_CellRow> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.read<ChoiceController>().addAnswer(answer);
-        setState(() {
-          choice = !choice;
-        });
+        bool add = context.read<ChoiceController>().addAnswer(answer);
+        if (add)
+          setState(() {
+            choice = !choice;
+          });
       },
       child: Container(
           padding: EdgeInsets.symmetric(horizontal: 7, vertical: 8),
