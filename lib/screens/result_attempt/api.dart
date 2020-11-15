@@ -3,14 +3,12 @@ import 'package:project/resources/strings.dart';
 
   Future<http.Response> getResultTime({String classUri}) async {
   final Map<String, String> queryParams = {
-    'extension': 'taoItems',
-    'perspective': 'results',
-    'section': 'manage_results',
+    'rows': '25',
+    'page': '1',
+    'sortby': 'id',
     'classUri': classUri ?? 'http://www.tao.lu/Ontologies/TAODelivery.rdf#AssembledDelivery',
-    'hideInstances': '0',
-    'filter': '*',
-    'offset': '0',
-    'limit': '30'
+    'sortorder': 'asc',
+    'sorttype': 'string'
   };
   final uri = Uri.http(baseUrl, '/taoOutcomeUi/Results/getResults', queryParams);
   final http.Response response = await http.get(uri, headers: {

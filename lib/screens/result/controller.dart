@@ -59,7 +59,6 @@ class ResultController extends StateNotifier<ResultData> {
   }
 
   void startPolling() async {
-    print('start');
     if (mounted) {
       if (state.polling) return;
       state.polling = true;
@@ -77,7 +76,6 @@ class ResultController extends StateNotifier<ResultData> {
   }
 
   void stopPolling() {
-    print('stop');
     state.polling = false;
   }
 }

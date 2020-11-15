@@ -1,2 +1,2 @@
 const String baseUrl = 'aigle.blife.ai';
-String cookie = '';
+String cookie = '', nameTestTaker = '';
