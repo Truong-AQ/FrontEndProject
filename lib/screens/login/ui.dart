@@ -65,6 +65,7 @@ class Login extends StatelessWidget {
                     contextLogin,
                     MaterialPageRoute(
                         builder: (_) => NavigationHome.withDependency()));
+                contextLogin = null;
                 return;
               }
               showDialog(

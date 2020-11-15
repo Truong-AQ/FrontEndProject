@@ -5,6 +5,7 @@ import 'package:project/resources/strings.dart';
 import 'package:project/screens/exercise/controller.dart';
 import 'package:project/screens/login/ui.dart';
 import 'package:project/screens/test/ui.dart';
+import 'package:project/util/common_data_question.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -89,6 +90,8 @@ class Exercise extends StatelessWidget {
             context.read<ExerciseController>().stopPolling();
             Navigator.pushReplacement(contextHome,
                 MaterialPageRoute(builder: (_) => Login.withDependency()));
+            contextHome = null;
+            commonDataQuestion = null;
           },
           child: Container(
             padding: EdgeInsets.all(14),
