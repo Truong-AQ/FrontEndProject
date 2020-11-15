@@ -80,7 +80,10 @@ Map<String, dynamic> _createItemForMoveItem(
   if (!formatOther)
     tmp['"list"'] = list;
   else {
-    tmp3['"identifier"'] = list['"identifier"'][0];
+    if (list['"identifier"'].length > 0)
+      tmp3['"identifier"'] = list['"identifier"'][0];
+    else
+      tmp3['"identifier"'] = {};
     tmp['"base"'] = tmp3;
   }
   if (extra == 'state') {
