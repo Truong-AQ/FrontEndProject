@@ -12,10 +12,12 @@ class ResultDetailController extends StateNotifier<ResultDetailData> {
       final questions = document.getElementsByClassName('matrix');
       for (int i = 1; i < questions.length; i++) {
         final tbody = questions[i].getElementsByTagName('tbody')[0];
-        state.points.add(int.parse(tbody
+        int point = int.parse(tbody
             .getElementsByTagName('tr')[6]
             .getElementsByClassName('dataResult')[0]
-            .text));
+            .text);
+        state.points.add(point);
+        state.totalPoint += point;
       }
       state.init = true;
       state = state.copy();

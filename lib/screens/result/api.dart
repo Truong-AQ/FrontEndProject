@@ -3,7 +3,7 @@ import 'package:project/resources/strings.dart';
 
 Future<http.Response> getResult({String classUri}) async {
   final Map<String, String> queryParams = {
-    'extension': 'taoItems',
+    'extension': 'taoOutcomeUi',
     'perspective': 'results',
     'section': 'manage_results',
     'classUri': classUri ?? 'http://www.tao.lu/Ontologies/TAODelivery.rdf#AssembledDelivery',

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:project/screens/exercise/data.dart';
 import 'package:project/screens/result/controller.dart';
 import 'package:project/screens/result/data.dart';
 import 'package:project/screens/result_attempt/ui.dart';
@@ -72,8 +71,8 @@ class _ResultState extends State<Result> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (_) =>
-                          ResultTestTime.withDependency(dataUri: dataUri)));
+                      builder: (_) => ResultTestTime.withDependency(
+                          dataUri: dataUri, label: text)));
             },
             child: Container(
                 padding: EdgeInsets.all(7),

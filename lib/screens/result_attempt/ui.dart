@@ -8,16 +8,18 @@ import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
 class ResultTestTime extends StatelessWidget {
-  static Widget withDependency({String dataUri}) {
+  static Widget withDependency({String dataUri, String label}) {
     return StateNotifierProvider<ResultTestTimeController, ResultTestTimeData>(
         create: (_) => ResultTestTimeController(dataUri),
-        child: ResultTestTime());
+        child: ResultTestTime(label: label));
   }
 
+  ResultTestTime({this.label});
+  final String label;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text(label), centerTitle: true),
       body: context.select((ResultTestTimeData dt) => dt.init)
           ? SingleChildScrollView(
               child: Selector<ResultTestTimeData, int>(

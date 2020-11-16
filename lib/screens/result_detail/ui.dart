@@ -30,6 +30,7 @@ class _ResultDetailState extends State<ResultDetail> {
                     context.select((ResultDetailData dt) => dt.points);
                 return Column(
                   children: [
+                    SizedBox(height: 10),
                     for (int i = 0; i < length; i++)
                       Container(
                         padding: EdgeInsets.all(10),
@@ -38,6 +39,13 @@ class _ResultDetailState extends State<ResultDetail> {
                             style: TextStyle(
                                 fontSize: 14, fontFamily: 'monospace')),
                       ),
+                    SizedBox(height: 10),
+                    Row(children: [
+                      Spacer(),
+                      Text(
+                          'Tong diem: ${context.read<ResultDetailData>().totalPoint}/${context.read<ResultDetailData>().points.length}'),
+                      SizedBox(width: 10)
+                    ])
                   ],
                 );
               },
