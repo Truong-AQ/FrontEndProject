@@ -24,40 +24,44 @@ class Study extends StatefulWidget {
 class _StudyState extends State<Study> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            title: Html(data: widget.label ?? 'Học tập', style: {
-          'body': Style(
-              textAlign: TextAlign.center,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: FontSize(20.0))
-        })),
-        body: context.select((StudyData dt) => dt.process)
-            ? Loading()
-            : SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(height: 10),
-                    Selector<StudyData, int>(
-                      selector: (_, dt) => dt.items.length,
-                      builder: (context, length, __) {
-                        List<StudyItem> list =
-                            context.select((StudyData dt) => dt.items);
-                        return context.select((StudyData dt) => dt.childIsClass)
-                            ? Column(
+    return context.select((StudyData dt) => dt.childIsClass)
+        ? Scaffold(
+            appBar: AppBar(
+                title: Html(data: widget.label ?? 'Học tập', style: {
+              'body': Style(
+                  textAlign: TextAlign.center,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: FontSize(20.0))
+            })),
+            body: context.select((StudyData dt) => dt.process)
+                ? Loading()
+                : SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(height: 10),
+                        Selector<StudyData, int>(
+                          selector: (_, dt) => dt.items.length,
+                          builder: (context, length, __) {
+                            List<StudyItem> list =
+                                context.select((StudyData dt) => dt.items);
+                            return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                    for (int i = 0; i < list.length; i++)
-                                      _buildStudyItem(context, item: list[i]),
-                                  ])
-                            : ObjectStudy.withDependency(
-                                uri: list.map((e) => e.dataUri).toList());
-                      },
-                    )
-                  ],
-                ),
-              ));
+                                  for (int i = 0; i < list.length; i++)
+                                    _buildStudyItem(context, item: list[i]),
+                                ]);
+                          },
+                        )
+                      ],
+                    ),
+                  ))
+        : ObjectStudy.withDependency(
+            uri: context
+                .select((StudyData dt) => dt.items)
+                .map((e) => e.dataUri)
+                .toList(),
+            label: widget.label);
   }
 
   Widget _buildStudyItem(BuildContext context, {StudyItem item}) {

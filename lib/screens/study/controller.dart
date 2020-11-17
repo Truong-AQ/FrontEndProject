@@ -35,4 +35,9 @@ class StudyController extends StateNotifier<StudyData> {
       state.childIsClass = false;
     }
   }
+
+  void changeProcess(bool process) {
+    state.process = process;
+    state = state.copy();
+  }
 }

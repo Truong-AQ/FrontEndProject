@@ -36,13 +36,14 @@ class ObjectStudyController extends StateNotifier<ObjectStudyData> {
         .replaceAll('"apipAccessibility":""},', '"apipAccessibility":""}'));
     Map<String, dynamic> elements = jsonInfo['body']['elements'];
     ObjectStudyItem objectStudyItem = ObjectStudyItem();
+    String baseLink = link.replaceAll('index', '');
     for (var valElement in elements.values) {
       final img = valElement['attributes']['src'];
       if (img != null) {
-        objectStudyItem.urlImg = '$link${img.replaceAll('\\/', '/')}';
+        objectStudyItem.urlImg = '$baseLink${img.replaceAll('\\/', '/')}';
       } else {
         objectStudyItem.urlAudio =
-            '$link${valElement['object']['attributes']['data'].replaceAll('\\/', '/')}';
+            '$baseLink${valElement['object']['attributes']['data'].replaceAll('\\/', '/')}';
       }
     }
     objectStudyItem.label = jsonInfo['attributes']['label'];
