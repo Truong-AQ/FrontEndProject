@@ -43,7 +43,7 @@ class _ResultDetailState extends State<ResultDetail> {
                     Row(children: [
                       Spacer(),
                       Text(
-                          'Tong diem: ${context.read<ResultDetailData>().totalPoint}/${context.read<ResultDetailData>().points.length}'),
+                          'Tong diem: ${context.select((ResultDetailData dt) => dt.totalPoint)}/${context.select((ResultDetailData dt) => dt.points).length}'),
                       SizedBox(width: 10)
                     ])
                   ],
