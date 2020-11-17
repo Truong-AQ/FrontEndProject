@@ -87,7 +87,7 @@ class _StudyState extends State<Study> {
                 margin: EdgeInsets.only(bottom: 10),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5), color: Colors.grey),
-                child: Text('CHỦ ĐỀ CON',
+                child: Text('XEM',
                     style: TextStyle(color: Colors.white, fontSize: 12))),
           )
         ])
