@@ -10,7 +10,7 @@ class StudyController extends StateNotifier<StudyData> {
   Future<void> initStudy() async {
     state.process = true;
     state = state.copy();
-    await getStudy();
+    await getStudy(classUri: state.classUri);
     state.process = false;
     state = state.copy();
   }

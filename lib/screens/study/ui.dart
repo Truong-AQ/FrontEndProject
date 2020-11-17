@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/screens/object_study/ui.dart';
 import 'package:project/screens/study/controller.dart';
 import 'package:project/screens/study/data.dart';
+import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
 class Study extends StatefulWidget {
@@ -22,31 +25,39 @@ class _StudyState extends State<Study> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-            AppBar(title: Text(widget.label ?? 'Học tập'), centerTitle: true),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 10),
-              Selector<StudyData, int>(
-                selector: (_, dt) => dt.items.length,
-                builder: (context, length, __) {
-                  List<StudyItem> list =
-                      context.select((StudyData dt) => dt.items);
-                  return context.select((StudyData dt) => dt.childIsClass)
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                              for (int i = 0; i < list.length; i++)
-                                _buildStudyItem(context, item: list[i]),
-                            ])
-                      : ObjectStudy.withDependency(
-                          uri: list.map((e) => e.dataUri).toList());
-                },
-              )
-            ],
-          ),
-        ));
+        appBar: AppBar(
+            title: Html(data: widget.label ?? 'Học tập', style: {
+          'body': Style(
+              textAlign: TextAlign.center,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: FontSize(20.0))
+        })),
+        body: context.select((StudyData dt) => dt.process)
+            ? Loading()
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 10),
+                    Selector<StudyData, int>(
+                      selector: (_, dt) => dt.items.length,
+                      builder: (context, length, __) {
+                        List<StudyItem> list =
+                            context.select((StudyData dt) => dt.items);
+                        return context.select((StudyData dt) => dt.childIsClass)
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                    for (int i = 0; i < list.length; i++)
+                                      _buildStudyItem(context, item: list[i]),
+                                  ])
+                            : ObjectStudy.withDependency(
+                                uri: list.map((e) => e.dataUri).toList());
+                      },
+                    )
+                  ],
+                ),
+              ));
   }
 
   Widget _buildStudyItem(BuildContext context, {StudyItem item}) {
@@ -55,7 +66,7 @@ class _StudyState extends State<Study> {
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.all(10),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(item.label, style: TextStyle(fontFamily: 'monospace')),
+        Html(data: item.label, style: {"body": Style(fontFamily: 'monospace')}),
         SizedBox(height: 4),
         Row(children: [
           Spacer(),
