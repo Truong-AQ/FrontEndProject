@@ -38,7 +38,7 @@ class _ResultDetailState extends State<ResultDetail> {
                         margin: EdgeInsets.only(left: 10, top: 10),
                         padding: EdgeInsets.all(10),
                         child: Text(
-                            'Cau hoi thu ${i + 1} dat diem: ${list[i]}/1',
+                            'Câu hỏi thứ ${i + 1} đạt điểm: ${list[i]}/1',
                             style: TextStyle(
                                 fontSize: 14, fontFamily: 'monospace')),
                       ),
@@ -46,7 +46,7 @@ class _ResultDetailState extends State<ResultDetail> {
                     Row(children: [
                       Spacer(),
                       Text(
-                          'Tong diem: ${context.select((ResultDetailData dt) => dt.totalPoint)}/${context.select((ResultDetailData dt) => dt.points).length}',
+                          'Tổng điểm: ${context.select((ResultDetailData dt) => dt.totalPoint)}/${context.select((ResultDetailData dt) => dt.points).length}',
                           style:
                               TextStyle(fontSize: 16, fontFamily: 'monospace')),
                       SizedBox(width: 20)
