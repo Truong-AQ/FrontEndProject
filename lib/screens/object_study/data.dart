@@ -12,6 +12,6 @@ class ObjectStudyData {
 }
 
 class ObjectStudyItem {
-  String type, label, dataUri;
-  ObjectStudyItem({this.type, this.label, this.dataUri});
+  String urlAudio, label, urlImg;
+  ObjectStudyItem({this.urlAudio, this.label, this.urlImg});
 }

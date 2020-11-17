@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
 import 'controller.dart';
@@ -21,60 +22,67 @@ class ObjectStudy extends StatefulWidget {
 class _ObjectStudyState extends State<ObjectStudy> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar:
-            AppBar(title: Text(widget.label ?? 'Học tập'), centerTitle: true),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 10),
-              Selector<ObjectStudyData, int>(
-                selector: (_, dt) => dt.items.length,
-                builder: (context, length, __) {
-                  List<ObjectStudyItem> list =
-                      context.select((ObjectStudyData dt) => dt.items);
-                  return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        for (int i = 0; i < list.length; i++)
-                          _buildStudyItem(context, item: list[i]),
-                      ]);
-                },
-              )
-            ],
-          ),
-        ));
-  }
-
-  Widget _buildStudyItem(BuildContext context, {ObjectStudyItem item}) {
-    return Container(
-      decoration: BoxDecoration(color: Colors.blue.withAlpha(30)),
-      margin: EdgeInsets.all(10),
-      padding: EdgeInsets.all(10),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(item.label, style: TextStyle(fontFamily: 'monospace')),
-        SizedBox(height: 4),
-        Row(children: [
-          Spacer(),
-          GestureDetector(
-            onTap: () {
-            },
-            child: Container(
-                padding: EdgeInsets.all(7),
-                margin: EdgeInsets.only(bottom: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5), color: Colors.grey),
-                child: Text('XEM KẾT QUẢ',
-                    style: TextStyle(color: Colors.white, fontSize: 12))),
-          )
-        ])
-      ]),
-    );
+    return context.select((ObjectStudyData dt) => dt.process)
+        ? Loading()
+        : Container(
+            margin: EdgeInsets.all(14),
+            child: Selector<ObjectStudyData, int>(
+              selector: (_, dt) => dt.items.length,
+              builder: (context, length, _) {
+                List<ObjectStudyItem> list =
+                    context.select((ObjectStudyData dt) => dt.items);
+                return Table(
+                  children: [
+                    for (int i = 0; i < length; i++)
+                      if (i + 1 < length)
+                        TableRow(children: [
+                          _CellRow(item: list[i]),
+                          _CellRow(item: list[i + 1])
+                        ])
+                      else
+                        TableRow(
+                            children: [_CellRow(item: list[i]), Container()])
+                  ],
+                );
+              },
+            ),
+          );
   }
 
   @override
   void initState() {
     super.initState();
-    Provider.of<ObjectStudyController>(context, listen: false).initObjectStudy();
+    Provider.of<ObjectStudyController>(context, listen: false)
+        .initObjectStudy();
+  }
+}
+
+// ignore: must_be_immutable
+class _CellRow extends StatefulWidget {
+  _CellRow({this.item});
+  ObjectStudyItem item;
+  @override
+  __CellRowState createState() => __CellRowState();
+}
+
+class __CellRowState extends State<_CellRow> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 150, height: 150,
+      child: Image.network(widget.item.urlImg, fit: BoxFit.fill,
+          loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) {
+          return child;
+        }
+        return Center(
+          child: CircularProgressIndicator(
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                      loadingProgress.expectedTotalBytes
+                  : null),
+        );
+      }),
+    );
   }
 }

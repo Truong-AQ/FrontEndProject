@@ -32,7 +32,7 @@ class StudyController extends StateNotifier<StudyData> {
           dataUri: child['attributes']['data-uri']));
     }
     if (state.items.length > 0 && state.items[0].type != 'class') {
-      state.childIsClass = true;
+      state.childIsClass = false;
     }
   }
 }

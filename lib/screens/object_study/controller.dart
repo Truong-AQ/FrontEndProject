@@ -27,10 +27,25 @@ class ObjectStudyController extends StateNotifier<ObjectStudyData> {
     String link = htmlFindLink
         .substring(
             htmlFindLink.indexOf('previewUrl: "') + 'previewUrl: "'.length)
-        .replaceAll(RegExp(r'",(.|\s)*'), '');
+        .replaceAll(RegExp(r'",(.|\s)*'), '')
+        .replaceAll('\\/', '/');
     String htmlInfo = (await getInfoObjectItem(link: link)).body;
-    String jsonInfo = jsonDecode(htmlInfo.substring(
-        htmlInfo.indexOf('itemData: ') + 'itemData: '.length,
-        htmlInfo.indexOf(RegExp(r'",\s*variableElements'))));
+    final jsonInfo = jsonDecode(htmlInfo
+        .substring(htmlInfo.indexOf('itemData : ') + 'itemData : '.length,
+            htmlInfo.indexOf('variableElements'))
+        .replaceAll('"apipAccessibility":""},', '"apipAccessibility":""}'));
+    Map<String, dynamic> elements = jsonInfo['body']['elements'];
+    ObjectStudyItem objectStudyItem = ObjectStudyItem();
+    for (var valElement in elements.values) {
+      final img = valElement['attributes']['src'];
+      if (img != null) {
+        objectStudyItem.urlImg = '$link${img.replaceAll('\\/', '/')}';
+      } else {
+        objectStudyItem.urlAudio =
+            '$link${valElement['object']['attributes']['data'].replaceAll('\\/', '/')}';
+      }
+    }
+    objectStudyItem.label = jsonInfo['attributes']['label'];
+    return objectStudyItem;
   }
 }
