@@ -44,7 +44,9 @@ class OrderSentence extends StatelessWidget {
           height: 200,
           child: TransitionToImage(
               enableRefresh: true,
-              image: AdvancedNetworkImage(suggest.data, loadedCallback: () {
+              placeholder: Icon(Icons.refresh),
+              image: AdvancedNetworkImage(suggest.data, useDiskCache: true,
+                  loadedCallback: () {
                 Provider.of<OrderSentenceController>(context)
                     .updateTime(DateTime.now());
               }),

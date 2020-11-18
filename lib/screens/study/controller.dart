@@ -6,18 +6,22 @@ import 'package:state_notifier/state_notifier.dart';
 import 'data.dart';
 
 class StudyController extends StateNotifier<StudyData> {
-  StudyController({String classUri}) : super(StudyData(classUri: classUri));
+  StudyController({StudyItem item}) : super(StudyData(item: item));
   Future<void> initStudy() async {
     state.process = true;
     state = state.copy();
-    await getStudy(classUri: state.classUri);
+    await getStudy();
     state.process = false;
     state = state.copy();
   }
 
-  Future<void> getStudy({String classUri}) async {
+  Future<void> getStudy() async {
+    if (state.item.items == null) {
+      state.item.items = [];
+    } else
+      return;
     Map<String, dynamic> json =
-        jsonDecode((await api.getStudy(classUri: classUri)).body);
+        jsonDecode((await api.getStudy(classUri: state.item.dataUri)).body);
     var tree = json['tree'];
     List<dynamic> children;
     if (tree is List) {
@@ -26,13 +30,13 @@ class StudyController extends StateNotifier<StudyData> {
       children = tree['children'];
     }
     for (var child in children) {
-      state.items.add(StudyItem(
+      state.item.items.add(StudyItem(
           type: child['type'],
           label: child['data'],
           dataUri: child['attributes']['data-uri']));
     }
-    if (state.items.length > 0 && state.items[0].type != 'class') {
-      state.childIsClass = false;
+    if (state.item.items.length > 0 && state.item.items[0].type != 'class') {
+      state.item.childIsClass = false;
     }
   }
 

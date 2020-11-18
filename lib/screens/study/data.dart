@@ -1,18 +1,21 @@
 class StudyData {
-  StudyData({this.classUri});
-  bool process = false, childIsClass = true;
-  String classUri;
-  List<StudyItem> items = [];
+  StudyData({this.item}) {
+    if (item == null) {
+      item = StudyItem();
+    }
+  }
+  bool process = false;
+  StudyItem item;
   StudyData copy() {
-    final clone = StudyData(classUri: classUri);
+    final clone = StudyData(item: item);
     clone.process = process;
-    clone.items = items;
-    clone.childIsClass = childIsClass;
     return clone;
   }
 }
 
 class StudyItem {
   String type, label, dataUri;
-  StudyItem({this.type, this.label, this.dataUri});
+  bool childIsClass;
+  StudyItem({this.type, this.label, this.dataUri, this.childIsClass = true});
+  List<StudyItem> items;
 }

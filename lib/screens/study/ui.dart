@@ -10,10 +10,9 @@ import 'package:provider/provider.dart';
 class Study extends StatefulWidget {
   @override
   _StudyState createState() => _StudyState();
-  static Widget withDependency({String classUri, String label}) {
+  static Widget withDependency({String label, StudyItem item}) {
     return StateNotifierProvider<StudyController, StudyData>(
-        create: (_) => StudyController(classUri: classUri),
-        child: Study(label: label));
+        create: (_) => StudyController(item: item), child: Study(label: label));
   }
 
   const Study({this.label});
@@ -23,7 +22,7 @@ class Study extends StatefulWidget {
 class _StudyState extends State<Study> {
   @override
   Widget build(BuildContext context) {
-    return context.select((StudyData dt) => dt.childIsClass)
+    return context.select((StudyData dt) => dt.item.childIsClass)
         ? Scaffold(
             appBar: AppBar(
                 centerTitle: true,
@@ -35,10 +34,10 @@ class _StudyState extends State<Study> {
                       children: [
                         SizedBox(height: 10),
                         Selector<StudyData, int>(
-                          selector: (_, dt) => dt.items.length,
+                          selector: (_, dt) => dt.item.items.length,
                           builder: (context, length, __) {
                             List<StudyItem> list =
-                                context.select((StudyData dt) => dt.items);
+                                context.select((StudyData dt) => dt.item.items);
                             return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -52,7 +51,7 @@ class _StudyState extends State<Study> {
                   ))
         : ObjectStudy.withDependency(
             uri: context
-                .select((StudyData dt) => dt.items)
+                .select((StudyData dt) => dt.item.items)
                 .map((e) => e.dataUri)
                 .toList(),
             label: widget.label);
@@ -74,8 +73,8 @@ class _StudyState extends State<Study> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (_) => Study.withDependency(
-                          classUri: item.dataUri, label: item.label)));
+                      builder: (_) =>
+                          Study.withDependency(label: item.label, item: item)));
             },
             child: Container(
                 padding: EdgeInsets.all(7),

@@ -97,8 +97,9 @@ class _CellRow extends StatelessWidget {
         height: (MediaQuery.of(context).size.width - 38) / 2,
         child: TransitionToImage(
             enableRefresh: true,
-            image:
-                AdvancedNetworkImage(item.urlImg, header: {'Cookie': cookie}),
+            placeholder: Icon(Icons.refresh),
+            image: AdvancedNetworkImage(item.urlImg,
+                useDiskCache: true, header: {'Cookie': cookie}),
             fit: BoxFit.fill),
       ),
       back: Container(

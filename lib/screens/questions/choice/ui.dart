@@ -43,7 +43,9 @@ class Choice extends StatelessWidget {
           height: 200,
           child: TransitionToImage(
               enableRefresh: true,
-              image: AdvancedNetworkImage(suggest.data, loadedCallback: () {
+              placeholder: Icon(Icons.refresh),
+              image: AdvancedNetworkImage(suggest.data, useDiskCache: true,
+                  loadedCallback: () {
                 Provider.of<ChoiceController>(context)
                     .updateTime(DateTime.now());
               }),
@@ -118,8 +120,9 @@ class __CellRowState extends State<_CellRow> {
               child: answer.type == 'image'
                   ? TransitionToImage(
                       enableRefresh: true,
-                      image:
-                          AdvancedNetworkImage(answer.data, loadedCallback: () {
+                      placeholder: Icon(Icons.refresh),
+                      image: AdvancedNetworkImage(answer.data,
+                          useDiskCache: true, loadedCallback: () {
                         Provider.of<ChoiceController>(context)
                             .updateTime(DateTime.now());
                       }),
