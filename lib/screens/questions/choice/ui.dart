@@ -114,9 +114,8 @@ class __CellRowState extends State<_CellRow> {
                   color: answer.type == 'image'
                       ? Colors.transparent
                       : Colors.pink.withAlpha(30),
-                  border: choice
-                      ? Border.all(color: Colors.green, width: 3)
-                      : Border.all()),
+                  border:
+                      choice ? Border.all(color: Colors.green) : Border.all()),
               child: answer.type == 'image'
                   ? TransitionToImage(
                       enableRefresh: true,
