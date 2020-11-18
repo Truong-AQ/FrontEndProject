@@ -47,7 +47,7 @@ class OrderSentence extends StatelessWidget {
               placeholder: Icon(Icons.refresh),
               image: AdvancedNetworkImage(suggest.data, useDiskCache: true,
                   loadedCallback: () {
-                Provider.of<OrderSentenceController>(context)
+                Provider.of<OrderSentenceController>(context, listen: false)
                     .updateTime(DateTime.now());
               }),
               fit: BoxFit.fill));

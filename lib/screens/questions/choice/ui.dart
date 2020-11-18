@@ -46,7 +46,7 @@ class Choice extends StatelessWidget {
               placeholder: Icon(Icons.refresh),
               image: AdvancedNetworkImage(suggest.data, useDiskCache: true,
                   loadedCallback: () {
-                Provider.of<ChoiceController>(context)
+                Provider.of<ChoiceController>(context, listen: false)
                     .updateTime(DateTime.now());
               }),
               fit: BoxFit.fill));
@@ -123,7 +123,7 @@ class __CellRowState extends State<_CellRow> {
                       placeholder: Icon(Icons.refresh),
                       image: AdvancedNetworkImage(answer.data,
                           useDiskCache: true, loadedCallback: () {
-                        Provider.of<ChoiceController>(context)
+                        Provider.of<ChoiceController>(context, listen: false)
                             .updateTime(DateTime.now());
                       }),
                       fit: BoxFit.fill)

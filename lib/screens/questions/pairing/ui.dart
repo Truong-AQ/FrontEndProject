@@ -46,7 +46,7 @@ class Pairing extends StatelessWidget {
             placeholder: Icon(Icons.refresh),
             image: AdvancedNetworkImage(suggest.data, useDiskCache: true,
                 loadedCallback: () {
-              Provider.of<PairingController>(context)
+              Provider.of<PairingController>(context, listen: false)
                   .updateTime(DateTime.now());
             }),
             fit: BoxFit.fill),
@@ -103,7 +103,7 @@ class Pairing extends StatelessWidget {
                   placeholder: Icon(Icons.refresh),
                   image: AdvancedNetworkImage(answer.data, useDiskCache: true,
                       loadedCallback: () {
-                    Provider.of<PairingController>(context)
+                    Provider.of<PairingController>(context, listen: false)
                         .updateTime(DateTime.now());
                   }),
                   fit: BoxFit.fill))
@@ -165,7 +165,7 @@ class _CellPairing extends StatelessWidget {
                         useDiskCache: true,
                         height: 80,
                         width: 80, loadedCallback: () {
-                      Provider.of<PairingController>(context)
+                      Provider.of<PairingController>(context, listen: false)
                           .updateTime(DateTime.now());
                     }),
                     fit: BoxFit.fill,
