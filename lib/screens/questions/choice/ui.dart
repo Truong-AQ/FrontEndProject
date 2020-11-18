@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:project/screens/test/data.dart';
 import 'package:project/widgets/PlayAudio.dart';
 import 'package:provider/provider.dart';
@@ -40,24 +41,13 @@ class Choice extends StatelessWidget {
           margin: EdgeInsets.only(top: 50),
           width: 200,
           height: 200,
-          child: Image(
-            image: AdvancedNetworkImage(suggest.data),
-            fit: BoxFit.fill,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) {
+          child: TransitionToImage(
+              enableRefresh: true,
+              image: AdvancedNetworkImage(suggest.data, loadedCallback: () {
                 Provider.of<ChoiceController>(context)
                     .updateTime(DateTime.now());
-                return child;
-              }
-              return Center(
-                child: CircularProgressIndicator(
-                    value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes
-                        : null),
-              );
-            },
-          ));
+              }),
+              fit: BoxFit.fill));
     return Container();
   }
 
@@ -126,24 +116,14 @@ class __CellRowState extends State<_CellRow> {
                       ? Border.all(color: Colors.green, width: 3)
                       : Border.all()),
               child: answer.type == 'image'
-                  ? Image(
-                      image: AdvancedNetworkImage(answer.data),
-                      fit: BoxFit.fill,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) {
-                          Provider.of<ChoiceController>(context)
-                              .updateTime(DateTime.now());
-                          return child;
-                        }
-                        return Center(
-                          child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes
-                                  : null),
-                        );
-                      },
-                    )
+                  ? TransitionToImage(
+                      enableRefresh: true,
+                      image:
+                          AdvancedNetworkImage(answer.data, loadedCallback: () {
+                        Provider.of<ChoiceController>(context)
+                            .updateTime(DateTime.now());
+                      }),
+                      fit: BoxFit.fill)
                   : Container(
                       padding: EdgeInsets.all(10),
                       child: Text(answer.data,

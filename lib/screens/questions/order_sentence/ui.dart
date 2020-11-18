@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 import 'package:project/screens/questions/order_sentence/controller.dart';
@@ -41,24 +42,13 @@ class OrderSentence extends StatelessWidget {
       return Container(
           width: 200,
           height: 200,
-          child: Image(
-            image: AdvancedNetworkImage(suggest.data),
-            fit: BoxFit.fill,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) {
+          child: TransitionToImage(
+              enableRefresh: true,
+              image: AdvancedNetworkImage(suggest.data, loadedCallback: () {
                 Provider.of<OrderSentenceController>(context)
                     .updateTime(DateTime.now());
-                return child;
-              }
-              return Center(
-                child: CircularProgressIndicator(
-                    value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes
-                        : null),
-              );
-            },
-          ));
+              }),
+              fit: BoxFit.fill));
     return Container();
   }
 

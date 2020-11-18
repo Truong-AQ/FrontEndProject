@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 import 'package:project/screens/questions/pairing/controller.dart';
@@ -40,24 +41,13 @@ class Pairing extends StatelessWidget {
         margin: EdgeInsets.only(top: 50),
         width: 200,
         height: 200,
-        child: Image(
-          image: AdvancedNetworkImage(suggest.data),
-          fit: BoxFit.fill,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) {
+        child: TransitionToImage(
+            enableRefresh: true,
+            image: AdvancedNetworkImage(suggest.data, loadedCallback: () {
               Provider.of<PairingController>(context)
                   .updateTime(DateTime.now());
-              return child;
-            }
-            return Center(
-              child: CircularProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes
-                      : null),
-            );
-          },
-        ),
+            }),
+            fit: BoxFit.fill),
       );
     return Container();
   }
@@ -106,24 +96,13 @@ class Pairing extends StatelessWidget {
           ? Container(
               width: 80,
               height: 80,
-              child: Image(
-                image: AdvancedNetworkImage(answer.data),
-                fit: BoxFit.fill,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) {
+              child: TransitionToImage(
+                  enableRefresh: true,
+                  image: AdvancedNetworkImage(answer.data, loadedCallback: () {
                     Provider.of<PairingController>(context)
                         .updateTime(DateTime.now());
-                    return child;
-                  }
-                  return Center(
-                    child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes
-                            : null),
-                  );
-                },
-              ))
+                  }),
+                  fit: BoxFit.fill))
           : Container(
               decoration: BoxDecoration(
                   color: Colors.pink.withAlpha(45),
@@ -175,25 +154,15 @@ class _CellPairing extends StatelessWidget {
                 decoration: BoxDecoration(color: Colors.greenAccent))
             : (answer.type == 'image'
                 ? Container(
-                    child: Image(
-                      image: AdvancedNetworkImage(answer.data, height: 80, width: 80),
-                      fit: BoxFit.fill,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) {
-                          Provider.of<PairingController>(context)
-                              .updateTime(DateTime.now());
-                          return child;
-                        }
-                        return Center(
-                          child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes
-                                  : null),
-                        );
-                      },
-                    )
-                  )
+                    child: TransitionToImage(
+                    enableRefresh: true,
+                    image: AdvancedNetworkImage(answer.data,
+                        height: 80, width: 80, loadedCallback: () {
+                      Provider.of<PairingController>(context)
+                          .updateTime(DateTime.now());
+                    }),
+                    fit: BoxFit.fill,
+                  ))
                 : Container(
                     margin: EdgeInsets.all(12),
                     padding: EdgeInsets.all(20),
