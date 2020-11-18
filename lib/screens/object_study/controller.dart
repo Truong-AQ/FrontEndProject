@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:project/util/variable.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 import 'api.dart';
@@ -9,16 +10,23 @@ class ObjectStudyController extends StateNotifier<ObjectStudyData> {
   ObjectStudyController({List<String> listUri})
       : super(ObjectStudyData(listUri: listUri));
   Future<void> initObjectStudy() async {
-    state.process = true;
-    state = state.copy();
     await getObjectStudy();
-    state.process = false;
-    state = state.copy();
   }
 
-  Future<void> getObjectStudy({String classUri}) async {
-    for (var uri in state.listUri) {
-      state.items.add(await getOneObject(uri));
+  Future<void> getObjectStudy() async {
+    List<String> list = state.listUri;
+    for (int i = 0; i < list.length; i++) {
+      String objectStudyItemString = prefs.getString(list[i]);
+      if (objectStudyItemString == null) {
+        getOneObject(list[i]).then((value) {
+          state.items[i] = value;
+          prefs.setString(list[i], state.items[i].toString());
+          state = state.copy();
+        });
+      } else {
+        state.items[i] = ObjectStudyItem.getFromString(objectStudyItemString);
+        state = state.copy();
+      }
     }
   }
 

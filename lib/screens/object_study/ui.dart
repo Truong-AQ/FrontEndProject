@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/resources/strings.dart';
 import 'package:project/util/variable.dart';
-import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
 import 'controller.dart';
@@ -32,32 +31,41 @@ class _ObjectStudyState extends State<ObjectStudy> {
           title: Text(
             unescape.convert(widget.label),
           )),
-      body: context.select((ObjectStudyData dt) => dt.process)
-          ? Loading()
-          : SingleChildScrollView(
-              child: Container(
-                margin: EdgeInsets.all(14),
-                child: Selector<ObjectStudyData, int>(
-                  selector: (_, dt) => dt.items.length,
-                  builder: (context, length, _) {
-                    List<ObjectStudyItem> list =
-                        context.select((ObjectStudyData dt) => dt.items);
-                    return Column(
+      body: SingleChildScrollView(
+        child: Container(
+            margin: EdgeInsets.all(15),
+            child: Column(
+              children: [
+                for (int i = 0;
+                    i < context.select((ObjectStudyData dt) => dt.items.length);
+                    i += 2)
+                  Container(
+                    margin: EdgeInsets.only(bottom: 12),
+                    child: Row(
                       children: [
-                        for (int i = 0; i < length; i += 2)
-                          Row(
-                            children: [
-                              _CellRow(item: list[i]),
-                              Spacer(),
-                              if (i + 1 < length) _CellRow(item: list[i + 1])
-                            ],
-                          )
+                        Selector<ObjectStudyData, ObjectStudyItem>(
+                          selector: (_, dt) => dt.items[i],
+                          builder: (_, item, __) {
+                            return item == null
+                                ? Container()
+                                : _CellRow(item: item);
+                          },
+                        ),
+                        Spacer(),
+                        Selector<ObjectStudyData, ObjectStudyItem>(
+                          selector: (_, dt) => dt.items[i + 1],
+                          builder: (_, item, __) {
+                            return item == null
+                                ? Container()
+                                : _CellRow(item: item);
+                          },
+                        )
                       ],
-                    );
-                  },
-                ),
-              ),
-            ),
+                    ),
+                  )
+              ],
+            )),
+      ),
     );
   }
 

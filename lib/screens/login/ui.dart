@@ -48,7 +48,7 @@ class Login extends StatelessWidget {
           Container(
               margin: style1,
               child: TextFormField(
-                decoration: InputDecoration(hintText: 'Nhập Mật khẩu'),
+                decoration: InputDecoration(hintText: 'Nhập mật khẩu'),
                 obscureText: true,
                 onChanged: (password) {
                   context.read<LoginController>().setPassword(password);

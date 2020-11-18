@@ -1,6 +1,7 @@
 import 'package:project/resources/strings.dart';
 import 'package:project/screens/login/api.dart' as api;
 import 'package:project/screens/login/data.dart';
+import 'package:project/util/variable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:state_notifier/state_notifier.dart';
 
@@ -23,7 +24,7 @@ class LoginController extends StateNotifier<LoginData> {
     } else {
       cookie = response.headers['set-cookie'];
       cookie = cookie.substring(cookie.indexOf('tao_xS2lIq62'));
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs = await SharedPreferences.getInstance();
       prefs.setString('cookie', cookie);
       return '';
     }

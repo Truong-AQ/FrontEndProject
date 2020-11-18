@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/resources/app_context.dart';
-import 'package:project/resources/strings.dart';
 import 'package:project/screens/exercise/controller.dart';
 import 'package:project/screens/login/ui.dart';
 import 'package:project/screens/test/ui.dart';
 import 'package:project/util/variable.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'data.dart';
 
@@ -84,14 +82,11 @@ class Exercise extends StatelessWidget {
             )),
         GestureDetector(
           onTap: () async {
-            SharedPreferences pref = await SharedPreferences.getInstance();
-            cookie = '';
-            pref.setString('cookie', '');
+            prefs.setString('cookie', '');
             context.read<ExerciseController>().stopPolling();
             Navigator.pushReplacement(contextHome,
                 MaterialPageRoute(builder: (_) => Login.withDependency()));
-            contextHome = null;
-            commonDataQuestion = null;
+            freeVariable();
           },
           child: Container(
             padding: EdgeInsets.all(14),
