@@ -37,7 +37,10 @@ dependencies:
   visibility_detector: ^0.1.5
   assets_audio_player: ^2.0.12
   flip_card: ^0.4.4
+  flutter_advanced_networkimage: ^0.7.0
 
+dependency_overrides:
+  flutter_svg: 0.18.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

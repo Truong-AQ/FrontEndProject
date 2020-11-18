@@ -1,6 +1,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/resources/strings.dart';
 import 'package:project/util/variable.dart';
@@ -93,20 +94,22 @@ class _CellRow extends StatelessWidget {
         decoration: BoxDecoration(border: Border.all()),
         width: (MediaQuery.of(context).size.width - 38) / 2,
         height: (MediaQuery.of(context).size.width - 38) / 2,
-        child: Image.network(item.urlImg,
-            fit: BoxFit.fill, headers: {'Cookie': cookie},
-            loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) {
-            return child;
-          }
-          return Center(
-            child: CircularProgressIndicator(
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes
-                    : null),
-          );
-        }),
+        child: Image(
+          image: AdvancedNetworkImage(item.urlImg, header: {'Cookie': cookie}),
+          fit: BoxFit.fill,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) {
+              return child;
+            }
+            return Center(
+              child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes
+                      : null),
+            );
+          },
+        ),
       ),
       back: Container(
         decoration: BoxDecoration(

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 import 'package:project/screens/questions/order_sentence/controller.dart';
@@ -38,23 +39,26 @@ class OrderSentence extends StatelessWidget {
     if (suggest.type == 'audio') return PlayAudio(url: suggest.data);
     if (suggest.type == 'image')
       return Container(
-        width: 200,
-        height: 200,
-        child: Image.network(suggest.data, fit: BoxFit.fill,
+          width: 200,
+          height: 200,
+          child: Image(
+            image: AdvancedNetworkImage(suggest.data),
+            fit: BoxFit.fill,
             loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) {
-            context.read<OrderSentenceController>().updateTime(DateTime.now());
-            return child;
-          }
-          return Center(
-            child: CircularProgressIndicator(
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes
-                    : null),
-          );
-        }),
-      );
+              if (loadingProgress == null) {
+                Provider.of<OrderSentenceController>(context)
+                    .updateTime(DateTime.now());
+                return child;
+              }
+              return Center(
+                child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes
+                        : null),
+              );
+            },
+          ));
     return Container();
   }
 
