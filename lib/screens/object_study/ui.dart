@@ -1,10 +1,9 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/style.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/resources/strings.dart';
+import 'package:project/util/variable.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
@@ -29,13 +28,10 @@ class _ObjectStudyState extends State<ObjectStudy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Html(data: widget.label, style: {
-        'body': Style(
-            textAlign: TextAlign.center,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: FontSize(20.0))
-      })),
+          centerTitle: true,
+          title: Text(
+            unescape.convert(widget.label),
+          )),
       body: context.select((ObjectStudyData dt) => dt.process)
           ? Loading()
           : SingleChildScrollView(

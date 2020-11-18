@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/style.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/screens/object_study/ui.dart';
 import 'package:project/screens/study/controller.dart';
 import 'package:project/screens/study/data.dart';
+import 'package:project/util/variable.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
@@ -27,13 +26,8 @@ class _StudyState extends State<Study> {
     return context.select((StudyData dt) => dt.childIsClass)
         ? Scaffold(
             appBar: AppBar(
-                title: Html(data: widget.label ?? 'Học tập', style: {
-              'body': Style(
-                  textAlign: TextAlign.center,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: FontSize(20.0))
-            })),
+                centerTitle: true,
+                title: Text(unescape.convert(widget.label ?? 'Học tập'))),
             body: context.select((StudyData dt) => dt.process)
                 ? Loading()
                 : SingleChildScrollView(
@@ -70,7 +64,8 @@ class _StudyState extends State<Study> {
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.all(10),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Html(data: item.label, style: {"body": Style(fontFamily: 'monospace')}),
+        Text(unescape.convert(item.label),
+            style: TextStyle(fontFamily: 'monospace')),
         SizedBox(height: 4),
         Row(children: [
           Spacer(),

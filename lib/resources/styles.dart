@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/style.dart';
-
 import 'colors.dart';
 import 'dimens.dart';
 
@@ -18,6 +16,4 @@ final style5 = BoxDecoration(
     borderRadius: BorderRadius.circular(dimen3),
     color: color4,
     border: Border.all());
-final style6 = Style(
-    color: color2, fontWeight: FontWeight.bold, fontSize: FontSize(dimen6));
 final style7 = BoxDecoration(color: color4, border: Border.all());
