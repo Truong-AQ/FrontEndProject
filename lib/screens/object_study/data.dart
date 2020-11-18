@@ -9,9 +9,11 @@ class ObjectStudyData {
     }
   }
   List<String> listUri;
+  bool init = false;
   List<ObjectStudyItem> items;
   ObjectStudyData copy() {
     final clone = ObjectStudyData(listUri: listUri, items: items);
+    clone.init = init;
     return clone;
   }
 }

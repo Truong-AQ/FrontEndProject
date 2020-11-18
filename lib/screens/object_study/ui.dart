@@ -6,6 +6,7 @@ import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/resources/strings.dart';
 import 'package:project/util/variable.dart';
+import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
 import 'controller.dart';
@@ -33,41 +34,45 @@ class _ObjectStudyState extends State<ObjectStudy> {
           title: Text(
             unescape.convert(widget.label),
           )),
-      body: SingleChildScrollView(
-        child: Container(
-            margin: EdgeInsets.all(15),
-            child: Column(
-              children: [
-                for (int i = 0;
-                    i < context.select((ObjectStudyData dt) => dt.items.length);
-                    i += 2)
-                  Container(
-                    margin: EdgeInsets.only(bottom: 12),
-                    child: Row(
-                      children: [
-                        Selector<ObjectStudyData, ObjectStudyItem>(
-                          selector: (_, dt) => dt.items[i],
-                          builder: (_, item, __) {
-                            return item == null
-                                ? Container()
-                                : _CellRow(item: item);
-                          },
-                        ),
-                        Spacer(),
-                        Selector<ObjectStudyData, ObjectStudyItem>(
-                          selector: (_, dt) => dt.items[i + 1],
-                          builder: (_, item, __) {
-                            return item == null
-                                ? Container()
-                                : _CellRow(item: item);
-                          },
+      body: context.select((ObjectStudyData dt) => dt.init)
+          ? SingleChildScrollView(
+              child: Container(
+                  margin: EdgeInsets.all(15),
+                  child: Column(
+                    children: [
+                      for (int i = 0;
+                          i <
+                              context.select(
+                                  (ObjectStudyData dt) => dt.items.length);
+                          i += 2)
+                        Container(
+                          margin: EdgeInsets.only(bottom: 12),
+                          child: Row(
+                            children: [
+                              Selector<ObjectStudyData, ObjectStudyItem>(
+                                selector: (_, dt) => dt.items[i],
+                                builder: (_, item, __) {
+                                  return item == null
+                                      ? Container()
+                                      : _CellRow(item: item);
+                                },
+                              ),
+                              Spacer(),
+                              Selector<ObjectStudyData, ObjectStudyItem>(
+                                selector: (_, dt) => dt.items[i + 1],
+                                builder: (_, item, __) {
+                                  return item == null
+                                      ? Container()
+                                      : _CellRow(item: item);
+                                },
+                              )
+                            ],
+                          ),
                         )
-                      ],
-                    ),
-                  )
-              ],
-            )),
-      ),
+                    ],
+                  )),
+            )
+          : Loading(),
     );
   }
 

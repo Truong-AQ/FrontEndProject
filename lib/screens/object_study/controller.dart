@@ -15,7 +15,24 @@ class ObjectStudyController extends StateNotifier<ObjectStudyData> {
 
   Future<void> getObjectStudy() async {
     List<String> list = state.listUri;
-    for (int i = 0; i < list.length; i++) {
+    //load object 0
+    if (list.length > 0) {
+      String objectStudyItemString = prefs.getString(list[0]);
+      if (objectStudyItemString == null) {
+        getOneObject(list[0]).then((value) {
+          state.items[0] = value;
+          prefs.setString(list[0], state.items[0].toString());
+          state.init = true;
+          state = state.copy();
+        });
+      } else {
+        state.items[0] = ObjectStudyItem.getFromString(objectStudyItemString);
+        state.init = true;
+        state = state.copy();
+      }
+    }
+
+    for (int i = 1; i < list.length; i++) {
       String objectStudyItemString = prefs.getString(list[i]);
       if (objectStudyItemString == null) {
         getOneObject(list[i]).then((value) {
