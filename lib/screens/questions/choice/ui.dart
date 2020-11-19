@@ -71,11 +71,12 @@ class Choice extends StatelessWidget {
   Widget _buildAnswer(BuildContext context, List<AnswerChoice> answers) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 14),
-      child: Table(
+      child: Column(
         children: [
           for (int i = 0; i < answers.length; i += 2)
-            TableRow(children: [
+            Row(children: [
               _CellRow(answer: answers[i]),
+              Spacer(),
               _CellRow(answer: answers[i + 1])
             ]),
         ],
@@ -108,7 +109,11 @@ class __CellRowState extends State<_CellRow> {
           });
       },
       child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 7, vertical: 8),
+          margin: EdgeInsets.symmetric(vertical: 8),
+          width: (MediaQuery.of(context).size.width - 38) / 2,
+          height: answer.type == 'image'
+              ? (MediaQuery.of(context).size.width - 38) / 2
+              : 40,
           child: Container(
               decoration: BoxDecoration(
                   color: answer.type == 'image'

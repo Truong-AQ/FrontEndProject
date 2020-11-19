@@ -34,27 +34,24 @@ class Exercise extends StatelessWidget {
         } else if (visiblePercentage == 100.0)
           context.read<ExerciseController>().startPolling();
       },
-      child: Stack(
-        children: [
-          Scaffold(
-              drawer: _buildDrawer(context),
-              appBar: AppBar(
-                  title: Text('Bài kiểm tra của tôi'), centerTitle: true),
-              body: SingleChildScrollView(
-                child: Container(
-                    margin: EdgeInsets.only(top: 15, left: 12, right: 12),
-                    child: Column(children: [
-                      _buildExercise(),
-                    ])),
-              )),
-          Selector<ExerciseData, bool>(
+      child: Scaffold(
+          drawer: _buildDrawer(context),
+          appBar:
+              AppBar(title: Text('Bài kiểm tra của tôi'), centerTitle: true),
+          body: Selector<ExerciseData, bool>(
             selector: (_, dt) => dt.process,
             builder: (_, process, __) {
-              return process ? Loading() : Container();
+              return process
+                  ? Loading()
+                  : SingleChildScrollView(
+                      child: Container(
+                          margin: EdgeInsets.only(top: 15, left: 12, right: 12),
+                          child: Column(children: [
+                            _buildExercise(),
+                          ])),
+                    );
             },
-          )
-        ],
-      ),
+          )),
     );
   }
 
@@ -159,9 +156,9 @@ class Exercise extends StatelessWidget {
                   contextHome,
                   MaterialPageRoute(
                       builder: (_) => Test.withDependency(url: link)));
+              print('load again');
               context.read<ExerciseController>().stopPolling();
               await context.read<ExerciseController>().initTests();
-              context.read<ExerciseController>().startPolling();
             },
             child: Container(
                 padding: EdgeInsets.all(7),

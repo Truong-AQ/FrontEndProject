@@ -51,10 +51,17 @@ class Test extends StatelessWidget {
                     Selector<TestData, bool>(
                       selector: (_, dt) => dt.process,
                       builder: (_, process, __) {
+                        if (process) gifLoading.evict();
                         return process
-                            ? Expanded(
-                                child:
-                                    Center(child: CircularProgressIndicator()))
+                            ? Center(
+                                child: Column(children: [
+                                  Image(image: gifLoading),
+                                  SizedBox(height: 15),
+                                  Text('Dữ liệu đang được tải đừng nóng ...',
+                                      style:
+                                          TextStyle(fontFamily: 'monospace')),
+                                ]),
+                              )
                             : _buildQuestion(context);
                       },
                     )

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:project/resources/app_context.dart';
 import 'package:project/resources/strings.dart';
@@ -9,6 +10,7 @@ class CommonDataQuestion {
   DateTime timeStart;
   List<AnswerChoice> userAnswer = [];
 }
+
 SharedPreferences prefs;
 CommonDataQuestion commonDataQuestion;
 bool formatOther = false;
@@ -22,3 +24,5 @@ void freeVariable() {
   cookie = '';
   nameTestTaker = '';
 }
+
+AssetImage gifLoading = AssetImage('assets/images/loading.gif');
