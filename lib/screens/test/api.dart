@@ -7,7 +7,7 @@ import 'package:project/screens/test/data.dart';
 import 'package:project/util/variable.dart';
 
 Future<Map<String, String>> getBasicInfo({String url}) async {
-  final response = await http.get(url, headers: {'Cookie': cookie});
+  http.Response response = await _getBasicInfo(url: url);
   String htmlResponse = response.body;
   final document = parse(htmlResponse);
   final attributes = jsonDecode(
@@ -19,7 +19,16 @@ Future<Map<String, String>> getBasicInfo({String url}) async {
   return map;
 }
 
+Future<http.Response> _getBasicInfo({String url}) async {
+  final response = await http.get(url, headers: {'Cookie': cookie});
+  return response;
+}
+
 Future<http.Response> initTest({Map<String, String> queryParams}) async {
+  return _initTest(queryParams: queryParams);
+}
+
+Future<http.Response> _initTest({Map<String, String> queryParams}) async {
   final uri = Uri.http(baseUrl, '/taoQtiTest/Runner/init', queryParams);
   final http.Response response =
       await http.post(uri, headers: {'Cookie': cookie});
@@ -27,6 +36,11 @@ Future<http.Response> initTest({Map<String, String> queryParams}) async {
 }
 
 Future<http.Response> getItem(
+    {Map<String, String> queryParams, String idItem, String token}) async {
+  return _getItem(queryParams: queryParams, idItem: idItem, token: token);
+}
+
+Future<http.Response> _getItem(
     {Map<String, String> queryParams, String idItem, String token}) async {
   Map<String, String> requestQueryParams = {
     'testDefinition': queryParams['testDefinition'],
@@ -45,6 +59,22 @@ Future<http.Response> getItem(
 }
 
 Future<http.Response> moveItem(
+    {TypeQuestion typeQuestion,
+    Map<String, dynamic> listChoice,
+    Map<String, String> queryParams,
+    String idItem,
+    double timeDuration,
+    String token}) async {
+  return _moveItem(
+      typeQuestion: typeQuestion,
+      listChoice: listChoice,
+      queryParams: queryParams,
+      idItem: idItem,
+      timeDuration: timeDuration,
+      token: token);
+}
+
+Future<http.Response> _moveItem(
     {TypeQuestion typeQuestion,
     Map<String, dynamic> listChoice,
     Map<String, String> queryParams,

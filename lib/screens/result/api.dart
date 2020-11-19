@@ -2,6 +2,9 @@ import 'package:http/http.dart' as http;
 import 'package:project/resources/strings.dart';
 
 Future<http.Response> getResult({String classUri}) async {
+  return _getResult(classUri: classUri);
+}
+Future<http.Response> _getResult({String classUri}) async {
   final Map<String, String> queryParams = {
     'extension': 'taoOutcomeUi',
     'perspective': 'results',

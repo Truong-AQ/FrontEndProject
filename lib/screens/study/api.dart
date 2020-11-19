@@ -2,12 +2,15 @@ import 'package:http/http.dart' as http;
 import 'package:project/resources/strings.dart';
 
 Future<http.Response> getStudy({String classUri}) async {
+  return _getStudy(classUri: classUri);
+}
+Future<http.Response> _getStudy({String classUri}) async {
   final Map<String, String> queryParams = {
     'extension': 'taoItems',
     'perspective': 'items',
     'section': 'manage_items',
     'classUri':
-        classUri ?? 'http://aigle.blife.ai/Aigle.rdf#i160534465998506495',
+    classUri ?? 'http://aigle.blife.ai/Aigle.rdf#i160534465998506495',
     'hideInstances': '0',
     'filter': '*',
     'offset': '0',

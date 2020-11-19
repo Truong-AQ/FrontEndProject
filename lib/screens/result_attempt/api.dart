@@ -1,7 +1,11 @@
 import 'package:http/http.dart' as http;
 import 'package:project/resources/strings.dart';
 
-  Future<http.Response> getResultTime({String classUri}) async {
+Future<http.Response> getResultTime({String classUri}) async {
+  return _getResultTime(classUri: classUri);
+}
+
+Future<http.Response> _getResultTime({String classUri}) async {
   final Map<String, String> queryParams = {
     'rows': '25',
     'page': '1',
@@ -10,9 +14,9 @@ import 'package:project/resources/strings.dart';
     'sortorder': 'asc',
     'sorttype': 'string'
   };
-  final uri = Uri.http(baseUrl, '/taoOutcomeUi/Results/getResults', queryParams);
-  final http.Response response = await http.get(uri, headers: {
-    'Cookie': cookie
-  });
+  final uri =
+      Uri.http(baseUrl, '/taoOutcomeUi/Results/getResults', queryParams);
+  final http.Response response =
+      await http.get(uri, headers: {'Cookie': cookie});
   return response;
 }
