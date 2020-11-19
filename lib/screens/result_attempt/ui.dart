@@ -56,6 +56,7 @@ class ResultTestTime extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (_) => ResultDetail.withDependency(
                           id: rs.id,
+                          label: label,
                           classUri:
                               context.read<ResultTestTimeData>().dataUri)));
             },

@@ -8,9 +8,7 @@ class ExerciseData {
   ExerciseData copy() {
     ExerciseData exercise = ExerciseData();
     exercise.test = test;
-    testDone = [];
-    for (int i = 0; i < test.length; i++)
-      if (test[i].link == '#') testDone.add(test[i]);
+    testDone = test;
     exercise.process = process;
     exercise.name = name;
     exercise.polling = polling;

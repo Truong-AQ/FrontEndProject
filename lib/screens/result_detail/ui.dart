@@ -7,12 +7,14 @@ import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
 class ResultDetail extends StatefulWidget {
-  static Widget withDependency({String id, String classUri}) {
+  static Widget withDependency({String id, String classUri, String label}) {
     return StateNotifierProvider<ResultDetailController, ResultDetailData>(
         create: (_) => ResultDetailController(id, classUri),
-        child: ResultDetail());
+        child: ResultDetail(label: label));
   }
 
+  ResultDetail({this.label});
+  final String label;
   @override
   _ResultDetailState createState() => _ResultDetailState();
 }
@@ -21,7 +23,7 @@ class _ResultDetailState extends State<ResultDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(centerTitle: true, title: Text(widget.label)),
       body: context.select((ResultDetailData dt) => dt.init)
           ? Selector<ResultDetailData, int>(
               selector: (_, dt) => dt.points.length,
