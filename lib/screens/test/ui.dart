@@ -55,11 +55,13 @@ class Test extends StatelessWidget {
                         return process
                             ? Center(
                                 child: Column(children: [
+                                  Spacer(),
                                   Image(image: gifLoading),
                                   SizedBox(height: 15),
                                   Text('Dữ liệu đang được tải đừng nóng ...',
                                       style:
                                           TextStyle(fontFamily: 'monospace')),
+                                  Spacer()
                                 ]),
                               )
                             : _buildQuestion(context);
