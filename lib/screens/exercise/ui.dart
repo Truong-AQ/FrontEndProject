@@ -156,7 +156,6 @@ class Exercise extends StatelessWidget {
                   contextHome,
                   MaterialPageRoute(
                       builder: (_) => Test.withDependency(url: link)));
-              print('load again');
               context.read<ExerciseController>().stopPolling();
               await context.read<ExerciseController>().initTests();
             },
