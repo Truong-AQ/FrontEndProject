@@ -24,12 +24,11 @@ class _LoadingState extends State<Loading> {
       backgroundColor: widget.backgroundColor ?? color4.withAlpha(dimen11),
       body: Center(
         child: Column(children: [
-          Spacer(),
+          SizedBox(height: 80),
           Image(image: gifLoading),
           SizedBox(height: 15),
           Text('Dữ liệu đang được tải đừng nóng ...',
-              style: TextStyle(fontFamily: 'monospace')),
-          Spacer()
+              style: TextStyle(fontFamily: 'monospace'))
         ]),
       ),
     );
