@@ -5,6 +5,7 @@ import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/resources/strings.dart';
+import 'package:project/util/show_dialog_general.dart';
 import 'package:project/util/variable.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,7 @@ class ObjectStudy extends StatefulWidget {
 }
 
 class _ObjectStudyState extends State<ObjectStudy> {
+  GestureDetector _tabShowDialog;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +42,25 @@ class _ObjectStudyState extends State<ObjectStudy> {
                   margin: EdgeInsets.all(15),
                   child: Column(
                     children: [
+                      _tabShowDialog = GestureDetector(
+                          child: Container(),
+                          onTap: () {
+                            String error =
+                                context.read<ObjectStudyData>().error;
+                            showDialogOfApp(context,
+                                error: error,
+                                onRetry: () => context
+                                    .read<ObjectStudyController>()
+                                    .initObjectStudy());
+                          }),
+                      Selector<ObjectStudyData, int>(
+                        selector: (_, dt) => dt.numOfError,
+                        builder: (_, __, ___) {
+                          Future.delayed(Duration(milliseconds: 500))
+                              .then((_) => _tabShowDialog.onTap());
+                          return Container();
+                        },
+                      ),
                       for (int i = 0;
                           i <
                               context.select(
@@ -103,6 +124,7 @@ class _CellRow extends StatelessWidget {
         child: TransitionToImage(
             enableRefresh: true,
             placeholder: Icon(Icons.refresh),
+            loadingWidget: Image.asset('assets/images/sand_clock.png'),
             image: AdvancedNetworkImage(item.urlImg,
                 useDiskCache: true, header: {'Cookie': cookie}),
             fit: BoxFit.fill),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/screens/result_detail/controller.dart';
 import 'package:project/screens/result_detail/data.dart';
+import 'package:project/util/show_dialog_general.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +21,7 @@ class ResultDetail extends StatefulWidget {
 }
 
 class _ResultDetailState extends State<ResultDetail> {
+  GestureDetector _tabShowDialog;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +35,24 @@ class _ResultDetailState extends State<ResultDetail> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    _tabShowDialog = GestureDetector(
+                        child: Container(),
+                        onTap: () {
+                          String error = context.read<ResultDetailData>().error;
+                          showDialogOfApp(context,
+                              error: error,
+                              onRetry: () => context
+                                  .read<ResultDetailController>()
+                                  .init());
+                        }),
+                    Selector<ResultDetailData, int>(
+                      selector: (_, dt) => dt.numOfError,
+                      builder: (_, __, ___) {
+                        Future.delayed(Duration(milliseconds: 500))
+                            .then((_) => _tabShowDialog.onTap());
+                        return Container();
+                      },
+                    ),
                     SizedBox(height: 10),
                     for (int i = 0; i < length; i++)
                       Container(

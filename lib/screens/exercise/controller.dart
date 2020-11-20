@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:html/parser.dart';
 import 'package:project/resources/strings.dart';
 import 'package:project/screens/exercise/api.dart';
+import 'package:project/util/function/convert_response.dart';
+import 'package:project/util/variable.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 import 'data.dart';
@@ -11,43 +13,16 @@ class ExerciseController extends StateNotifier<ExerciseData> {
   ExerciseController() : super(ExerciseData());
 
   Future<void> initTests() async {
-    state.process = true;
-    state = state.copy();
-    while (true) {
-      try {
-        await _polling();
-        break;
-      } on Exception catch (_) {
-        await Future.delayed(Duration(seconds: 5));
-      }
-    }
-    state.process = false;
-    state = state.copy();
+    ExerciseData st = state;
+    _startProcess(st);
+    await _getData(st);
+    _doneProcess(st);
   }
 
-  void startPolling() async {
-    if (mounted) {
-      if (state.polling) return;
-      state.polling = true;
-      while (state.polling) {
-        try {
-          await _polling();
-          await Future.delayed(Duration(seconds: 5));
-          if (mounted) {
-            state = state.copy();
-          } else
-            break;
-        } on Exception catch (_) {}
-      }
-    }
-  }
-
-  void stopPolling() {
-    state.polling = false;
-  }
-
-  Future<void> _polling() async {
-    String htmlTests = (await getTests()).body;
+  Future<void> _getData(ExerciseData st) async {
+    final response = await getTests();
+    if (!checkResponseError(response, st)) return;
+    String htmlTests = response;
     final document = parse(htmlTests);
     String name = document.getElementsByClassName("text")[1].text;
     var entries = document.getElementsByClassName('entry-point-box plain');
@@ -91,10 +66,22 @@ class ExerciseController extends StateNotifier<ExerciseData> {
         }
       }
     }
-    if (mounted && !state.equalTest(test)) {
-      state.name = name;
+    if (!st.equalTest(test)) {
+      st.name = name;
       nameTestTaker = name;
-      state.test = test;
+      st.test = test;
+      if (mounted) state = st.copy();
     }
+  }
+
+  void _startProcess(ExerciseData st) {
+    st.process = true;
+    st.error = '';
+    if (mounted) state = st.copy();
+  }
+
+  void _doneProcess(ExerciseData st) {
+    st.process = false;
+    if (mounted) state = st.copy();
   }
 }

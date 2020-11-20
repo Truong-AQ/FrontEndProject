@@ -7,28 +7,31 @@ class OrderSentenceController extends StateNotifier<OrderSentenceData> {
       : super(OrderSentenceData(data: data));
 
   void updateTime(DateTime time) {
-    if (time.isAfter(state.timeStart)) {
-      state.timeStart = time;
+    OrderSentenceData st = state;
+    if (time.isAfter(st.timeStart)) {
+      st.timeStart = time;
     }
   }
 
   void addAnswer(int index) {
-    state.userAnswer[state.nWordsChoose] = state.answers[index];
-    state.nWordsChoose += 1;
-    state.answers[index] = null;
-    state = state.copy();
+    OrderSentenceData st = state;
+    st.userAnswer[st.nWordsChoose] = st.answers[index];
+    st.nWordsChoose += 1;
+    st.answers[index] = null;
+    if (mounted) state = st.copy();
   }
 
   void removeAnswer(int index) {
-    for (int i = 0; i < state.answers.length; i++) {
-      if (state.answers[i] == null) {
-        state.answers[i] = state.userAnswer[index];
-        state.userAnswer.removeAt(index);
-        state.userAnswer.add(null);
-        state.nWordsChoose -= 1;
+    OrderSentenceData st = state;
+    for (int i = 0; i < st.answers.length; i++) {
+      if (st.answers[i] == null) {
+        st.answers[i] = st.userAnswer[index];
+        st.userAnswer.removeAt(index);
+        st.userAnswer.add(null);
+        st.nWordsChoose -= 1;
         break;
       }
     }
-    state = state.copy();
+    if (mounted) state = st.copy();
   }
 }

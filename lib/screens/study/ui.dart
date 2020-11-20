@@ -3,7 +3,9 @@ import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/screens/object_study/ui.dart';
 import 'package:project/screens/study/controller.dart';
 import 'package:project/screens/study/data.dart';
+import 'package:project/util/show_dialog_general.dart';
 import 'package:project/util/variable.dart';
+import 'package:project/widgets/icon_refresh.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
@@ -20,11 +22,17 @@ class Study extends StatefulWidget {
 }
 
 class _StudyState extends State<Study> {
+  GestureDetector _tabShowDialog;
   @override
   Widget build(BuildContext context) {
     return context.select((StudyData dt) => dt.item.childIsClass)
         ? Scaffold(
             appBar: AppBar(
+                actions: [
+                  IconRefresh(
+                    onPress: () => context.read<StudyController>().initStudy(),
+                  )
+                ],
                 centerTitle: true,
                 title: Text(unescape.convert(widget.label ?? 'Học tập'))),
             body: context.select((StudyData dt) => dt.process)
@@ -32,6 +40,24 @@ class _StudyState extends State<Study> {
                 : SingleChildScrollView(
                     child: Column(
                       children: [
+                        _tabShowDialog = GestureDetector(
+                            child: Container(),
+                            onTap: () {
+                              String error = context.read<StudyData>().error;
+                              showDialogOfApp(context,
+                                  error: error,
+                                  onRetry: () => context
+                                      .read<StudyController>()
+                                      .initStudy());
+                            }),
+                        Selector<StudyData, int>(
+                          selector: (_, dt) => dt.numOfError,
+                          builder: (_, __, ___) {
+                            Future.delayed(Duration(milliseconds: 500))
+                                .then((_) => _tabShowDialog.onTap());
+                            return Container();
+                          },
+                        ),
                         SizedBox(height: 10),
                         Selector<StudyData, int>(
                           selector: (_, dt) => dt.item.items.length,

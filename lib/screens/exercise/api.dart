@@ -1,12 +1,17 @@
 import 'package:http/http.dart' as http;
 import 'package:project/resources/strings.dart';
+import 'package:project/util/function/convert_response.dart';
 
-Future<http.Response> getTests() async {
-  return _getTests();
+Future<dynamic> getTests() async {
+  try {
+    final http.Response response = await _getTests();
+    return convertResponse2(response);
+  } on Exception catch (e) {
+    return convertResponseException(e);
+  }
 }
+
 Future<http.Response> _getTests() async {
-  final response = await http.get(
-      'http://$baseUrl/taoDelivery/DeliveryServer/index',
+  return await http.get('http://$baseUrl/taoDelivery/DeliveryServer/index',
       headers: {'Cookie': cookie});
-  return response;
 }

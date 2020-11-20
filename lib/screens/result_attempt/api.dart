@@ -1,8 +1,14 @@
 import 'package:http/http.dart' as http;
 import 'package:project/resources/strings.dart';
+import 'package:project/util/function/convert_response.dart';
 
-Future<http.Response> getResultTime({String classUri}) async {
-  return _getResultTime(classUri: classUri);
+Future<dynamic> getResultTime({String classUri}) async {
+  try {
+    final http.Response response = await _getResultTime(classUri: classUri);
+    return convertResponse1(response);
+  } on Exception catch (e) {
+    return convertResponseException(e);
+  }
 }
 
 Future<http.Response> _getResultTime({String classUri}) async {

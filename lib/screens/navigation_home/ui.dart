@@ -58,6 +58,11 @@ class NavigationHome extends StatelessWidget {
           BottomNavigationBarItem(icon: Icon(Icons.label), label: 'Học tập')
         ],
         onTap: (tabIndex) {
+          if (tabIndex == 1 && _widgets[tabIndex] is Container) {
+            _widgets[1] = Result.withDependency();
+          } else if (tabIndex == 2 && _widgets[tabIndex] is Container) {
+            _widgets[2] = Study.withDependency();
+          }
           context.read<NavigationHomeController>().updateTabIndex(tabIndex);
         });
   }
@@ -66,7 +71,7 @@ class NavigationHome extends StatelessWidget {
       List.generate(3, (index) => GlobalKey());
   final List<Widget> _widgets = [
     Exercise.withDependency(),
-    Result.withDependency(),
-    Study.withDependency()
+    Container(),
+    Container(),
   ];
 }

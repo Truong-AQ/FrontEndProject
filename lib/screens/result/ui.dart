@@ -3,8 +3,10 @@ import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/screens/result/controller.dart';
 import 'package:project/screens/result/data.dart';
 import 'package:project/screens/result_attempt/ui.dart';
+import 'package:project/util/show_dialog_general.dart';
+import 'package:project/widgets/icon_refresh.dart';
+import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 class Result extends StatefulWidget {
   @override
@@ -16,44 +18,62 @@ class Result extends StatefulWidget {
 }
 
 class _ResultState extends State<Result> {
+  GestureDetector _tabShowDialog;
   @override
   Widget build(BuildContext context) {
-    return VisibilityDetector(
-      key: GlobalKey(),
-      onVisibilityChanged: (VisibilityInfo info) {
-        var visiblePercentage = info.visibleFraction * 100;
-
-        if (visiblePercentage == 0.0) {
-          try {
-            context.read<ResultController>().stopPolling();
-          } on Error catch (_) {}
-        } else if (visiblePercentage == 100.0)
-          context.read<ResultController>().startPolling();
-      },
-      child: Scaffold(
-          appBar: AppBar(title: Text('Kết quả của tôi'), centerTitle: true),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: 10),
-                Selector<ResultData, int>(
-                  selector: (_, dt) => dt.result.length,
-                  builder: (context, length, __) {
-                    List<ResultTest> list =
-                        context.select((ResultData dt) => dt.result);
-                    return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          for (int i = 0; i < list.length; i++)
-                            _buildResultItem(context,
-                                text: list[i].label, dataUri: list[i].dataUri),
-                        ]);
-                  },
-                )
-              ],
-            ),
-          )),
-    );
+    return Scaffold(
+        appBar: AppBar(
+            title: Text('Kết quả của tôi'),
+            centerTitle: true,
+            actions: [
+              IconRefresh(
+                  onPress: () => context.read<ResultController>().initResult())
+            ]),
+        body: Selector<ResultData, bool>(
+          selector: (_, dt) => dt.process,
+          builder: (_, process, __) {
+            if (process) return Loading();
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: 10),
+                  Selector<ResultData, int>(
+                    selector: (_, dt) => dt.result.length,
+                    builder: (context, length, __) {
+                      List<ResultTest> list =
+                          context.select((ResultData dt) => dt.result);
+                      return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            for (int i = 0; i < list.length; i++)
+                              _buildResultItem(context,
+                                  text: list[i].label,
+                                  dataUri: list[i].dataUri),
+                          ]);
+                    },
+                  ),
+                  _tabShowDialog = GestureDetector(
+                      child: Container(),
+                      onTap: () {
+                        String error = context.read<ResultData>().error;
+                        showDialogOfApp(context,
+                            error: error,
+                            onRetry: () =>
+                                context.read<ResultController>().initResult());
+                      }),
+                  Selector<ResultData, int>(
+                    selector: (_, dt) => dt.numOfError,
+                    builder: (_, __, ___) {
+                      Future.delayed(Duration(milliseconds: 500))
+                          .then((_) => _tabShowDialog.onTap());
+                      return Container();
+                    },
+                  )
+                ],
+              ),
+            );
+          },
+        ));
   }
 
   Widget _buildResultItem(BuildContext context, {String text, String dataUri}) {

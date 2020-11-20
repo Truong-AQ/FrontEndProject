@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-class ObjectStudyData {
+import 'package:project/resources/types.dart';
+
+class ObjectStudyData extends InfoError {
   ObjectStudyData({this.listUri, this.items = const []}) {
     var l = listUri.length;
     if (l % 2 == 1) l += 1;
@@ -14,6 +16,7 @@ class ObjectStudyData {
   ObjectStudyData copy() {
     final clone = ObjectStudyData(listUri: listUri, items: items);
     clone.init = init;
+    clone.setValue(error: error, numOfError: numOfError);
     return clone;
   }
 }

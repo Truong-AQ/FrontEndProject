@@ -1,4 +1,5 @@
 import 'package:project/resources/strings.dart';
+import 'package:project/resources/types.dart';
 import 'package:project/screens/login/api.dart' as api;
 import 'package:project/screens/login/data.dart';
 import 'package:project/util/variable.dart';
@@ -8,19 +9,18 @@ import 'package:state_notifier/state_notifier.dart';
 class LoginController extends StateNotifier<LoginData> {
   LoginController() : super(LoginData());
   Future<String> login() async {
-    state.process = true;
-    state = state.copy();
-    final response =
-        await api.login(login: state.name, password: state.password);
-    state.process = false;
-    state = state.copy();
+    LoginData st = state;
+    final response = await api.login(login: st.name, password: st.password);
+    if (response is AppError) {
+      return response.description;
+    }
     final htmlBody = response.body;
     if (htmlBody.indexOf("Invalid login or password. Please try again.") !=
         -1) {
-      return 'Sai tên đăng nhập hoặc mật khẩu';
+      return wrongLogin;
     } else if (htmlBody.indexOf("This field is required") != -1 ||
         htmlBody.indexOf('\'error\': ""') != -1) {
-      return 'Vui lòng điền đủ tên đăng nhập và mật khẩu';
+      return missLogin;
     } else {
       cookie = response.headers['set-cookie'];
       cookie = cookie.substring(cookie.indexOf('tao_xS2lIq62'));
@@ -30,11 +30,13 @@ class LoginController extends StateNotifier<LoginData> {
     }
   }
 
-  setName(String name) {
-    state.name = name;
+  void setName(String name) {
+    LoginData st = state;
+    st.name = name;
   }
 
-  setPassword(String password) {
-    state.password = password;
+  void setPassword(String password) {
+    LoginData st = state;
+    st.password = password;
   }
 }

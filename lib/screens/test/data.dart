@@ -1,10 +1,13 @@
-class TestData {
+import 'package:project/resources/types.dart';
+
+class TestData extends InfoError {
   String url, token = '';
-  int questionCurrent = 0;
+  int questionCurrent = 0, stepInit = 0;
   bool process = false, init = false;
   TypeQuestion typeQuestionCurrent;
   List<String> idQuestions = [];
   Map<String, dynamic> queryParams, dataQuestion;
+  UserAction action = InitLoad();
   TestData({this.url});
   TestData copy() {
     TestData clone = TestData(url: url);
@@ -17,6 +20,8 @@ class TestData {
     clone.questionCurrent = questionCurrent;
     clone.typeQuestionCurrent = typeQuestionCurrent;
     clone.init = init;
+    clone.action = action;
+    clone.setValue(error: error, numOfError: numOfError);
     return clone;
   }
 }

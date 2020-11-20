@@ -7,7 +7,7 @@ import 'package:project/resources/dimens.dart';
 import 'package:project/screens/questions/order_sentence/controller.dart';
 import 'package:project/screens/questions/order_sentence/data.dart';
 import 'package:project/screens/test/data.dart';
-import 'package:project/widgets/PlayAudio.dart';
+import 'package:project/widgets/play_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 
@@ -44,6 +44,7 @@ class OrderSentence extends StatelessWidget {
           height: 200,
           child: TransitionToImage(
               enableRefresh: true,
+              loadingWidget: Image.asset('assets/images/sand_clock.png'),
               placeholder: Icon(Icons.refresh),
               image: AdvancedNetworkImage(suggest.data, useDiskCache: true,
                   loadedCallback: () {
@@ -60,11 +61,11 @@ class OrderSentence extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 15),
       child: Container(
         margin: EdgeInsets.only(top: 35, bottom: 35),
-        padding: EdgeInsets.all(dimen12),
+        padding: EdgeInsets.all(dimen8),
         child: Text(label,
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: color2, fontWeight: FontWeight.bold, fontSize: 16)),
+                color: color1, fontWeight: FontWeight.bold, fontSize: 16)),
       ),
     );
   }
@@ -73,7 +74,7 @@ class OrderSentence extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: dimen3),
+      padding: EdgeInsets.symmetric(horizontal: dimen1),
       child: Consumer<OrderSentenceData>(builder: (_, dt, __) {
         return Wrap(
             alignment: WrapAlignment.center,
@@ -81,7 +82,7 @@ class OrderSentence extends StatelessWidget {
               for (int i = 0; i < dt.answers.length; i++)
                 _buildWord(context, dt.answers[i], i),
             ],
-            runSpacing: dimen6);
+            runSpacing: dimen4);
       }),
     );
   }
@@ -93,11 +94,11 @@ class OrderSentence extends StatelessWidget {
         context.read<OrderSentenceController>().addAnswer(index);
       },
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: dimen5),
-        width: dimen6 * answer.data.length,
+        margin: EdgeInsets.symmetric(horizontal: dimen3),
+        width: dimen4 * answer.data.length,
         child: Text(answer.data,
             style: TextStyle(
-                color: color2, fontSize: dimen12, fontWeight: FontWeight.bold),
+                color: color1, fontSize: dimen8, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center),
       ),
     );
@@ -108,25 +109,25 @@ class OrderSentence extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         alignment: Alignment.center,
         padding:
-            EdgeInsets.only(left: dimen3, right: dimen3, top: 45, bottom: 45),
+            EdgeInsets.only(left: dimen1, right: dimen1, top: 45, bottom: 45),
         child: Consumer<OrderSentenceData>(builder: (_, dt, __) {
           List<AnswerChoice> userAnswer = dt.userAnswer;
           return Wrap(children: [
             for (int i = 0; i < userAnswer.length; i++)
               _buildUserWord(context, i, userAnswer[i]),
-          ], runSpacing: dimen6, alignment: WrapAlignment.center);
+          ], runSpacing: dimen4, alignment: WrapAlignment.center);
         }));
   }
 
   Widget _buildUserWord(BuildContext context, int index, AnswerChoice answer) {
     return Container(
-        height: dimen8,
-        margin: EdgeInsets.symmetric(horizontal: dimen5),
-        padding: EdgeInsets.only(bottom: dimen18),
+        height: dimen5,
+        margin: EdgeInsets.symmetric(horizontal: dimen3),
+        padding: EdgeInsets.only(bottom: dimen11),
         alignment: Alignment.center,
-        width: answer == null ? dimen17 : answer.data.length * dimen6,
+        width: answer == null ? dimen10 : answer.data.length * dimen4,
         decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(width: dimen16)),
+          border: Border(bottom: BorderSide(width: dimen9)),
         ),
         child: answer == null
             ? Container()
@@ -136,7 +137,7 @@ class OrderSentence extends StatelessWidget {
                 },
                 child: Text(answer.data,
                     style: TextStyle(
-                        fontSize: dimen12, fontWeight: FontWeight.bold)),
+                        fontSize: dimen8, fontWeight: FontWeight.bold)),
               ));
   }
 }

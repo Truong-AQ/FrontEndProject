@@ -1,44 +1,114 @@
-import 'dart:convert';
-
+import 'package:project/resources/types.dart';
 import 'package:project/screens/test/api.dart';
 import 'package:project/screens/test/data.dart';
+import 'package:project/util/function/convert_response.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 class TestController extends StateNotifier<TestData> {
   TestController({String url}) : super(TestData(url: url));
   Future<void> initData() async {
-    state.queryParams = await getBasicInfo(url: state.url);
-    final responseInitTest = await initTest(queryParams: state.queryParams);
-    final jsonResponseInitTest = jsonDecode(responseInitTest.body);
-    _readIdQuestions(jsonResponseInitTest);
-    final responseItem = await getItem(
-        queryParams: state.queryParams,
-        idItem: state.idQuestions[state.questionCurrent],
-        token: state.token);
-    final jsonItem = jsonDecode(responseItem.body);
-    _readQuestion(jsonItem);
-    state.questionCurrent += 1;
-    state.init = true;
-    state = state.copy();
+    TestData st = state;
+    _startInit(st);
+    // call 3 http request tuan tu de khoi tao bai test
+    if (!await _getBasicInfo(st)) {
+      _doneInit(st);
+      return;
+    }
+    if (!await _initTest(st)) {
+      _doneInit(st);
+      return;
+    }
+    await _getItem(st);
+    _doneInit(st);
   }
 
-  void _readIdQuestions(Map<String, dynamic> json) {
-    state.token = json['token'];
-    state.questionCurrent = (json['testMap']['stats']['answered'] as int) - 1;
+  Future<bool> _getBasicInfo(TestData st) async {
+    if (st.stepInit != 0) return true;
+    final queryParams = await getBasicInfo(url: st.url);
+    if (!checkResponseError(queryParams, st)) return false;
+    st.queryParams = queryParams;
+    st.stepInit += 1;
+    return true;
+  }
+
+  Future<bool> _initTest(TestData st) async {
+    if (st.stepInit != 1) return true;
+    final json = await initTest(queryParams: st.queryParams);
+    if (!checkResponseError(json, st)) return false;
+    _readIdQuestions(st, json);
+    st.stepInit += 1;
+    return true;
+  }
+
+  Future<void> _getItem(TestData st) async {
+    final json = await getItem(
+        queryParams: st.queryParams,
+        idItem: st.idQuestions[st.questionCurrent],
+        token: st.token);
+    if (!checkResponseError(json, st)) {
+      _doneProcess(st);
+      return;
+    }
+    _readQuestion(st, json);
+    st.questionCurrent += 1;
+    st.stepInit += 1;
+    st.action = WaitQuestion();
+  }
+
+  Future<void> getNextItem() async {
+    TestData st = state;
+    _startProcess(st);
+    final json = await getItem(
+        queryParams: st.queryParams,
+        idItem: st.idQuestions[st.questionCurrent],
+        token: st.token);
+    if (!checkResponseError(json, st)) {
+      _doneProcess(st);
+      return;
+    }
+    _readQuestion(st, json);
+    st.questionCurrent += 1;
+    st.action = WaitQuestion();
+    _doneProcess(st);
+  }
+
+  Future<bool> moveItemForNextItem(
+      {Map<String, dynamic> listAnswer, double timeDuration}) async {
+    TestData st = state;
+    _startProcess(st);
+    final json = await moveItem(
+        typeQuestion: st.typeQuestionCurrent,
+        queryParams: st.queryParams,
+        listChoice: listAnswer,
+        timeDuration: timeDuration,
+        token: st.token,
+        idItem: st.idQuestions[st.questionCurrent - 1]);
+    if (!checkResponseError(json, st)) {
+      _doneProcess(st);
+      return false;
+    }
+    st.token = json['token'];
+    _doneProcess(st);
+    return true;
+  }
+
+  void _readIdQuestions(TestData st, Map<String, dynamic> json) {
+    st.token = json['token'];
+    st.questionCurrent = (json['testMap']['stats']['answered'] as int) - 1;
     Map<String, dynamic> jsonPart = json['testMap']['parts'];
     for (var part in jsonPart.values) {
       Map<String, dynamic> sections = part['sections'];
       for (var section in sections.values) {
         Map<String, dynamic> items = section['items'];
         for (var item in items.values) {
-          state.idQuestions.add(item['id']);
+          st.idQuestions.add(item['id']);
         }
       }
     }
   }
 
-  void _readQuestion(Map<String, dynamic> jsonItem) {
-    state.token = jsonItem['token'];
+  void _readQuestion(TestData st, Map<String, dynamic> jsonItem) {
+    st.token = jsonItem['token'];
     final String baseUrlAssets =
         (jsonItem['baseUrl'] as String).replaceAll("\/", "/");
     Map<String, dynamic> dataQuestion = {};
@@ -49,13 +119,13 @@ class TestController extends StateNotifier<TestData> {
     String type = element['qtiClass'];
     switch (type) {
       case 'associateInteraction':
-        state.typeQuestionCurrent = TypeQuestion.PAIRING;
+        st.typeQuestionCurrent = TypeQuestion.PAIRING;
         break;
       case 'orderInteraction':
-        state.typeQuestionCurrent = TypeQuestion.SORT;
+        st.typeQuestionCurrent = TypeQuestion.SORT;
         break;
       case 'choiceInteraction':
-        state.typeQuestionCurrent = TypeQuestion.ASSIGNING;
+        st.typeQuestionCurrent = TypeQuestion.ASSIGNING;
         break;
     }
     //load prompt
@@ -102,40 +172,37 @@ class TestController extends StateNotifier<TestData> {
             .add(AnswerChoice(id: id, data: bodyChoice['body'], type: 'text'));
       }
     }
-    if (state.typeQuestionCurrent == TypeQuestion.ASSIGNING) {
+    if (st.typeQuestionCurrent == TypeQuestion.ASSIGNING) {
       dataQuestion['maxChoice'] = element['attributes']['maxChoices'];
     }
     dataQuestion['answers'] = answers;
-    state.dataQuestion = dataQuestion;
+    st.dataQuestion = dataQuestion;
   }
 
-  Future<void> getNextItem() async {
-    state.process = true;
-    state = state.copy();
-    final responseItem = await getItem(
-        queryParams: state.queryParams,
-        idItem: state.idQuestions[state.questionCurrent],
-        token: state.token);
-    state.questionCurrent += 1;
-    final jsonItem = jsonDecode(responseItem.body);
-    _readQuestion(jsonItem);
-    state.process = false;
-    state = state.copy();
+  void updateUserAction(UserAction action) {
+    TestData st = state;
+    st.action = action;
   }
 
-  Future<void> moveItemForNextItem(
-      {Map<String, dynamic> listAnswer, double timeDuration}) async {
-    state.process = true;
-    state = state.copy();
-    final response = await moveItem(
-        typeQuestion: state.typeQuestionCurrent,
-        queryParams: state.queryParams,
-        listChoice: listAnswer,
-        timeDuration: timeDuration,
-        token: state.token,
-        idItem: state.idQuestions[state.questionCurrent - 1]);
-    state.token = jsonDecode(response.body)['token'];
-    state.process = false;
-    state = state.copy();
+  void _startInit(TestData st) {
+    st.error = '';
+    st.init = false;
+    if (mounted) state = st.copy();
+  }
+
+  void _doneInit(TestData st) {
+    st.init = true;
+    if (mounted) state = st.copy();
+  }
+
+  void _startProcess(TestData st) {
+    st.error = '';
+    st.process = true;
+    if (mounted) state = st.copy();
+  }
+
+  void _doneProcess(TestData st) {
+    st.process = false;
+    if (mounted) state = st.copy();
   }
 }

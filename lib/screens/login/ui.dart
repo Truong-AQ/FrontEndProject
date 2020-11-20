@@ -5,13 +5,16 @@ import 'package:project/resources/colors.dart';
 import 'package:project/resources/dimens.dart';
 import 'package:project/resources/styles.dart';
 import 'package:project/screens/navigation_home/ui.dart';
+import 'package:project/util/show_dialog_general.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:project/screens/login/controller.dart';
 import 'package:project/screens/login/data.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 
+// ignore: must_be_immutable
 class Login extends StatelessWidget {
+  GestureDetector _tabShowDialog;
   static withDependency() {
     return StateNotifierProvider<LoginController, LoginData>(
         create: (context) {
@@ -55,7 +58,7 @@ class Login extends StatelessWidget {
                 },
               )),
           SizedBox(height: 40),
-          GestureDetector(
+          _tabShowDialog = GestureDetector(
             onTap: () async {
               showDialog(context: context, builder: (_) => Loading());
               final error = await context.read<LoginController>().login();
@@ -68,26 +71,10 @@ class Login extends StatelessWidget {
                 contextLogin = null;
                 return;
               }
-              showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (_) {
-                    return CupertinoAlertDialog(
-                      title: Text(error,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: dimen9,
-                              color: color7,
-                              fontFamily: 'roboto')),
-                      actions: [
-                        TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text('OK'))
-                      ],
-                    );
-                  });
+              showDialogOfApp(context,
+                  error: error,
+                  onRetry: () => Future.delayed(Duration(milliseconds: 500))
+                      .then((_) => _tabShowDialog.onTap()));
             },
             child: Container(
               width: MediaQuery.of(context).size.width,
@@ -95,15 +82,15 @@ class Login extends StatelessWidget {
               margin: EdgeInsets.only(left: 60, right: 60),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15), color: color5),
+                  borderRadius: BorderRadius.circular(15), color: color3),
               child: Text('ĐĂNG NHẬP',
                   style: TextStyle(
-                      color: color4,
+                      color: color2,
                       fontFamily: 'monospace',
                       fontWeight: FontWeight.bold)),
             ),
           ),
-          SizedBox(height: dimen4)
+          SizedBox(height: dimen2)
         ],
       ),
     );

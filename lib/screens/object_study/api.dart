@@ -1,12 +1,25 @@
 import 'package:http/http.dart' as http;
 import 'package:project/resources/strings.dart';
+import 'package:project/util/function/convert_response.dart';
 
-Future<http.Response> getLink({String uri}) async {
-  return _getLink(uri: uri);
+Future<dynamic> getLink({String uri}) async {
+  try {
+    final http.Response response = await _getLink(uri: uri);
+    return response.body == '' ? getLink(uri: uri) : convertResponse5(response);
+  } on Exception catch (e) {
+    return convertResponseException(e);
+  }
 }
 
-Future<http.Response> getInfoObjectItem({String link}) async {
-  return _getInfoObjectItem(link: link);
+Future<dynamic> getInfoObjectItem({String link}) async {
+  try {
+    final http.Response response = await _getInfoObjectItem(link: link);
+    return response.body == ''
+        ? getInfoObjectItem(link: link)
+        : convertResponse6(response);
+  } on Exception catch (e) {
+    return convertResponseException(e);
+  }
 }
 
 Future<http.Response> _getLink({String uri}) async {

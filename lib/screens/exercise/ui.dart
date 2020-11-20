@@ -2,57 +2,69 @@ import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/resources/app_context.dart';
 import 'package:project/screens/exercise/controller.dart';
-import 'package:project/screens/login/ui.dart';
 import 'package:project/screens/test/ui.dart';
-import 'package:project/util/variable.dart';
+import 'package:project/util/function/logout.dart';
+import 'package:project/util/show_dialog_general.dart';
+import 'package:project/widgets/icon_refresh.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 import 'data.dart';
 
+// ignore: must_be_immutable
 class Exercise extends StatelessWidget {
+  GestureDetector _tabShowDialog;
   static Widget withDependency() {
     return StateNotifierProvider<ExerciseController, ExerciseData>(
-      create: (_) => ExerciseController()
-        ..initTests()
-        ..startPolling(),
+      create: (_) => ExerciseController()..initTests(),
       child: Exercise(),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return VisibilityDetector(
-      key: GlobalKey(),
-      onVisibilityChanged: (VisibilityInfo info) {
-        var visiblePercentage = info.visibleFraction * 100;
-
-        if (visiblePercentage == 0.0) {
-          try {
-            context.read<ExerciseController>().stopPolling();
-          } on Error catch (_) {}
-        } else if (visiblePercentage == 100.0)
-          context.read<ExerciseController>().startPolling();
-      },
-      child: Scaffold(
-          drawer: _buildDrawer(context),
-          appBar:
-              AppBar(title: Text('Bài kiểm tra của tôi'), centerTitle: true),
-          body: Selector<ExerciseData, bool>(
-            selector: (_, dt) => dt.process,
-            builder: (_, process, __) {
-              return process
-                  ? Loading()
-                  : SingleChildScrollView(
-                      child: Container(
-                          margin: EdgeInsets.only(top: 15, left: 12, right: 12),
-                          child: Column(children: [
-                            _buildExercise(),
-                          ])),
-                    );
-            },
-          )),
-    );
+    return Scaffold(
+        drawer: _buildDrawer(context),
+        appBar: AppBar(
+            title: Text('Bài kiểm tra của tôi'),
+            centerTitle: true,
+            actions: [
+              IconRefresh(onPress: () {
+                context.read<ExerciseController>().initTests();
+              })
+            ]),
+        body: Selector<ExerciseData, bool>(
+          selector: (_, dt) => dt.process,
+          builder: (_, process, __) {
+            return process
+                ? Loading()
+                : SingleChildScrollView(
+                    child: Container(
+                        margin: EdgeInsets.only(top: 15, left: 12, right: 12),
+                        child: Column(children: [
+                          _buildExercise(),
+                          _tabShowDialog = GestureDetector(
+                              child: Container(),
+                              onTap: () {
+                                String error =
+                                    context.read<ExerciseData>().error;
+                                showDialogOfApp(context,
+                                    error: error,
+                                    onRetry: () => context
+                                        .read<ExerciseController>()
+                                        .initTests());
+                              }),
+                          Selector<ExerciseData, int>(
+                            selector: (_, dt) => dt.numOfError,
+                            builder: (_, __, ___) {
+                              Future.delayed(Duration(milliseconds: 500))
+                                  .then((_) => _tabShowDialog.onTap());
+                              return Container();
+                            },
+                          )
+                        ])),
+                  );
+          },
+        ));
   }
 
   Widget _buildDrawer(BuildContext context) {
@@ -79,11 +91,7 @@ class Exercise extends StatelessWidget {
             )),
         GestureDetector(
           onTap: () async {
-            prefs.setString('cookie', '');
-            context.read<ExerciseController>().stopPolling();
-            Navigator.pushReplacement(contextHome,
-                MaterialPageRoute(builder: (_) => Login.withDependency()));
-            freeVariable();
+            logout();
           },
           child: Container(
             padding: EdgeInsets.all(14),
@@ -156,8 +164,7 @@ class Exercise extends StatelessWidget {
                   contextHome,
                   MaterialPageRoute(
                       builder: (_) => Test.withDependency(url: link)));
-              context.read<ExerciseController>().stopPolling();
-              await context.read<ExerciseController>().initTests();
+              context.read<ExerciseController>().initTests();
             },
             child: Container(
                 padding: EdgeInsets.all(7),

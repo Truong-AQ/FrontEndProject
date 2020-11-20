@@ -1,3 +1,4 @@
+import 'package:project/resources/types.dart';
 import 'package:project/screens/test/data.dart';
 import 'package:project/util/variable.dart';
 
@@ -50,8 +51,7 @@ class PairingData extends CommonDataQuestion {
     clone.label = label;
     clone.suggest = suggest;
     clone.answers = answers;
-    clone.userAnswer = userAnswer;
-    clone.timeStart = timeStart;
+    clone.setValue(timeStart: timeStart, userAnswer: userAnswer);
     clone.haveImg = haveImg;
     return clone;
   }

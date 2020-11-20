@@ -2,16 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:project/resources/types.dart';
 import 'package:project/screens/questions/choice/ui.dart';
 import 'package:project/screens/questions/order_sentence/ui.dart';
 import 'package:project/screens/questions/pairing/ui.dart';
 import 'package:project/screens/test/controller.dart';
 import 'package:project/screens/test/data.dart';
+import 'package:project/util/function/convert_answer.dart';
+import 'package:project/util/show_dialog_general.dart';
 import 'package:project/util/variable.dart';
-import 'package:project/util/convert_answer.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class Test extends StatelessWidget {
   static Widget withDependency({String url}) {
     return StateNotifierProvider<TestController, TestData>(
@@ -20,75 +23,106 @@ class Test extends StatelessWidget {
     );
   }
 
+  GestureDetector _tabShowDialog;
   @override
   Widget build(BuildContext context) {
     return !context.select((TestData dt) => dt.init)
         ? Loading(backgroundColor: Colors.white)
-        : Scaffold(body: LayoutBuilder(builder: (context, constraint) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraint.maxHeight),
-                child: IntrinsicHeight(
-                    child: Column(
-                  children: [
-                    SizedBox(height: MediaQuery.of(context).padding.top),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      child: Row(
-                        children: [
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // _TimeTest(time: 5),
-                                // SizedBox(height: 4),
-                                _QuestionCurrent()
-                              ]),
-                          Spacer(),
-                          _buildNextButton(context)
-                        ],
-                      ),
-                    ),
-                    Selector<TestData, bool>(
-                      selector: (_, dt) => dt.process,
-                      builder: (_, process, __) {
-                        if (process) gifLoading.evict();
-                        return process
-                            ? Center(
-                                child: Column(children: [
-                                  SizedBox(height: 80),
-                                  Image(image: gifLoading),
-                                  SizedBox(height: 15),
-                                  Text('Dữ liệu đang được tải đừng nóng ...',
-                                      style:
-                                          TextStyle(fontFamily: 'monospace'))
-                                ]),
-                              )
-                            : _buildQuestion(context);
-                      },
-                    )
-                  ],
-                )),
-              ),
-            );
-          }));
+        : Scaffold(
+            body: SingleChildScrollView(
+            child: Column(
+              children: [
+                _tabShowDialog = GestureDetector(
+                    child: Container(),
+                    onTap: () {
+                      String error = context.read<TestData>().error;
+                      UserAction action = context.read<TestData>().action;
+                      Function onRetry;
+                      if (action is InitLoad)
+                        onRetry =
+                            () => context.read<TestController>().initData();
+                      else if (action is GetNextQuestion)
+                        onRetry =
+                            () => context.read<TestController>().getNextItem();
+                      else if (action is SubmitQuestion) {
+                        Map<String, dynamic> data = action.data;
+                        onRetry = () => context
+                            .read<TestController>()
+                            .moveItemForNextItem(
+                                listAnswer: data['listAnswer'],
+                                timeDuration: data['timeDuration']);
+                      }
+                      showDialogOfApp(context, error: error, onRetry: onRetry);
+                    }),
+                Selector<TestData, int>(
+                  selector: (_, dt) => dt.numOfError,
+                  builder: (_, __, ___) {
+                    Future.delayed(Duration(milliseconds: 500))
+                        .then((_) => _tabShowDialog.onTap());
+                    return Container();
+                  },
+                ),
+                SizedBox(height: MediaQuery.of(context).padding.top),
+                Container(
+                  padding: EdgeInsets.all(15),
+                  child: Row(
+                    children: [
+                      _QuestionCurrent(),
+                      Spacer(),
+                      _buildNextButton(context)
+                    ],
+                  ),
+                ),
+                Selector<TestData, bool>(
+                  selector: (_, dt) => dt.process,
+                  builder: (_, process, __) {
+                    final error = context.read<TestData>().error;
+                    if (error != '') return Container();
+                    if (process) gifLoading.evict();
+                    return process
+                        ? Center(
+                            child: Column(children: [
+                              SizedBox(height: 80),
+                              Image(image: gifLoading),
+                              SizedBox(height: 15),
+                              Text('Dữ liệu đang được tải đừng nóng ...',
+                                  style: TextStyle(
+                                      fontFamily: 'monospace', fontSize: 16))
+                            ]),
+                          )
+                        : _buildQuestion(context);
+                  },
+                )
+              ],
+            ),
+          ));
   }
 
   Widget _buildNextButton(BuildContext context) {
     return GestureDetector(
       onTap: () async {
         if (!context.read<TestData>().process) {
-          await context.read<TestController>().moveItemForNextItem(
-              listAnswer: convertListAnswer(
-                  answer: commonDataQuestion.userAnswer,
-                  typeQuestion: context.read<TestData>().typeQuestionCurrent),
-              timeDuration: DateTime.now()
-                      .difference(commonDataQuestion.timeStart)
-                      .inMicroseconds /
-                  1000000);
+          final listAnswer = convertListAnswer(
+              answer: commonDataQuestion.userAnswer,
+              typeQuestion: context.read<TestData>().typeQuestionCurrent);
+          final timeDuration = DateTime.now()
+                  .difference(commonDataQuestion.timeStart)
+                  .inMicroseconds /
+              1000000;
+          context.read<TestController>().updateUserAction(SubmitQuestion()
+            ..addData('listAnswer', listAnswer)
+            ..addData('timeDuration', timeDuration));
+          bool moveQuestion = await context
+              .read<TestController>()
+              .moveItemForNextItem(
+                  listAnswer: listAnswer, timeDuration: timeDuration);
+
+          if (!moveQuestion) return;
           if (context.read<TestData>().idQuestions.length !=
-              context.read<TestData>().questionCurrent)
+              context.read<TestData>().questionCurrent) {
+            context.read<TestController>().updateUserAction(GetNextQuestion());
             await context.read<TestController>().getNextItem();
-          else {
+          } else {
             Navigator.pop(context);
           }
         }
@@ -140,64 +174,6 @@ class _TextNextOrEnd extends StatelessWidget {
             fontSize: 12,
             fontWeight: FontWeight.bold));
   }
-}
-
-// ignore: must_be_immutable
-class _TimeTest extends StatefulWidget {
-  _TimeTest({
-    Key key,
-    this.time,
-  }) : super(key: key);
-  int time;
-  Timer timer;
-  @override
-  __TimeTestState createState() => __TimeTestState();
-}
-
-class __TimeTestState extends State<_TimeTest> {
-  get time => widget.time;
-  void downTime() => widget.time -= 1;
-  get timer => widget.timer;
-  set timer(Timer timer) => widget.timer = timer;
-  @override
-  void initState() {
-    super.initState();
-    hour = time ~/ 3600;
-    minute = (time - hour * 3600) ~/ 60;
-    second = (time - hour * 3600 - minute * 60);
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-        downTime();
-        second--;
-        if (second == -1) {
-          second = 59;
-          minute--;
-          if (minute == -1) {
-            hour--;
-            minute = 59;
-            if (hour == -1) {
-              hour = minute = second = 0;
-              timer.cancel();
-            }
-          }
-        }
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Text('Thoi gian con lai: $hour:$minute:$second',
-        style: TextStyle(fontSize: 14, fontFamily: 'monospace'));
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    timer.cancel();
-  }
-
-  int hour, minute, second;
 }
 
 class _QuestionCurrent extends StatelessWidget {

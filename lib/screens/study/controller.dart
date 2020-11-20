@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:project/screens/study/api.dart' as api;
+import 'package:project/util/function/convert_response.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 import 'data.dart';
@@ -8,20 +7,21 @@ import 'data.dart';
 class StudyController extends StateNotifier<StudyData> {
   StudyController({StudyItem item}) : super(StudyData(item: item));
   Future<void> initStudy() async {
-    state.process = true;
-    state = state.copy();
-    await getStudy();
-    state.process = false;
-    state = state.copy();
+    StudyData st = state;
+    _startProcess(st);
+    await _getStudy(st);
+    _doneProcess(st);
   }
 
-  Future<void> getStudy() async {
-    if (state.item.items == null) {
-      state.item.items = [];
-    } else
+  Future<void> _getStudy(StudyData st) async {
+    if (st.item.items.length != 0) {
       return;
-    Map<String, dynamic> json =
-        jsonDecode((await api.getStudy(classUri: state.item.dataUri)).body);
+    }
+    final json = await api.getStudy(classUri: st.item.dataUri);
+    if (!checkResponseError(json, st)) {
+      st.item.items = [];
+      return;
+    }
     var tree = json['tree'];
     List<dynamic> children;
     if (tree is List) {
@@ -30,18 +30,24 @@ class StudyController extends StateNotifier<StudyData> {
       children = tree['children'];
     }
     for (var child in children) {
-      state.item.items.add(StudyItem(
+      st.item.items.add(StudyItem(
           type: child['type'],
           label: child['data'],
           dataUri: child['attributes']['data-uri']));
     }
-    if (state.item.items.length > 0 && state.item.items[0].type != 'class') {
-      state.item.childIsClass = false;
+    if (st.item.items.length > 0 && st.item.items[0].type != 'class') {
+      st.item.childIsClass = false;
     }
   }
 
-  void changeProcess(bool process) {
-    state.process = process;
-    state = state.copy();
+  void _startProcess(StudyData st) {
+    st.error = '';
+    st.process = true;
+    if (mounted) state = st.copy();
+  }
+
+  void _doneProcess(StudyData st) {
+    st.process = false;
+    if (mounted) state = st.copy();
   }
 }

@@ -1,8 +1,9 @@
+import 'package:project/resources/types.dart';
 import 'package:project/util/variable.dart';
 
-class ExerciseData {
+class ExerciseData extends InfoError {
   List<Exercise> test = [];
-  bool process = false, polling = false;
+  bool process = false;
   String name;
 
   ExerciseData copy() {
@@ -11,7 +12,7 @@ class ExerciseData {
     testDone = test;
     exercise.process = process;
     exercise.name = name;
-    exercise.polling = polling;
+    exercise.setValue(error: error, numOfError: numOfError);
     return exercise;
   }
 

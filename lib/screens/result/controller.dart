@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:project/screens/result/api.dart' as api;
+import 'package:project/util/function/convert_response.dart';
 import 'package:project/util/variable.dart';
 import 'package:state_notifier/state_notifier.dart';
 
@@ -9,34 +8,32 @@ import 'data.dart';
 class ResultController extends StateNotifier<ResultData> {
   ResultController() : super(ResultData());
   Future<void> initResult() async {
-    state.process = true;
-    state = state.copy();
-    await _polling();
-    state.process = false;
-    state = state.copy();
+    ResultData st = state;
+    _startProcess(st);
+    await _getData(st);
+    _doneProcess(st);
   }
 
-  Future<void> _polling() async {
-    List<ResultTest> listResultTest = [], listResultTestOfUser = [];
-    await getResult(listResultTest);
+  Future<void> _getData(ResultData st) async {
+    List<ResultTest> listResultTest = [];
+    bool got = await _getResult(listResultTest, st);
+    if (!got) return;
     //remove other test in result
+    st.result = [];
     for (int i = 0; i < testDone.length; i++) {
       for (int j = 0; j < listResultTest.length; j++)
         if (testDone[i].label == listResultTest[j].label) {
-          listResultTestOfUser.add(listResultTest[j]);
+          st.result.add(listResultTest[j]);
           break;
         }
     }
-    if (listResultTestOfUser.length != state.result.length) {
-      state.result = listResultTestOfUser;
-      state = state.copy();
-    }
   }
 
-  Future<void> getResult(List<ResultTest> listResultTest,
+  Future<bool> _getResult(List<ResultTest> listResultTest, ResultData st,
       {String classUri}) async {
-    Map<String, dynamic> json =
-        jsonDecode((await api.getResult(classUri: classUri)).body);
+    final json = await api.getResult(classUri: classUri);
+    if (!checkResponseError(json, st)) return false;
+
     var tree = json['tree'];
     List<dynamic> children;
     if (tree is List) {
@@ -47,8 +44,11 @@ class ResultController extends StateNotifier<ResultData> {
     for (var child in children) {
       String type = child['type'];
       if (type == 'class') {
-        await getResult(listResultTest,
+        final bool got = await _getResult(listResultTest, st,
             classUri: child['attributes']['data-uri']);
+        if (!got) {
+          return false;
+        }
       } else {
         listResultTest.add(ResultTest(
             type: type,
@@ -56,26 +56,17 @@ class ResultController extends StateNotifier<ResultData> {
             dataUri: child['attributes']['data-uri']));
       }
     }
+    return true;
   }
 
-  void startPolling() async {
-    if (mounted) {
-      if (state.polling) return;
-      state.polling = true;
-      while (state.polling) {
-        try {
-          await _polling();
-          await Future.delayed(Duration(seconds: 5));
-          if (mounted) {
-            state = state.copy();
-          } else
-            break;
-        } on Exception catch (_) {}
-      }
-    }
+  void _startProcess(ResultData st) {
+    st.error = '';
+    st.process = true;
+    if (mounted) state = st.copy();
   }
 
-  void stopPolling() {
-    state.polling = false;
+  void _doneProcess(ResultData st) {
+    st.process = false;
+    if (mounted) state = st.copy();
   }
 }

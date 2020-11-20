@@ -6,11 +6,12 @@ class ChoiceController extends StateNotifier<ChoiceData> {
   ChoiceController(Map<String, dynamic> data) : super(ChoiceData(data: data));
 
   bool addAnswer(AnswerChoice answer) {
-    if (state.userAnswer.contains(answer)) {
-      state.userAnswer.remove(answer);
+    ChoiceData st = state;
+    if (st.userAnswer.contains(answer)) {
+      st.userAnswer.remove(answer);
     } else {
-      if (state.userAnswer.length < state.maxChoice || state.maxChoice == 0)
-        state.userAnswer.add(answer);
+      if (st.userAnswer.length < st.maxChoice || st.maxChoice == 0)
+        st.userAnswer.add(answer);
       else
         return false;
     }
@@ -18,8 +19,9 @@ class ChoiceController extends StateNotifier<ChoiceData> {
   }
 
   void updateTime(DateTime time) {
-    if (time.isAfter(state.timeStart)) {
-      state.timeStart = time;
+    ChoiceData st = state;
+    if (time.isAfter(st.timeStart)) {
+      st.timeStart = time;
     }
   }
 }

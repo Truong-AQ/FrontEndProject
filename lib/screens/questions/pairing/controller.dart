@@ -6,33 +6,36 @@ class PairingController extends StateNotifier<PairingData> {
   PairingController(Map<String, dynamic> data) : super(PairingData(data: data));
 
   void updateTime(DateTime time) {
-    if (time.isAfter(state.timeStart)) {
-      state.timeStart = time;
+    PairingData st = state;
+    if (time.isAfter(st.timeStart)) {
+      st.timeStart = time;
     }
   }
 
   void addAnswer(int index) {
-    for (int i = 0; i < state.userAnswer.length; i++) {
-      if (state.userAnswer[i] == null) {
-        state.userAnswer[i] = state.answers[index];
-        state.answers[index] = null;
+    PairingData st = state;
+    for (int i = 0; i < st.userAnswer.length; i++) {
+      if (st.userAnswer[i] == null) {
+        st.userAnswer[i] = st.answers[index];
+        st.answers[index] = null;
         break;
       }
     }
-    state = state.copy();
+    if (mounted) state = st.copy();
   }
 
   void removeAnswer(int index) {
-    if (state.haveImg && state.userAnswer[index].type != 'image') {
+    PairingData st = state;
+    if (st.haveImg && st.userAnswer[index].type != 'image') {
       return;
     }
-    for (int i = 0; i < state.answers.length; i++) {
-      if (state.answers[i] == null) {
-        state.answers[i] = state.userAnswer[index];
-        state.userAnswer[index] = null;
+    for (int i = 0; i < st.answers.length; i++) {
+      if (st.answers[i] == null) {
+        st.answers[i] = st.userAnswer[index];
+        st.userAnswer[index] = null;
         break;
       }
     }
-    state = state.copy();
+    if (mounted) state = st.copy();
   }
 }

@@ -1,22 +1,57 @@
-import 'dart:convert';
-
-import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:project/resources/strings.dart';
 import 'package:project/screens/test/data.dart';
+import 'package:project/util/function/convert_response.dart';
 import 'package:project/util/variable.dart';
 
-Future<Map<String, String>> getBasicInfo({String url}) async {
-  http.Response response = await _getBasicInfo(url: url);
-  String htmlResponse = response.body;
-  final document = parse(htmlResponse);
-  final attributes = jsonDecode(
-      document.getElementsByTagName('script')[1].attributes['data-params']);
-  Map<String, String> map = {};
-  map['testDefinition'] = attributes['testDefinition'].replaceAll('\/', '/');
-  map['testCompilation'] = attributes['testCompilation'].replaceAll('\/', '/');
-  map['serviceCallId'] = attributes['serviceCallId'].replaceAll('\/', '/');
-  return map;
+Future<dynamic> getBasicInfo({String url}) async {
+  try {
+    final http.Response response = await _getBasicInfo(url: url);
+    return convertResponse4(response);
+  } on Exception catch (e) {
+    return convertResponseException(e);
+  }
+}
+
+Future<dynamic> initTest({Map<String, String> queryParams}) async {
+  try {
+    final http.Response response = await _initTest(queryParams: queryParams);
+    return convertResponse1(response);
+  } on Exception catch (e) {
+    return convertResponseException(e);
+  }
+}
+
+Future<dynamic> getItem(
+    {Map<String, String> queryParams, String idItem, String token}) async {
+  try {
+    final http.Response response =
+        await _getItem(queryParams: queryParams, idItem: idItem, token: token);
+    return convertResponse1(response);
+  } on Exception catch (e) {
+    return convertResponseException(e);
+  }
+}
+
+Future<dynamic> moveItem(
+    {TypeQuestion typeQuestion,
+    Map<String, dynamic> listChoice,
+    Map<String, String> queryParams,
+    String idItem,
+    double timeDuration,
+    String token}) async {
+  try {
+    final http.Response response = await _moveItem(
+        typeQuestion: typeQuestion,
+        listChoice: listChoice,
+        queryParams: queryParams,
+        idItem: idItem,
+        timeDuration: timeDuration,
+        token: token);
+    return convertResponse1(response);
+  } on Exception catch (e) {
+    return convertResponseException(e);
+  }
 }
 
 Future<http.Response> _getBasicInfo({String url}) async {
@@ -24,20 +59,11 @@ Future<http.Response> _getBasicInfo({String url}) async {
   return response;
 }
 
-Future<http.Response> initTest({Map<String, String> queryParams}) async {
-  return _initTest(queryParams: queryParams);
-}
-
 Future<http.Response> _initTest({Map<String, String> queryParams}) async {
   final uri = Uri.http(baseUrl, '/taoQtiTest/Runner/init', queryParams);
   final http.Response response =
       await http.post(uri, headers: {'Cookie': cookie});
   return response;
-}
-
-Future<http.Response> getItem(
-    {Map<String, String> queryParams, String idItem, String token}) async {
-  return _getItem(queryParams: queryParams, idItem: idItem, token: token);
 }
 
 Future<http.Response> _getItem(
@@ -56,22 +82,6 @@ Future<http.Response> _getItem(
     'X-Auth-Token': token
   });
   return response;
-}
-
-Future<http.Response> moveItem(
-    {TypeQuestion typeQuestion,
-    Map<String, dynamic> listChoice,
-    Map<String, String> queryParams,
-    String idItem,
-    double timeDuration,
-    String token}) async {
-  return _moveItem(
-      typeQuestion: typeQuestion,
-      listChoice: listChoice,
-      queryParams: queryParams,
-      idItem: idItem,
-      timeDuration: timeDuration,
-      token: token);
 }
 
 Future<http.Response> _moveItem(

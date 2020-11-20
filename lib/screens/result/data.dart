@@ -1,12 +1,13 @@
-class ResultData {
+import 'package:project/resources/types.dart';
+
+class ResultData extends InfoError {
   bool process = false;
   List<ResultTest> result = [];
-  bool polling = false;
   ResultData copy() {
     final clone = ResultData();
     clone.process = process;
     clone.result = result;
-    clone.polling = polling;
+    clone.setValue(error: error, numOfError: numOfError);
     return clone;
   }
 }
