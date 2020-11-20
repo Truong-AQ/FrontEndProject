@@ -97,8 +97,9 @@ class Pairing extends StatelessWidget {
       },
       child: answer.type == 'image'
           ? Container(
-              width: 80,
-              height: 80,
+              width: 100,
+              height: 100,
+              margin: EdgeInsets.symmetric(horizontal: 10),
               child: TransitionToImage(
                   enableRefresh: true,
                   placeholder: Icon(Icons.refresh),
@@ -161,23 +162,24 @@ class _CellPairing extends StatelessWidget {
                 decoration: BoxDecoration(color: Colors.greenAccent))
             : (answer.type == 'image'
                 ? Container(
+                    margin: EdgeInsets.only(right: 12, bottom: 12),
                     child: TransitionToImage(
-                    enableRefresh: true,
-                    loadingWidget: Image.asset(
-                      'assets/images/sand_clock.png',
-                      width: 64,
-                      height: 64,
-                    ),
-                    placeholder: Icon(Icons.refresh),
-                    image: AdvancedNetworkImage(answer.data,
-                        useDiskCache: true,
-                        height: 80,
-                        width: 80, loadedCallback: () {
-                      Provider.of<PairingController>(context, listen: false)
-                          .updateTime(DateTime.now());
-                    }),
-                    fit: BoxFit.fill,
-                  ))
+                      enableRefresh: true,
+                      loadingWidget: Image.asset(
+                        'assets/images/sand_clock.png',
+                        width: 64,
+                        height: 64,
+                      ),
+                      placeholder: Icon(Icons.refresh),
+                      image: AdvancedNetworkImage(answer.data,
+                          useDiskCache: true,
+                          width: 80,
+                          height: 80, loadedCallback: () {
+                        Provider.of<PairingController>(context, listen: false)
+                            .updateTime(DateTime.now());
+                      }),
+                      fit: BoxFit.fill,
+                    ))
                 : Container(
                     margin: EdgeInsets.all(12),
                     padding: EdgeInsets.all(20),
