@@ -8,8 +8,10 @@ import 'package:project/resources/types.dart';
 
 dynamic convertResponse1(http.Response response) {
   final json = jsonDecode(response.body);
-  if (json['message'] == cookieInvalid)
-    return AppError(description: cookieExpired);
+  if (json['message'] == cookieExpiredServer)
+    return AppError(description: cookieExpiredApp);
+  else if (json['message'] == errorRoleServer)
+    return AppError(description: errorRoleApp);
   else
     return json;
 }
@@ -17,7 +19,7 @@ dynamic convertResponse1(http.Response response) {
 dynamic convertResponse2(http.Response response) {
   final body = response.body;
   if (body == '' && response.headers.length == 12)
-    return AppError(description: cookieExpired);
+    return AppError(description: cookieExpiredApp);
   else if (body == '') return AppError(description: clientError);
   return body;
 }
@@ -26,10 +28,10 @@ dynamic convertResponse4(http.Response response) {
   String htmlResponse = response.body;
   final document = parse(htmlResponse);
   final script = document.getElementsByTagName('script');
-  if (script.length < 2) return AppError(description: cookieExpired);
+  if (script.length < 2) return AppError(description: cookieExpiredApp);
   final attributes = jsonDecode(script[1].attributes['data-params']);
   if (attributes == null) {
-    return AppError(description: cookieExpired);
+    return AppError(description: cookieExpiredApp);
   }
   Map<String, String> map = {};
   map['testDefinition'] = attributes['testDefinition'].replaceAll('\/', '/');
@@ -41,7 +43,7 @@ dynamic convertResponse4(http.Response response) {
 dynamic convertResponse5(http.Response response) {
   String htmlFindLink = response.body;
   int posDecision1 = htmlFindLink.indexOf('previewUrl');
-  if (posDecision1 == -1) return AppError(description: cookieExpired);
+  if (posDecision1 == -1) return AppError(description: cookieExpiredApp);
   while (htmlFindLink[posDecision1] != 'h') {
     posDecision1++;
   }
@@ -58,7 +60,7 @@ dynamic convertResponse5(http.Response response) {
 dynamic convertResponse6(http.Response response) {
   String htmlInfo = response.body;
   int posDecision1 = htmlInfo.indexOf('itemData');
-  if (posDecision1 == -1) return AppError(description: cookieExpired);
+  if (posDecision1 == -1) return AppError(description: cookieExpiredApp);
   int posDecision2 = htmlInfo.indexOf('apipAccessibility');
   while (htmlInfo[posDecision1] != '{') {
     posDecision1++;

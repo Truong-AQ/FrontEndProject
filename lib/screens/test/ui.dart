@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:project/resources/strings.dart';
 import 'package:project/resources/types.dart';
 import 'package:project/screens/questions/choice/ui.dart';
 import 'package:project/screens/questions/order_sentence/ui.dart';
