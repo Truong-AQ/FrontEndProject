@@ -5,7 +5,9 @@ import 'package:project/util/function/convert_response.dart';
 Future<dynamic> getLink({String uri}) async {
   try {
     final http.Response response = await _getLink(uri: uri);
-    return response.body == '' ? getLink(uri: uri) : convertResponse5(response);
+    return response.body == '' && response.headers.length != 12
+        ? getLink(uri: uri)
+        : convertResponse5(response);
   } on Exception catch (e) {
     return convertResponseException(e);
   }
@@ -14,7 +16,7 @@ Future<dynamic> getLink({String uri}) async {
 Future<dynamic> getInfoObjectItem({String link}) async {
   try {
     final http.Response response = await _getInfoObjectItem(link: link);
-    return response.body == ''
+    return response.body == '' && response.headers.length != 12
         ? getInfoObjectItem(link: link)
         : convertResponse6(response);
   } on Exception catch (e) {

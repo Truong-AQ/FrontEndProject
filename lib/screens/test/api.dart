@@ -16,7 +16,7 @@ Future<dynamic> getBasicInfo({String url}) async {
 Future<dynamic> initTest({Map<String, String> queryParams}) async {
   try {
     final http.Response response = await _initTest(queryParams: queryParams);
-    return convertResponse1(response);
+    return convertResponse2(response);
   } on Exception catch (e) {
     return convertResponseException(e);
   }

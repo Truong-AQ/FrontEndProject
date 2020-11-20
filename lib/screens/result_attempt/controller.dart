@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:project/resources/strings.dart';
 import 'package:project/screens/result_attempt/api.dart';
 import 'package:project/util/function/convert_response.dart';
@@ -13,12 +15,12 @@ class ResultTestTimeController extends StateNotifier<ResultTestTimeData> {
   void init({String dataUri}) {
     ResultTestTimeData st = state;
     _startInit(st);
-    getResultTime(classUri: dataUri ?? st.dataUri).then((json) {
-      if (!checkResponseError(json, st)) {
+    getResultTime(classUri: dataUri ?? st.dataUri).then((body) {
+      if (!checkResponseError(body, st)) {
         _doneInit(st);
         return;
       }
-      List<dynamic> listData = json['data'];
+      List<dynamic> listData = jsonDecode(body)['data'];
       for (var dt in listData) {
         if (dt['ttaker'] == nameTestTaker)
           st.list.add(ResultByTime(time: dt['time'], id: dt['id']));

@@ -25,8 +25,9 @@ dynamic convertResponse2(http.Response response) {
 dynamic convertResponse4(http.Response response) {
   String htmlResponse = response.body;
   final document = parse(htmlResponse);
-  final attributes = jsonDecode(
-      document.getElementsByTagName('script')[1].attributes['data-params']);
+  final script = document.getElementsByTagName('script');
+  if (script.length < 2) return AppError(description: cookieExpired);
+  final attributes = jsonDecode(script[1].attributes['data-params']);
   if (attributes == null) {
     return AppError(description: cookieExpired);
   }

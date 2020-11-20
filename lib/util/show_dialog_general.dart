@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:project/resources/strings.dart';
+import 'package:project/screens/test/ui.dart';
 import 'package:project/util/function/logout.dart';
 import 'package:project/widgets/show_error.dart';
 
-void showDialogOfApp(BuildContext context, {String error, Function onRetry}) {
+void showDialogOfApp(BuildContext context,
+    {String error, Function onRetry, Type typeWidgetCurrent}) {
   if (error == noNetwork)
     _showDialogNoNetwork(context, onRetry);
   else if (error == cookieExpired)
-    _showDialogLogout(context);
+    _showDialogLogout(context, typeWidgetCurrent);
   else if (error == wrongLogin || error == missLogin)
     _showDialogWarningAccount(context, error);
   else if (error == clientError) _showDialogClientError(context, onRetry);
@@ -45,13 +47,14 @@ void _showDialogWarningAccount(BuildContext context, String error) {
           ]));
 }
 
-void _showDialogLogout(BuildContext context) {
+void _showDialogLogout(BuildContext context, Type typeWidgetCurrent) {
   showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => ShowError(error: cookieExpired, actions: [
             TextButton(
                 onPressed: () {
+                  if (typeWidgetCurrent == Test) Navigator.pop(context);
                   Navigator.pop(context);
                   logout();
                 },

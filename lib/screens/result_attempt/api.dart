@@ -5,7 +5,7 @@ import 'package:project/util/function/convert_response.dart';
 Future<dynamic> getResultTime({String classUri}) async {
   try {
     final http.Response response = await _getResultTime(classUri: classUri);
-    return convertResponse1(response);
+    return convertResponse2(response);
   } on Exception catch (e) {
     return convertResponseException(e);
   }

@@ -22,8 +22,8 @@ class ObjectStudyController extends StateNotifier<ObjectStudyData> {
     for (int i = 0; i < list.length; i++) {
       String objectStudyItemString = prefs.getString(list[i]);
       if (objectStudyItemString == null) {
-        listRequests.add(CancelableOperation.fromFuture(
-            getOneObject(list[i], st)));
+        listRequests
+            .add(CancelableOperation.fromFuture(getOneObject(list[i], st)));
       } else {
         listRequests.add(null);
         st.items[i] = ObjectStudyItem.getFromString(objectStudyItemString);

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:project/resources/types.dart';
 import 'package:project/screens/test/api.dart';
 import 'package:project/screens/test/data.dart';
@@ -33,8 +35,9 @@ class TestController extends StateNotifier<TestData> {
 
   Future<bool> _initTest(TestData st) async {
     if (st.stepInit != 1) return true;
-    final json = await initTest(queryParams: st.queryParams);
-    if (!checkResponseError(json, st)) return false;
+    final body = await initTest(queryParams: st.queryParams);
+    if (!checkResponseError(body, st)) return false;
+    final json = jsonDecode(body);
     _readIdQuestions(st, json);
     st.stepInit += 1;
     return true;

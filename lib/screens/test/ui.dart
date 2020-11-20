@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:project/resources/strings.dart';
 import 'package:project/resources/types.dart';
 import 'package:project/screens/questions/choice/ui.dart';
 import 'package:project/screens/questions/order_sentence/ui.dart';
@@ -52,7 +53,10 @@ class Test extends StatelessWidget {
                                 listAnswer: data['listAnswer'],
                                 timeDuration: data['timeDuration']);
                       }
-                      showDialogOfApp(context, error: error, onRetry: onRetry);
+                      showDialogOfApp(context,
+                          error: error,
+                          onRetry: onRetry,
+                          typeWidgetCurrent: Test);
                     }),
                 Selector<TestData, int>(
                   selector: (_, dt) => dt.numOfError,
