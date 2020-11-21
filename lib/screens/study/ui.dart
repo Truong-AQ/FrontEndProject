@@ -120,22 +120,24 @@ class __StudyItemState extends State<_StudyItem> {
                   got = (await context
                       .read<StudyController>()
                       .getListStudyItem(item));
+                  if (level == 1) init = got;
                   Navigator.pop(context);
                 }
                 if (level == 1) {
-                  if (!init)
-                    setState(() {
-                      open = !open;
-                    });
+                  setState(() {
+                    open = !open;
+                  });
                 } else {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => ObjectStudy.withDependency(
-                              listUri: item.items
-                                  .map((item) => item.dataUri)
-                                  .toList(),
-                              label: item.label)));
+                  if (got) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => ObjectStudy.withDependency(
+                                listUri: item.items
+                                    .map((item) => item.dataUri)
+                                    .toList(),
+                                label: item.label)));
+                  }
                 }
               },
               child: Image.asset(level == 1
