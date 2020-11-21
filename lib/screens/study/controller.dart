@@ -35,12 +35,10 @@ class StudyController extends StateNotifier<StudyData> {
     } else {
       children = tree['children'];
     }
-    for (var child in children) {
-      list.add(StudyItemData(
-          type: child['type'],
-          label: child['data'],
-          dataUri: child['attributes']['data-uri']));
-    }
+    children.forEach((child) => list.add(StudyItemData(
+        type: child['type'],
+        label: child['data'],
+        dataUri: child['attributes']['data-uri'])));
   }
 
   void _startProcess(StudyData st) {
