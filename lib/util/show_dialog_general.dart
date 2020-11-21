@@ -4,32 +4,15 @@ import 'package:project/screens/test/ui.dart';
 import 'package:project/util/function/logout.dart';
 import 'package:project/widgets/show_error.dart';
 
-import '../resources/strings.dart';
-
 void showDialogOfApp(BuildContext context,
     {String error, Function onRetry, Type typeWidgetCurrent}) {
   if (error == noNetwork)
     _showDialogNoNetwork(context, onRetry);
   else if (error == cookieExpiredApp)
     _showDialogLogout(context, typeWidgetCurrent);
-  else if (error == wrongLogin || error == missLogin)
+  else if (error == wrongLogin || error == missLogin || error == errorRoleApp)
     _showDialogWarningAccount(context, error);
-  else if (error == clientError)
-    _showDialogClientError(context, onRetry);
-  else if (error == errorRoleApp) _showDialogRoleError(context, error);
-}
-
-void _showDialogRoleError(BuildContext context, String error) {
-  showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => ShowError(error: error, actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'))
-          ]));
+  else if (error == clientError) _showDialogClientError(context, onRetry);
 }
 
 void _showDialogClientError(BuildContext context, Function onRetry) {

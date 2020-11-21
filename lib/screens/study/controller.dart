@@ -50,4 +50,10 @@ class StudyController extends StateNotifier<StudyData> {
     st.process = false;
     if (mounted) state = st.copy();
   }
+
+  void refreshStudy() async {
+    StudyData st = state;
+    st.item.items = [];
+    initStudy();
+  }
 }

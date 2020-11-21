@@ -7,6 +7,7 @@ import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/resources/strings.dart';
 import 'package:project/util/show_dialog_general.dart';
 import 'package:project/util/variable.dart';
+import 'package:project/widgets/icon_refresh.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
@@ -32,6 +33,12 @@ class _ObjectStudyState extends State<ObjectStudy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          actions: [
+            IconRefresh(
+              onPress: () =>
+                  context.read<ObjectStudyController>().refreshObjectStudy(),
+            )
+          ],
           centerTitle: true,
           title: Text(
             unescape.convert(widget.label),

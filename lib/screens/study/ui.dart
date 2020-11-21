@@ -30,7 +30,7 @@ class _StudyState extends State<Study> {
             appBar: AppBar(
                 actions: [
                   IconRefresh(
-                    onPress: () => context.read<StudyController>().initStudy(),
+                    onPress: () => context.read<StudyController>().refreshStudy(),
                   )
                 ],
                 centerTitle: true,

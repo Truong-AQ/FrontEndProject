@@ -13,7 +13,7 @@ class ObjectStudyController extends StateNotifier<ObjectStudyData> {
     await getObjectStudy();
   }
 
-  Future<void> getObjectStudy() async {
+  Future<void> getObjectStudy({bool useDataLocal = true}) async {
     ObjectStudyData st = state;
     _startInit(st);
     List<String> list = st.listUri;
@@ -21,7 +21,7 @@ class ObjectStudyController extends StateNotifier<ObjectStudyData> {
     List<CancelableOperation> listRequests = [];
     for (int i = 0; i < list.length; i++) {
       String objectStudyItemString = prefs.getString(list[i]);
-      if (objectStudyItemString == null) {
+      if (objectStudyItemString == null || !useDataLocal) {
         listRequests
             .add(CancelableOperation.fromFuture(getOneObject(list[i], st)));
       } else {
@@ -91,5 +91,10 @@ class ObjectStudyController extends StateNotifier<ObjectStudyData> {
   void _doneInit(ObjectStudyData st) {
     st.init = true;
     if (mounted) state = st.copy();
+  }
+
+  void refreshObjectStudy() async {
+    await prefs.clear();
+    getObjectStudy(useDataLocal: false);
   }
 }
