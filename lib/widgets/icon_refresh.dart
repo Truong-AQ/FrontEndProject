@@ -5,6 +5,8 @@ class IconRefresh extends StatelessWidget {
   final Function onPress;
   @override
   Widget build(BuildContext context) {
-    return IconButton(icon: Icon(Icons.refresh), onPressed: onPress);
+    return IconButton(
+        icon: Icon(Icons.refresh, color: Colors.transparent),
+        onPressed: onPress);
   }
 }
