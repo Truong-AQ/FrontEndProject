@@ -111,17 +111,15 @@ class __StudyItemState extends State<_StudyItem> {
             Spacer(),
             GestureDetector(
               onTap: () async {
-                List<String> listUri;
+                bool got = false;
                 if (level == 2 || (level == 1 && !init)) {
                   showDialog(
                       useRootNavigator: false,
                       context: context,
                       builder: (_) => Loading());
-                  listUri = (await context
-                          .read<StudyController>()
-                          .getListStudyItem(item))
-                      .map((e) => e.dataUri)
-                      .toList();
+                  got = (await context
+                      .read<StudyController>()
+                      .getListStudyItem(item));
                   Navigator.pop(context);
                 }
                 if (level == 1) {
@@ -134,7 +132,10 @@ class __StudyItemState extends State<_StudyItem> {
                       context,
                       MaterialPageRoute(
                           builder: (_) => ObjectStudy.withDependency(
-                              listUri: listUri, label: item.label)));
+                              listUri: item.items
+                                  .map((item) => item.dataUri)
+                                  .toList(),
+                              label: item.label)));
                 }
               },
               child: Image.asset(level == 1

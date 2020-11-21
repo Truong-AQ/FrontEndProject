@@ -13,17 +13,16 @@ class StudyController extends StateNotifier<StudyData> {
     _doneProcess(st);
   }
 
-  Future<List<StudyItemData>> getListStudyItem(StudyItemData item,
-      {StudyData st}) async {
+  Future<bool> getListStudyItem(StudyItemData item, {StudyData st}) async {
     if (st == null) st = state;
     if (item.items.length == 0) {
       final json = await api.getStudy(classUri: item.dataUri);
       if (!checkResponseError(json, st)) {
-        return [];
+        return false;
       }
       _readStudyItemDataFromJson(json, item.items);
     }
-    return item.items;
+    return true;
   }
 
   _readStudyItemDataFromJson(
