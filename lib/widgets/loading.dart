@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project/resources/colors.dart';
-import 'package:project/resources/dimens.dart';
 import 'package:project/util/variable.dart';
 
 class Loading extends StatefulWidget {
@@ -20,7 +18,7 @@ class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: widget.backgroundColor ?? color2.withAlpha(dimen7),
+      backgroundColor: widget.backgroundColor ?? Colors.white.withAlpha(60),
       body: Center(
         child: Column(children: [
           SizedBox(height: 80),

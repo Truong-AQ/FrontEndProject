@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
-import 'package:project/resources/colors.dart';
-import 'package:project/resources/dimens.dart';
+import 'package:project/resources/strings.dart';
 import 'package:project/screens/questions/pairing/controller.dart';
 import 'package:project/screens/questions/pairing/data.dart';
 import 'package:project/screens/test/data.dart';
@@ -42,7 +41,7 @@ class Pairing extends StatelessWidget {
         width: 200,
         height: 200,
         child: TransitionToImage(
-            loadingWidget: Image.asset('assets/images/sand_clock.png'),
+            loadingWidget: Image.asset(urlIconLoadingImage),
             enableRefresh: true,
             placeholder: Icon(Icons.refresh),
             image: AdvancedNetworkImage(suggest.data, useDiskCache: true,
@@ -61,11 +60,11 @@ class Pairing extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 15),
       child: Container(
         margin: EdgeInsets.only(top: 20, bottom: 20),
-        padding: EdgeInsets.all(dimen8),
+        padding: EdgeInsets.all(18.0),
         child: Text(label,
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: color1, fontWeight: FontWeight.bold, fontSize: 16)),
+                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)),
       ),
     );
   }
@@ -75,7 +74,7 @@ class Pairing extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         alignment: Alignment.center,
         margin: EdgeInsets.only(top: 30),
-        padding: EdgeInsets.symmetric(horizontal: dimen1),
+        padding: EdgeInsets.symmetric(horizontal: 12.0),
         child: Consumer<PairingData>(
           builder: (_, dt, __) {
             return Wrap(
@@ -103,8 +102,8 @@ class Pairing extends StatelessWidget {
               child: TransitionToImage(
                   enableRefresh: true,
                   placeholder: Icon(Icons.refresh),
-                  loadingWidget: Image.asset('assets/images/sand_clock.png',
-                      width: 64, height: 64),
+                  loadingWidget:
+                      Image.asset(urlIconLoadingImage, width: 64, height: 64),
                   image: AdvancedNetworkImage(answer.data, useDiskCache: true,
                       loadedCallback: () {
                     Provider.of<PairingController>(context, listen: false)
@@ -115,11 +114,11 @@ class Pairing extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Colors.pink.withAlpha(45),
                   borderRadius: BorderRadius.circular(10)),
-              margin: EdgeInsets.symmetric(horizontal: dimen3),
+              margin: EdgeInsets.symmetric(horizontal: 9.0),
               padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
               child: Text(answer.data,
                   style: TextStyle(
-                      color: color1, fontSize: 17, fontWeight: FontWeight.bold),
+                      color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center),
             ),
     );
@@ -166,7 +165,7 @@ class _CellPairing extends StatelessWidget {
                     child: TransitionToImage(
                       enableRefresh: true,
                       loadingWidget: Image.asset(
-                        'assets/images/sand_clock.png',
+                        urlIconLoadingImage,
                         width: 64,
                         height: 64,
                       ),

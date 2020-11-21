@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/screens/result_detail/controller.dart';
 import 'package:project/screens/result_detail/data.dart';
-import 'package:project/util/show_dialog_general.dart';
+import 'package:project/util/function/show_dialog_general.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 

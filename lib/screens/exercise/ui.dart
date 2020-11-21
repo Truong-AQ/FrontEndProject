@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:project/resources/app_context.dart';
+import 'package:project/util/variable.dart';
+import 'package:project/resources/strings.dart';
 import 'package:project/screens/exercise/controller.dart';
 import 'package:project/screens/test/ui.dart';
 import 'package:project/util/function/logout.dart';
-import 'package:project/util/show_dialog_general.dart';
+import 'package:project/util/function/show_dialog_general.dart';
 import 'package:project/widgets/icon_refresh.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
@@ -75,8 +76,7 @@ class Exercise extends StatelessWidget {
         Container(
             alignment: Alignment.center,
             margin: EdgeInsets.only(bottom: 0, top: 70),
-            child:
-                Image.asset('assets/images/ic_profile.png', scale: 128 / 150)),
+            child: Image.asset(urlIconProfile, scale: 128 / 150)),
         Container(
             padding: EdgeInsets.all(14),
             margin: EdgeInsets.only(top: 15),

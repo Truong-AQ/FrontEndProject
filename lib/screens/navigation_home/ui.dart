@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:project/resources/app_context.dart';
+import 'package:project/util/variable.dart';
 import 'package:project/screens/exercise/ui.dart';
 import 'package:project/screens/result/ui.dart';
 import 'package:project/screens/study/ui.dart';

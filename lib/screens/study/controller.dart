@@ -5,23 +5,29 @@ import 'package:state_notifier/state_notifier.dart';
 import 'data.dart';
 
 class StudyController extends StateNotifier<StudyData> {
-  StudyController({StudyItem item}) : super(StudyData(item: item));
+  StudyController() : super(StudyData());
   Future<void> initStudy() async {
     StudyData st = state;
     _startProcess(st);
-    await _getStudy(st);
+    await getListStudyItem(st.item, st: st);
     _doneProcess(st);
   }
 
-  Future<void> _getStudy(StudyData st) async {
-    if (st.item.items.length != 0) {
-      return;
+  Future<List<StudyItemData>> getListStudyItem(StudyItemData item,
+      {StudyData st}) async {
+    if (st == null) st = state;
+    if (item.items.length == 0) {
+      final json = await api.getStudy(classUri: item.dataUri);
+      if (!checkResponseError(json, st)) {
+        return [];
+      }
+      _readStudyItemDataFromJson(json, item.items);
     }
-    final json = await api.getStudy(classUri: st.item.dataUri);
-    if (!checkResponseError(json, st)) {
-      st.item.items = [];
-      return;
-    }
+    return item.items;
+  }
+
+  _readStudyItemDataFromJson(
+      Map<String, dynamic> json, List<StudyItemData> list) {
     var tree = json['tree'];
     List<dynamic> children;
     if (tree is List) {
@@ -30,18 +36,16 @@ class StudyController extends StateNotifier<StudyData> {
       children = tree['children'];
     }
     for (var child in children) {
-      st.item.items.add(StudyItem(
+      list.add(StudyItemData(
           type: child['type'],
           label: child['data'],
           dataUri: child['attributes']['data-uri']));
-    }
-    if (st.item.items.length > 0 && st.item.items[0].type != 'class') {
-      st.item.childIsClass = false;
     }
   }
 
   void _startProcess(StudyData st) {
     st.error = '';
+    st.item = StudyItemData();
     st.process = true;
     if (mounted) state = st.copy();
   }
@@ -49,11 +53,5 @@ class StudyController extends StateNotifier<StudyData> {
   void _doneProcess(StudyData st) {
     st.process = false;
     if (mounted) state = st.copy();
-  }
-
-  void refreshStudy() async {
-    StudyData st = state;
-    st.item.items = [];
-    initStudy();
   }
 }

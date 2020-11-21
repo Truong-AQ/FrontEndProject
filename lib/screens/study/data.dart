@@ -1,24 +1,19 @@
 import 'package:project/resources/types.dart';
 
 class StudyData extends InfoError {
-  StudyData({this.item}) {
-    if (item == null) {
-      item = StudyItem();
-    }
-  }
   bool process = false;
-  StudyItem item;
+  StudyItemData item;
   StudyData copy() {
-    final clone = StudyData(item: item);
+    final clone = StudyData();
     clone.process = process;
+    clone.item = item;
     clone.setValue(error: error, numOfError: numOfError);
     return clone;
   }
 }
 
-class StudyItem {
+class StudyItemData {
   String type, label, dataUri;
-  bool childIsClass;
-  StudyItem({this.type, this.label, this.dataUri, this.childIsClass = true});
-  List<StudyItem> items = [];
+  StudyItemData({this.type, this.label, this.dataUri});
+  List<StudyItemData> items = [];
 }

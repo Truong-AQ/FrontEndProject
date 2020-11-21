@@ -10,9 +10,9 @@ dynamic convertResponse1(http.Response response) {
   final json = jsonDecode(response.body);
   if (json['message'] == cookieExpiredServer)
     return AppError(description: cookieExpiredApp);
-  else if (json['message'] == errorRoleServer)
+  else if (json['message'] == errorRoleServer) {
     return AppError(description: errorRoleApp);
-  else
+  } else
     return json;
 }
 
@@ -24,7 +24,7 @@ dynamic convertResponse2(http.Response response) {
   return body;
 }
 
-dynamic convertResponse4(http.Response response) {
+dynamic convertResponse3(http.Response response) {
   String htmlResponse = response.body;
   final document = parse(htmlResponse);
   final script = document.getElementsByTagName('script');
@@ -40,7 +40,7 @@ dynamic convertResponse4(http.Response response) {
   return map;
 }
 
-dynamic convertResponse5(http.Response response) {
+dynamic convertResponse4(http.Response response) {
   String htmlFindLink = response.body;
   int posDecision1 = htmlFindLink.indexOf('previewUrl');
   if (posDecision1 == -1) return AppError(description: cookieExpiredApp);
@@ -57,7 +57,7 @@ dynamic convertResponse5(http.Response response) {
   return link;
 }
 
-dynamic convertResponse6(http.Response response) {
+dynamic convertResponse5(http.Response response) {
   String htmlInfo = response.body;
   int posDecision1 = htmlInfo.indexOf('itemData');
   if (posDecision1 == -1) return AppError(description: cookieExpiredApp);

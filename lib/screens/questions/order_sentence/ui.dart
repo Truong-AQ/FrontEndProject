@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
-import 'package:project/resources/colors.dart';
-import 'package:project/resources/dimens.dart';
+import 'package:project/resources/strings.dart';
 import 'package:project/screens/questions/order_sentence/controller.dart';
 import 'package:project/screens/questions/order_sentence/data.dart';
 import 'package:project/screens/test/data.dart';
@@ -44,7 +43,7 @@ class OrderSentence extends StatelessWidget {
           height: 200,
           child: TransitionToImage(
               enableRefresh: true,
-              loadingWidget: Image.asset('assets/images/sand_clock.png'),
+              loadingWidget: Image.asset(urlIconLoadingImage),
               placeholder: Icon(Icons.refresh),
               image: AdvancedNetworkImage(suggest.data, useDiskCache: true,
                   loadedCallback: () {
@@ -61,11 +60,11 @@ class OrderSentence extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 15),
       child: Container(
         margin: EdgeInsets.only(top: 35, bottom: 35),
-        padding: EdgeInsets.all(dimen8),
+        padding: EdgeInsets.all(18.0),
         child: Text(label,
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: color1, fontWeight: FontWeight.bold, fontSize: 16)),
+                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)),
       ),
     );
   }
@@ -74,7 +73,7 @@ class OrderSentence extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: dimen1),
+      padding: EdgeInsets.symmetric(horizontal: 12.0),
       child: Consumer<OrderSentenceData>(builder: (_, dt, __) {
         return Wrap(
             alignment: WrapAlignment.center,
@@ -82,7 +81,7 @@ class OrderSentence extends StatelessWidget {
               for (int i = 0; i < dt.answers.length; i++)
                 _buildWord(context, dt.answers[i], i),
             ],
-            runSpacing: dimen4);
+            runSpacing: 14.0);
       }),
     );
   }
@@ -94,11 +93,11 @@ class OrderSentence extends StatelessWidget {
         context.read<OrderSentenceController>().addAnswer(index);
       },
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: dimen3),
-        width: dimen4 * answer.data.length,
+        margin: EdgeInsets.symmetric(horizontal: 9.0),
+        width: 14.0 * answer.data.length,
         child: Text(answer.data,
             style: TextStyle(
-                color: color1, fontSize: dimen8, fontWeight: FontWeight.bold),
+                color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center),
       ),
     );
@@ -109,25 +108,25 @@ class OrderSentence extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         alignment: Alignment.center,
         padding:
-            EdgeInsets.only(left: dimen1, right: dimen1, top: 45, bottom: 45),
+            EdgeInsets.only(left: 12.0, right: 12.0, top: 45, bottom: 45),
         child: Consumer<OrderSentenceData>(builder: (_, dt, __) {
           List<AnswerChoice> userAnswer = dt.userAnswer;
           return Wrap(children: [
             for (int i = 0; i < userAnswer.length; i++)
               _buildUserWord(context, i, userAnswer[i]),
-          ], runSpacing: dimen4, alignment: WrapAlignment.center);
+          ], runSpacing: 14.0, alignment: WrapAlignment.center);
         }));
   }
 
   Widget _buildUserWord(BuildContext context, int index, AnswerChoice answer) {
     return Container(
-        height: dimen5,
-        margin: EdgeInsets.symmetric(horizontal: dimen3),
-        padding: EdgeInsets.only(bottom: dimen11),
+        height: 24.0,
+        margin: EdgeInsets.symmetric(horizontal: 9.0),
+        padding: EdgeInsets.only(bottom: 2),
         alignment: Alignment.center,
-        width: answer == null ? dimen10 : answer.data.length * dimen4,
+        width: answer == null ? 42 : answer.data.length * 14.0,
         decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(width: dimen9)),
+          border: Border(bottom: BorderSide(width: 1.0)),
         ),
         child: answer == null
             ? Container()
@@ -137,7 +136,7 @@ class OrderSentence extends StatelessWidget {
                 },
                 child: Text(answer.data,
                     style: TextStyle(
-                        fontSize: dimen8, fontWeight: FontWeight.bold)),
+                        fontSize: 18.0, fontWeight: FontWeight.bold)),
               ));
   }
 }

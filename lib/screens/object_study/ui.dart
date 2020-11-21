@@ -5,7 +5,7 @@ import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/resources/strings.dart';
-import 'package:project/util/show_dialog_general.dart';
+import 'package:project/util/function/show_dialog_general.dart';
 import 'package:project/util/variable.dart';
 import 'package:project/widgets/icon_refresh.dart';
 import 'package:project/widgets/loading.dart';
@@ -17,9 +17,9 @@ import 'data.dart';
 class ObjectStudy extends StatefulWidget {
   @override
   _ObjectStudyState createState() => _ObjectStudyState();
-  static Widget withDependency({String label, List<String> uri}) {
+  static Widget withDependency({String label, List<String> listUri}) {
     return StateNotifierProvider<ObjectStudyController, ObjectStudyData>(
-        create: (_) => ObjectStudyController(listUri: uri),
+        create: (_) => ObjectStudyController(listUri: listUri),
         child: ObjectStudy(label: label));
   }
 
@@ -131,7 +131,7 @@ class _CellRow extends StatelessWidget {
         child: TransitionToImage(
             enableRefresh: true,
             placeholder: Icon(Icons.refresh),
-            loadingWidget: Image.asset('assets/images/sand_clock.png'),
+            loadingWidget: Image.asset(urlIconLoadingImage),
             image: AdvancedNetworkImage(item.urlImg,
                 useDiskCache: true, header: {'Cookie': cookie}),
             fit: BoxFit.fill),

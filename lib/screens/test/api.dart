@@ -7,7 +7,7 @@ import 'package:project/util/variable.dart';
 Future<dynamic> getBasicInfo({String url}) async {
   try {
     final http.Response response = await _getBasicInfo(url: url);
-    return convertResponse4(response);
+    return convertResponse3(response);
   } on Exception catch (e) {
     return convertResponseException(e);
   }

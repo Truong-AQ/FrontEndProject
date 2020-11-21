@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:project/resources/app_context.dart';
-import 'package:project/resources/colors.dart';
-import 'package:project/resources/dimens.dart';
-import 'package:project/resources/styles.dart';
+import 'package:project/resources/strings.dart';
 import 'package:project/screens/navigation_home/ui.dart';
-import 'package:project/util/show_dialog_general.dart';
+import 'package:project/util/function/show_dialog_general.dart';
+import 'package:project/util/variable.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:project/screens/login/controller.dart';
@@ -37,10 +35,10 @@ class Login extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/images/ic_profile.png'),
+          Image.asset(urlIconProfile),
           SizedBox(height: 25),
           Container(
-              margin: style1,
+              margin: EdgeInsets.symmetric(horizontal: 12.0),
               child: TextFormField(
                 decoration: InputDecoration(hintText: 'Nhập tên đăng nhập'),
                 onChanged: (name) {
@@ -49,7 +47,7 @@ class Login extends StatelessWidget {
               )),
           SizedBox(height: 30),
           Container(
-              margin: style1,
+              margin: EdgeInsets.symmetric(horizontal: 12.0),
               child: TextFormField(
                 decoration: InputDecoration(hintText: 'Nhập mật khẩu'),
                 obscureText: true,
@@ -82,15 +80,15 @@ class Login extends StatelessWidget {
               margin: EdgeInsets.only(left: 60, right: 60),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15), color: color3),
+                  borderRadius: BorderRadius.circular(15), color: Color(0xFF1C18EF)),
               child: Text('ĐĂNG NHẬP',
                   style: TextStyle(
-                      color: color2,
+                      color: Colors.white,
                       fontFamily: 'monospace',
                       fontWeight: FontWeight.bold)),
             ),
           ),
-          SizedBox(height: dimen2)
+          SizedBox(height: 20.0)
         ],
       ),
     );

@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
+import 'package:project/resources/strings.dart';
 import 'package:project/screens/test/data.dart';
 import 'package:project/widgets/play_audio.dart';
 import 'package:provider/provider.dart';
-import 'package:project/resources/colors.dart';
-import 'package:project/resources/dimens.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/screens/questions/choice/controller.dart';
 import 'package:project/screens/questions/choice/data.dart';
@@ -43,7 +42,7 @@ class Choice extends StatelessWidget {
           height: 200,
           child: TransitionToImage(
               enableRefresh: true,
-              loadingWidget: Image.asset('assets/images/sand_clock.png'),
+              loadingWidget: Image.asset(urlIconLoadingImage),
               placeholder: Icon(Icons.refresh),
               image: AdvancedNetworkImage(suggest.data, useDiskCache: true,
                   loadedCallback: () {
@@ -60,11 +59,11 @@ class Choice extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 15),
       child: Container(
         margin: EdgeInsets.only(top: 35, bottom: 59),
-        padding: EdgeInsets.all(dimen8),
+        padding: EdgeInsets.all(18.0),
         child: Text(label,
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: color1, fontWeight: FontWeight.bold, fontSize: 16)),
+                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)),
       ),
     );
   }
@@ -127,7 +126,7 @@ class __CellRowState extends State<_CellRow> {
                   ? TransitionToImage(
                       enableRefresh: true,
                       loadingWidget:
-                          Image.asset('assets/images/sand_clock.png'),
+                          Image.asset(urlIconLoadingImage),
                       placeholder: Icon(Icons.refresh),
                       image: AdvancedNetworkImage(answer.data,
                           useDiskCache: true, loadedCallback: () {

@@ -7,7 +7,7 @@ Future<dynamic> getLink({String uri}) async {
     final http.Response response = await _getLink(uri: uri);
     return response.body == '' && response.headers.length != 12
         ? getLink(uri: uri)
-        : convertResponse5(response);
+        : convertResponse4(response);
   } on Exception catch (e) {
     return convertResponseException(e);
   }
@@ -18,7 +18,7 @@ Future<dynamic> getInfoObjectItem({String link}) async {
     final http.Response response = await _getInfoObjectItem(link: link);
     return response.body == '' && response.headers.length != 12
         ? getInfoObjectItem(link: link)
-        : convertResponse6(response);
+        : convertResponse5(response);
   } on Exception catch (e) {
     return convertResponseException(e);
   }

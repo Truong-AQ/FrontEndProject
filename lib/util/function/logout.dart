@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project/resources/app_context.dart';
 import 'package:project/resources/strings.dart';
 import 'package:project/screens/login/ui.dart';
 import 'package:project/util/variable.dart';

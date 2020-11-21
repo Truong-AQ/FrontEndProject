@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:project/resources/colors.dart';
-import 'package:project/resources/dimens.dart';
 
 class ShowError extends StatelessWidget {
   ShowError({this.error, this.actions});
@@ -12,8 +10,8 @@ class ShowError extends StatelessWidget {
     return CupertinoAlertDialog(
       title: Text(error,
           textAlign: TextAlign.center,
-          style:
-              TextStyle(fontSize: dimen6, color: color4, fontFamily: 'roboto')),
+          style: TextStyle(
+              fontSize: 16.0, color: Colors.red, fontFamily: 'roboto')),
       actions: actions,
     );
   }

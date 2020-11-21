@@ -9,7 +9,7 @@ import 'package:project/screens/questions/pairing/ui.dart';
 import 'package:project/screens/test/controller.dart';
 import 'package:project/screens/test/data.dart';
 import 'package:project/util/function/convert_answer.dart';
-import 'package:project/util/show_dialog_general.dart';
+import 'package:project/util/function/show_dialog_general.dart';
 import 'package:project/util/variable.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
