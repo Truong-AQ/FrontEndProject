@@ -6,6 +6,7 @@ import 'package:project/screens/exercise/data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 SharedPreferences prefs;
+String cookie = '', nameTestTaker = '';
 BuildContext contextLogin, contextHome;
 CommonDataQuestion commonDataQuestion;
 bool formatOther = false;

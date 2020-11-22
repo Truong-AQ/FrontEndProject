@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:html/parser.dart';
-import 'package:project/resources/strings.dart';
 import 'package:project/screens/exercise/api.dart';
 import 'package:project/util/function/convert_response.dart';
+import 'package:project/util/variable.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 import 'data.dart';

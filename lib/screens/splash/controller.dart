@@ -1,4 +1,3 @@
-import 'package:project/resources/strings.dart';
 import 'package:project/screens/splash/data.dart';
 import 'package:project/util/variable.dart';
 import 'package:shared_preferences/shared_preferences.dart';

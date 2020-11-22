@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:project/resources/strings.dart';
 import 'package:project/screens/result_attempt/api.dart';
 import 'package:project/util/function/convert_response.dart';
+import 'package:project/util/variable.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 import 'data.dart';
