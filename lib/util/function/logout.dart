@@ -13,7 +13,7 @@ void logout() {
 void freeVariable() {
   commonDataQuestion = null;
   contextHome = null;
-  testDone = [];
+  testOfUser = [];
   prefs = null;
   cookie = '';
   nameTestTaker = '';

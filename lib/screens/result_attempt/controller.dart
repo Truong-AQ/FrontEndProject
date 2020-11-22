@@ -10,23 +10,31 @@ import 'data.dart';
 class ResultTestTimeController extends StateNotifier<ResultTestTimeData> {
   ResultTestTimeController(String dataUri)
       : super(ResultTestTimeData(dataUri: dataUri)) {
-    init(dataUri: dataUri);
+    init();
   }
-  void init({String dataUri}) {
+  Future<void> init() async {
     ResultTestTimeData st = state;
     _startInit(st);
-    getResultTime(classUri: dataUri ?? st.dataUri).then((body) {
-      if (!checkResponseError(body, st)) {
-        _doneInit(st);
-        return;
-      }
-      List<dynamic> listData = jsonDecode(body)['data'];
-      for (var dt in listData) {
-        if (dt['ttaker'] == nameTestTaker)
-          st.list.add(ResultByTime(time: dt['time'], id: dt['id']));
-      }
+    await _getResultTesTimeByPage(st, page: 1);
+    _doneInit(st);
+  }
+
+  Future<void> _getResultTesTimeByPage(ResultTestTimeData st,
+      {int page}) async {
+    final body = await getResultTime(classUri: st.dataUri, page: page);
+    if (!checkResponseError(body, st)) {
       _doneInit(st);
-    });
+      return;
+    }
+    final json = jsonDecode(body);
+    List<dynamic> listData = json['data'];
+    for (var dt in listData) {
+      if (dt['ttaker'] == nameTestTaker)
+        st.list.add(ResultByTime(time: dt['time'], id: dt['id']));
+    }
+    if (json['total'] > page) {
+      await _getResultTesTimeByPage(st, page: page + 1);
+    }
   }
 
   void _startInit(ResultTestTimeData st) {

@@ -20,9 +20,9 @@ class ResultController extends StateNotifier<ResultData> {
     if (!got) return;
     //remove other test in result
     st.result = [];
-    for (int i = 0; i < testDone.length; i++) {
+    for (int i = 0; i < testOfUser.length; i++) {
       for (int j = 0; j < listResultTest.length; j++)
-        if (testDone[i].label == listResultTest[j].label) {
+        if (testOfUser[i].label == listResultTest[j].label) {
           st.result.add(listResultTest[j]);
           break;
         }

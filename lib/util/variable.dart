@@ -9,7 +9,7 @@ SharedPreferences prefs;
 BuildContext contextLogin, contextHome;
 CommonDataQuestion commonDataQuestion;
 bool formatOther = false;
-List<Exercise> testDone = [];
+List<Exercise> testOfUser = [];
 HtmlUnescape unescape = new HtmlUnescape();
 
 AssetImage gifLoading = AssetImage(urlIconLoading);

@@ -9,7 +9,7 @@ class ExerciseData extends InfoError {
   ExerciseData copy() {
     ExerciseData exercise = ExerciseData();
     exercise.test = test;
-    testDone = test;
+    testOfUser = test;
     exercise.process = process;
     exercise.name = name;
     exercise.setValue(error: error, numOfError: numOfError);

@@ -2,19 +2,20 @@ import 'package:http/http.dart' as http;
 import 'package:project/resources/strings.dart';
 import 'package:project/util/function/convert_response.dart';
 
-Future<dynamic> getResultTime({String classUri}) async {
+Future<dynamic> getResultTime({String classUri, int page}) async {
   try {
-    final http.Response response = await _getResultTime(classUri: classUri);
+    final http.Response response =
+        await _getResultTime(classUri: classUri, page: page);
     return convertResponse2(response);
   } on Exception catch (e) {
     return convertResponseException(e);
   }
 }
 
-Future<http.Response> _getResultTime({String classUri}) async {
+Future<http.Response> _getResultTime({String classUri, int page}) async {
   final Map<String, String> queryParams = {
-    'rows': '25',
-    'page': '1',
+    'rows': '50',
+    'page': '$page',
     'sortby': 'id',
     'classUri': classUri,
     'sortorder': 'asc',
