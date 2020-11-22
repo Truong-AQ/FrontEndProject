@@ -139,10 +139,12 @@ class _CellRow extends StatelessWidget {
       back: Container(
         decoration: BoxDecoration(
             border: Border.all(), color: Colors.greenAccent.withAlpha(25)),
+        padding: EdgeInsets.symmetric(horizontal: 10),
         width: (MediaQuery.of(context).size.width - 38) / 2,
         height: (MediaQuery.of(context).size.width - 38) / 2,
         child: Center(
           child: Text(item.label,
+              textAlign: TextAlign.center,
               style: TextStyle(fontFamily: 'monospace', fontSize: 16)),
         ),
       ),
