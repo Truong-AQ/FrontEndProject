@@ -1,4 +1,4 @@
-import 'package:project/screens/test/data.dart';
+import 'package:project/screens/patient/test/data.dart';
 
 Map<String, dynamic> convertListAnswer(
     {List<AnswerChoice> answer, TypeQuestion typeQuestion}) {

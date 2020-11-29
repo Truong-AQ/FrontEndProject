@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/resources/strings.dart';
-import 'package:project/screens/test/ui.dart';
+import 'package:project/screens/patient/test/ui.dart';
 import 'package:project/util/function/logout.dart';
 import 'package:project/widgets/show_error.dart';
 

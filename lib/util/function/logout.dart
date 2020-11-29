@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project/screens/login/ui.dart';
+import 'package:project/screens/patient/login/ui.dart';
 import 'package:project/util/variable.dart';
 
 void logout() {

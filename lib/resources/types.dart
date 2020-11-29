@@ -1,4 +1,4 @@
-import 'package:project/screens/test/data.dart';
+import 'package:project/screens/patient/test/data.dart';
 
 //du lieu cau hoi tong quan - thoi gian, tra loi cua nguoi dung
 class CommonDataQuestion {
