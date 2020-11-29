@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:project/resources/app_context.dart';
-import 'package:project/screens/home/ui.dart';
+import 'package:project/util/variable.dart';
+import 'package:project/screens/exercise/ui.dart';
+import 'package:project/screens/result/ui.dart';
+import 'package:project/screens/study/ui.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/screens/navigation_home/controller.dart';
-import 'package:project/screens/register/ui.dart';
-import 'package:project/screens/search/ui.dart';
 
 import 'data.dart';
 
@@ -52,12 +52,17 @@ class NavigationHome extends StatelessWidget {
     return BottomNavigationBar(
         currentIndex: index,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add'),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Bài tập'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.search_rounded), label: 'Search')
+              icon: Icon(Icons.bar_chart), label: 'Kết quả'),
+          BottomNavigationBarItem(icon: Icon(Icons.label), label: 'Học tập')
         ],
         onTap: (tabIndex) {
+          if (tabIndex == 1 && _widgets[tabIndex] is Container) {
+            _widgets[1] = Result.withDependency();
+          } else if (tabIndex == 2 && _widgets[tabIndex] is Container) {
+            _widgets[2] = Study.withDependency();
+          }
           context.read<NavigationHomeController>().updateTabIndex(tabIndex);
         });
   }
@@ -65,8 +70,8 @@ class NavigationHome extends StatelessWidget {
   final List<GlobalKey<NavigatorState>> _navigatorKeys =
       List.generate(3, (index) => GlobalKey());
   final List<Widget> _widgets = [
-    Home.withDependency(),
-    Register.withDependency(),
-    Search.withDependency()
+    Exercise.withDependency(),
+    Container(),
+    Container(),
   ];
 }

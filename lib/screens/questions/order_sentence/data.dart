@@ -1,18 +1,30 @@
-class OrderSentenceData {
-  List<String> questions = ['LA', 'DAY', 'CAI', 'DIA'];
-  List<String> correctAnswer = ['DAY', 'LA', 'CAI', 'DIA'];
-  List<String> answerUser = ['', '', '', '', ''];
-  bool isCorrect = false;
-  bool isComplete = false;
-  int nWordsChoosed = 0;
+import 'package:project/resources/types.dart';
+import 'package:project/screens/test/data.dart';
+import 'package:project/util/variable.dart';
+
+class OrderSentenceData extends CommonDataQuestion {
+  OrderSentenceData({Map<String, dynamic> data}) {
+    commonDataQuestion = this;
+    formatOther = false;
+    if (data != null) {
+      label = data['label'];
+      suggest = data['suggest'];
+      answers = data['answers'];
+      userAnswer = List.generate(answers.length, (index) => null);
+      timeStart = DateTime.now();
+    }
+  }
+  String label;
+  AnswerChoice suggest;
+  List<AnswerChoice> answers;
+  int nWordsChoose = 0;
   OrderSentenceData copy() {
     final clone = OrderSentenceData();
-    clone.questions = questions;
-    clone.correctAnswer = correctAnswer;
-    clone.answerUser = answerUser;
-    clone.isCorrect = isCorrect;
-    clone.nWordsChoosed = nWordsChoosed;
-    clone.isComplete = isComplete;
+    clone.label = label;
+    clone.suggest = suggest;
+    clone.answers = answers;
+    clone.setValue(timeStart: timeStart, userAnswer: userAnswer);
+    clone.nWordsChoose = nWordsChoose;
     return clone;
   }
 }

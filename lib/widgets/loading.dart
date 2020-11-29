@@ -1,13 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:project/resources/colors.dart';
-import 'package:project/resources/dimens.dart';
+import 'package:project/util/variable.dart';
 
-class Loading extends StatelessWidget {
+class Loading extends StatefulWidget {
+  Loading({this.backgroundColor});
+  final Color backgroundColor;
+  @override
+  _LoadingState createState() => _LoadingState();
+}
+
+class _LoadingState extends State<Loading> {
+  @override
+  void initState() {
+    super.initState();
+    gifLoading.evict();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: color4.withAlpha(dimen11),
-      body: Center(child: CircularProgressIndicator(backgroundColor: color4)),
+      backgroundColor: widget.backgroundColor ?? Colors.white.withAlpha(60),
+      body: Center(
+        child: Column(children: [
+          SizedBox(height: 80),
+          Image(image: gifLoading),
+          SizedBox(height: 15),
+          Text('Dữ liệu đang được tải đừng nóng ...',
+              style: TextStyle(fontFamily: 'monospace', fontSize: 16))
+        ]),
+      ),
     );
   }
 }

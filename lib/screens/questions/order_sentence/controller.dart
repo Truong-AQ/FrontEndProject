@@ -3,38 +3,35 @@ import 'package:state_notifier/state_notifier.dart';
 import 'data.dart';
 
 class OrderSentenceController extends StateNotifier<OrderSentenceData> {
-  OrderSentenceController() : super(OrderSentenceData());
+  OrderSentenceController(Map<String, dynamic> data)
+      : super(OrderSentenceData(data: data));
 
-  addAnswer(int index) {
-    state.answerUser[state.nWordsChoosed++] = state.questions[index];
-    state.questions[index] = '';
-    state.isCorrect = checkCorrect(state.answerUser, state.correctAnswer);
-    state.isComplete = (state.nWordsChoosed == state.correctAnswer.length);
-    state = state.copy();
+  void updateTime(DateTime time) {
+    OrderSentenceData st = state;
+    if (time.isAfter(st.timeStart)) {
+      st.timeStart = time;
+    }
   }
 
-  removeAnswer(int index) {
-    for (int i = 0; i < state.questions.length; i++) {
-      if (state.questions[i] == '') {
-        state.questions[i] = state.answerUser[index];
+  void addAnswer(int index) {
+    OrderSentenceData st = state;
+    st.userAnswer[st.nWordsChoose] = st.answers[index];
+    st.nWordsChoose += 1;
+    st.answers[index] = null;
+    if (mounted) state = st.copy();
+  }
+
+  void removeAnswer(int index) {
+    OrderSentenceData st = state;
+    for (int i = 0; i < st.answers.length; i++) {
+      if (st.answers[i] == null) {
+        st.answers[i] = st.userAnswer[index];
+        st.userAnswer.removeAt(index);
+        st.userAnswer.add(null);
+        st.nWordsChoose -= 1;
         break;
       }
     }
-    state.answerUser[index] = '';
-    for (int i = index; i < state.correctAnswer.length; i++) {
-      state.answerUser[i] = state.answerUser[i + 1];
-    }
-    state.nWordsChoosed--;
-    state.isComplete = (state.nWordsChoosed == state.correctAnswer.length);
-    state = state.copy();
-  }
-
-  bool checkCorrect(List<String> answerUser, List<String> correctAnswer) {
-    for (int i = 0; i < correctAnswer.length; i++) {
-      if (answerUser[i] != correctAnswer[i]) {
-        return false;
-      }
-    }
-    return true;
+    if (mounted) state = st.copy();
   }
 }

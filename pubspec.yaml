@@ -1,5 +1,5 @@
 name: project
-description: A new Flutter application.
+description: A new Flutter application.e
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -29,12 +29,18 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
   http: ^0.12.2
+  async: ^2.4.2
   state_notifier: ^0.6.0
   flutter_state_notifier: ^0.6.1
   shared_preferences: ^0.5.12+2
-  flutter_html: ^1.0.0
+  html_unescape: ^1.0.2
   html: ^0.14.0+4
+  assets_audio_player: ^2.0.12
+  flip_card: ^0.4.4
+  flutter_advanced_networkimage: ^0.7.0
 
+dependency_overrides:
+  flutter_svg: 0.18.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

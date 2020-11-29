@@ -1,168 +1,95 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:project/resources/app_context.dart';
-import 'package:project/resources/colors.dart';
-import 'package:project/resources/dimens.dart';
-import 'package:project/resources/styles.dart';
+import 'package:project/resources/strings.dart';
 import 'package:project/screens/navigation_home/ui.dart';
-import 'package:project/screens/register/ui.dart';
+import 'package:project/util/function/show_dialog_general.dart';
+import 'package:project/util/variable.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:project/screens/login/controller.dart';
 import 'package:project/screens/login/data.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 
+// ignore: must_be_immutable
 class Login extends StatelessWidget {
+  GestureDetector _tabShowDialog;
   static withDependency() {
     return StateNotifierProvider<LoginController, LoginData>(
         create: (context) {
           contextLogin = context;
           return LoginController();
-        }, child: Login());
+        },
+        child: Login());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: color1,
-        appBar: AppBar(backgroundColor: color3, elevation: 0),
-        body: LayoutBuilder(builder: (context, constraint) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraint.maxHeight),
-              child: IntrinsicHeight(
-                  child: Column(
-                children: [
-                  _buildTextLogin(context),
-                  _buildLoginForm(context),
-                ],
-              )),
-            ),
-          );
-        }));
-  }
-
-  Widget _buildTextLogin(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: dimen1, bottom: dimen4),
-      alignment: Alignment.center,
-      child: Text('Dang nhap',
-          style: TextStyle(
-              color: color2,
-              fontWeight: FontWeight.bold,
-              fontSize: dimen2,
-              fontStyle: FontStyle.italic)),
-    );
+    return Scaffold(body: _buildLoginForm(context));
   }
 
   Widget _buildLoginForm(BuildContext context) {
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-            color: color4,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(dimen4),
-                topRight: Radius.circular(dimen4))),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: dimen2),
-            Container(
-              margin: style1,
-              child: Text('TEN DANG NHAP', style: style3),
-            ),
-            SizedBox(height: dimen5),
-            Container(
-                margin: style1,
-                child: TextFormField(
-                  decoration: style2,
-                  onChanged: (name) {
-                    context.read<LoginController>().setName(name);
-                  },
-                )),
-            SizedBox(height: dimen4),
-            Container(
-              margin: style1,
-              child: Text('MAT KHAU', style: style3),
-            ),
-            SizedBox(height: dimen5),
-            Container(
-                margin: style1,
-                child: TextFormField(
-                  obscureText: true,
-                  decoration: style2,
-                  onChanged: (password) {
-                    context.read<LoginController>().setPassword(password);
-                  },
-                )),
-            SizedBox(height: dimen2),
-            GestureDetector(
-              onTap: () async {
-                showDialog(context: context, builder: (_) => Loading());
-                final error = await context.read<LoginController>().login();
-                Navigator.pop(context);
-                if (error == '') {
-                  Navigator.pushReplacement(
-                      contextLogin,
-                      MaterialPageRoute(
-                          builder: (_) => NavigationHome.withDependency()));
-                  return;
-                }
-                showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (_) {
-                      return CupertinoAlertDialog(
-                        title: Text(error,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: dimen9,
-                                color: color7,
-                                fontFamily: 'roboto')),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('OK'))
-                        ],
-                      );
-                    });
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(vertical: dimen5),
-                margin: style1,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: color5, borderRadius: BorderRadius.circular(dimen3)),
-                child: Text('DANG NHAP',
-                    style: TextStyle(
-                        color: color4,
-                        fontWeight: FontWeight.bold,
-                        fontSize: dimen8)),
-              ),
-            ),
-            SizedBox(height: dimen4),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24), topRight: Radius.circular(24))),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(urlIconProfile),
+          SizedBox(height: 25),
+          Container(
+              margin: EdgeInsets.symmetric(horizontal: 12.0),
+              child: TextFormField(
+                decoration: InputDecoration(hintText: 'Nhập tên đăng nhập'),
+                onChanged: (name) {
+                  context.read<LoginController>().setName(name);
+                },
+              )),
+          SizedBox(height: 30),
+          Container(
+              margin: EdgeInsets.symmetric(horizontal: 12.0),
+              child: TextFormField(
+                decoration: InputDecoration(hintText: 'Nhập mật khẩu'),
+                obscureText: true,
+                onChanged: (password) {
+                  context.read<LoginController>().setPassword(password);
+                },
+              )),
+          SizedBox(height: 40),
+          _tabShowDialog = GestureDetector(
+            onTap: () async {
+              showDialog(context: context, builder: (_) => Loading());
+              final error = await context.read<LoginController>().login();
+              Navigator.pop(context);
+              if (error == '') {
+                Navigator.pushReplacement(
+                    contextLogin,
                     MaterialPageRoute(
-                        builder: (_) => Register.withDependency()));
-              },
-              child: Container(
-                  alignment: Alignment.centerRight,
-                  margin: EdgeInsets.only(right: 30, bottom: dimen4),
-                  child: Text('DANG KY',
-                      style: TextStyle(
-                          color: Colors.green,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic))),
+                        builder: (_) => NavigationHome.withDependency()));
+                contextLogin = null;
+                return;
+              }
+              showDialogOfApp(context,
+                  error: error,
+                  onRetry: () => Future.delayed(Duration(milliseconds: 500))
+                      .then((_) => _tabShowDialog.onTap()));
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(vertical: 15),
+              margin: EdgeInsets.only(left: 60, right: 60),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15), color: Color(0xFF1C18EF)),
+              child: Text('ĐĂNG NHẬP',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'monospace',
+                      fontWeight: FontWeight.bold)),
             ),
-          ],
-        ),
+          ),
+          SizedBox(height: 20.0)
+        ],
       ),
     );
   }

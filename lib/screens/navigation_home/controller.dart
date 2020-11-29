@@ -6,7 +6,8 @@ class NavigationHomeController extends StateNotifier<NavigationHomeData> {
   NavigationHomeController() : super(NavigationHomeData());
 
   void updateTabIndex(int tabIndex) {
-    state.tabIndex = tabIndex;
-    state = state.copy();
+    NavigationHomeData st = state;
+    st.tabIndex = tabIndex;
+    if (mounted) state = st.copy();
   }
 }
