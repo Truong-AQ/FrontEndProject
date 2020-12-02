@@ -1,4 +1,4 @@
-import 'package:project/screens/patient/splash/data.dart';
+import 'package:project/screens/splash/data.dart';
 import 'package:project/util/variable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:state_notifier/state_notifier.dart';

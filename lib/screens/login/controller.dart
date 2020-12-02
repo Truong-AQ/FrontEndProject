@@ -1,7 +1,7 @@
 import 'package:project/resources/strings.dart';
 import 'package:project/resources/types.dart';
-import 'package:project/screens/patient/login/api.dart' as api;
-import 'package:project/screens/patient/login/data.dart';
+import 'api.dart' as api;
+import 'data.dart';
 import 'package:project/util/variable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:state_notifier/state_notifier.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:project/screens/patient/login/ui.dart';
+import 'package:project/screens/login/ui.dart';
 import 'package:project/screens/patient/navigation_home/ui.dart';
-import 'package:project/screens/patient/splash/controller.dart';
-import 'package:project/screens/patient/splash/data.dart';
+import 'package:project/screens/splash/controller.dart';
+import 'package:project/screens/splash/data.dart';
 import 'package:project/util/mixin.dart';
 import 'package:provider/provider.dart';
 

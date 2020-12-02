@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:project/screens/patient/splash/ui.dart';
+import 'package:project/screens/splash/ui.dart';
 
 void main() {
   runApp(MyApp());

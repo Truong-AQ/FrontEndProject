@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project/resources/strings.dart';
-import 'package:project/screens/patient/navigation_home/ui.dart';
+import 'package:project/screens/patient/navigation_home/ui.dart' as patient;
+import 'package:project/screens/doctor/navigation_home/ui.dart' as doctor;
 import 'package:project/util/function/show_dialog_general.dart';
 import 'package:project/util/variable.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
-import 'package:project/screens/patient/login/controller.dart';
-import 'package:project/screens/patient/login/data.dart';
+import 'controller.dart';
+import 'data.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 
 // ignore: must_be_immutable
@@ -65,7 +66,7 @@ class Login extends StatelessWidget {
                 Navigator.pushReplacement(
                     contextLogin,
                     MaterialPageRoute(
-                        builder: (_) => NavigationHome.withDependency()));
+                        builder: (_) => doctor.NavigationHome.withDependency()));
                 contextLogin = null;
                 return;
               }
@@ -80,7 +81,8 @@ class Login extends StatelessWidget {
               margin: EdgeInsets.only(left: 60, right: 60),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15), color: Color(0xFF1C18EF)),
+                  borderRadius: BorderRadius.circular(15),
+                  color: Color(0xFF1C18EF)),
               child: Text('ĐĂNG NHẬP',
                   style: TextStyle(
                       color: Colors.white,
