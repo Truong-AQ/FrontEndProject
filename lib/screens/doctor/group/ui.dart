@@ -85,7 +85,7 @@ class _GroupUI extends StatelessWidget {
                 alignment: WrapAlignment.center,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 70),
+                    margin: EdgeInsets.only(top: 70, left: 20, right: 20),
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -95,11 +95,14 @@ class _GroupUI extends StatelessWidget {
                         SizedBox(height: 15),
                         GestureDetector(
                           onTap: () {
+                            Navigator.pop(context);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (_) => ItemsCheck.withDependency(
                                         type: TypeItemChecker.TESTTAKER,
+                                        title: item.data,
+                                        checker: item.checker['test-taker'],
                                         resourceUri: item.dataUri)));
                           },
                           child: Container(
@@ -118,11 +121,14 @@ class _GroupUI extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
+                            Navigator.pop(context);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (_) => ItemsCheck.withDependency(
                                         type: TypeItemChecker.TEST,
+                                        title: item.data,
+                                        checker: item.checker['test'],
                                         resourceUri: item.dataUri)));
                           },
                           child: Container(

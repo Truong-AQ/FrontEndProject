@@ -10,19 +10,24 @@ class ItemsCheckController extends StateNotifier<ItemsCheckData> {
       : super(ItemsCheckData(
             type: type, checker: checker, resourceUri: resourceUri));
 
-  Future<void> initGroup() async {
+  Future<void> initItemCheck() async {
     ItemsCheckData st = state;
-    _initProcess(st);
-    await getItem(st.items);
-    _doneInit(st);
+    _startInit(st);
+    bool got = await getItem(st.items);
+    if (got) {
+      _doneInit(st);
+    }
   }
 
   Future<bool> getItem(List items, {String classUri}) async {
     ItemsCheckData st = state;
     if (items.length == 0) {
       final json = await getData(type: st.type, classUri: classUri);
-      if (!checkResponseError(json, st)) return false;
-      List children = json['tree']['children'];
+      if (!checkResponseError(json, st)) {
+        _doneInit(st);
+        return false;
+      }
+      List children = (json is List) ? json : json['children'];
       for (var child in children) {
         final attributes = child['attributes'];
         final id = attributes['id'];
@@ -53,7 +58,7 @@ class ItemsCheckController extends StateNotifier<ItemsCheckData> {
     return checkResponseError(res, st);
   }
 
-  void _initProcess(ItemsCheckData st) {
+  void _startInit(ItemsCheckData st) {
     st.error = '';
     st.init = false;
     if (mounted) state = st.copy();

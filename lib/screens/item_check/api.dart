@@ -6,8 +6,8 @@ import 'package:project/util/variable.dart';
 
 Future<dynamic> getData({TypeItemChecker type, String classUri}) async {
   try {
-    http.Response response = await _getData(type: type);
-    return convertResponse1(response);
+    http.Response response = await _getData(type: type, classUri: classUri);
+    return convertResponse7(response);
   } on Exception catch (e) {
     return convertResponseException(e);
   }
@@ -35,7 +35,7 @@ Future<dynamic> _saveData(
     'X-Requested-With': 'XMLHttpRequest',
     'Cookie': cookie
   }, body: {
-    'instances': instances.toString(),
+    'instances': instances.map((e) => '"$e"').toList().toString(),
     'resourceUri': resourceUri,
     'propertyUri': type == TypeItemChecker.TEST
         ? 'http://www.tao.lu/Ontologies/TAOGroup.rdf#Deliveries'
@@ -46,11 +46,11 @@ Future<dynamic> _saveData(
 
 Future<http.Response> _getData({TypeItemChecker type, String classUri}) async {
   final Map<String, String> queryParams = {
-    'rootNode': type == TypeItemChecker.TEST
+    'rootNode': type == TypeItemChecker.TESTTAKER
         ? 'http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject'
         : 'http://www.tao.lu/Ontologies/TAODelivery.rdf#AssembledDelivery',
-    'classUri': classUri
   };
+  if (classUri != null) queryParams['classUri'] = classUri;
   final uri = Uri.http(baseUrl, '/tao/GenerisTree/getData', queryParams);
   final http.Response response = await http.post(uri,
       headers: {'X-Requested-With': 'XMLHttpRequest', 'Cookie': cookie});

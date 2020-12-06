@@ -23,5 +23,5 @@ class CheckItem {
   CheckItem({this.data, this.type, this.id, this.dataUri, this.isCheck});
   String data, type, id, dataUri;
   bool isCheck;
-  List items = [];
+  List<CheckItem> items = [];
 }

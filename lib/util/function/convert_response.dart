@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:project/resources/strings.dart';
@@ -81,10 +82,10 @@ dynamic convertResponse6(http.Response response) {
     return AppError(description: errorRoleApp);
   final htmlParse = parse(html);
   Map<String, List> checker = {};
-  List scripts = htmlParse.getElementsByTagName('script');
+  List<Element> scripts = htmlParse.getElementsByTagName('script');
   //test taker checker
   checker['test-taker'] = [];
-  String htmlTestTaker = scripts[1].toString();
+  String htmlTestTaker = scripts[1].text;
   int l = htmlTestTaker.length;
   int pos = htmlTestTaker.indexOf('checkedNodes');
   for (int i = pos; i < l; i++) {
@@ -94,12 +95,12 @@ dynamic convertResponse6(http.Response response) {
           checker['test-taker'].add(htmlTestTaker.substring(i + 1, j));
           i = j;
           break;
-        } else if (htmlTestTaker[i] == ']') break;
-    }
+        }
+    } else if (htmlTestTaker[i] == ']') break;
   }
   //test checker
   checker['test'] = [];
-  String htmlTest = scripts[2].toString();
+  String htmlTest = scripts[2].text;
   l = htmlTest.length;
   pos = htmlTest.indexOf('checkedNodes');
   for (int i = pos; i < l; i++) {
@@ -109,10 +110,20 @@ dynamic convertResponse6(http.Response response) {
           checker['test'].add(htmlTest.substring(i + 1, j));
           i = j;
           break;
-        } else if (htmlTest[i] == ']') break;
-    }
+        }
+    } else if (htmlTest[i] == ']') break;
   }
   return checker;
+}
+
+dynamic convertResponse7(http.Response response) {
+  final res = response.body;
+  if (res.contains(cookieExpiredServer))
+    return AppError(description: cookieExpiredApp);
+  else if (res.contains(errorRoleServer)) {
+    return AppError(description: errorRoleApp);
+  } else
+    return jsonDecode(res);
 }
 
 dynamic convertResponseException(Exception e) {
