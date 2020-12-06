@@ -10,6 +10,8 @@ class CommonDataQuestion {
   }
 }
 
+enum TypeItemChecker { TESTTAKER, TEST }
+
 // ten loi, so lan loi
 abstract class InfoError {
   String error = '';

@@ -5,21 +5,36 @@ import 'package:project/util/function/logout.dart';
 import 'package:project/widgets/show_error.dart';
 
 void showDialogOfApp(BuildContext context,
-    {String error, Function onRetry, Type typeWidgetCurrent}) {
+    {String error, Function onRetry, Type typeWidgetCurrent, String message}) {
   if (error == noNetwork)
     _showDialogNoNetwork(context, onRetry);
   else if (error == cookieExpiredApp)
     _showDialogLogout(context, typeWidgetCurrent);
   else if (error == wrongLogin || error == missLogin || error == errorRoleApp)
     _showDialogWarningAccount(context, error);
-  else if (error == clientError) _showDialogClientError(context, onRetry);
+  else if (error == clientError)
+    _showDialogClientError(context, onRetry);
+  else if (message != null) _showDialogMsg(context, message);
+}
+
+void _showDialogMsg(BuildContext context, String message) {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => ShowErrorOrMsg(msg: message, actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'))
+          ]));
 }
 
 void _showDialogClientError(BuildContext context, Function onRetry) {
   showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => ShowError(error: clientError, actions: [
+      builder: (context) => ShowErrorOrMsg(error: clientError, actions: [
             TextButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -38,7 +53,7 @@ void _showDialogWarningAccount(BuildContext context, String error) {
   showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => ShowError(error: error, actions: [
+      builder: (context) => ShowErrorOrMsg(error: error, actions: [
             TextButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -51,7 +66,7 @@ void _showDialogLogout(BuildContext context, Type typeWidgetCurrent) {
   showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => ShowError(error: cookieExpiredApp, actions: [
+      builder: (context) => ShowErrorOrMsg(error: cookieExpiredApp, actions: [
             TextButton(
                 onPressed: () {
                   if (typeWidgetCurrent == Test) Navigator.pop(context);
@@ -66,7 +81,7 @@ void _showDialogNoNetwork(BuildContext context, Function onRetry) {
   showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => ShowError(error: noNetwork, actions: [
+      builder: (context) => ShowErrorOrMsg(error: noNetwork, actions: [
             TextButton(
                 onPressed: () {
                   Navigator.pop(context);

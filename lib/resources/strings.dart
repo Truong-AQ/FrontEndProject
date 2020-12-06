@@ -7,9 +7,10 @@ final String cookieExpiredServer =
     'Access denied. Please renew your authentication!';
 final String clientError = 'Kết nối mạng không ổn định';
 final String errorRoleServer =
-    'Quy\u1ec1n truy c\u1eadp \u0111\u00e3 b\u1ecb t\u1eeb ch\u1ed1i. H\u00e3y l\u00e0m m\u1edbi x\u00e1c th\u1ef1c c\u1ee7a b\u1ea1n!';
+    'Quyền truy cập đã bị từ chối. Hãy làm mới xác thực của bạn!';
 final String errorRoleApp =
     'Bạn không có quyền xem đâu. Đừng chờ đợi nữa. A hi hi';
+final String saveSucess = 'Lưu thành công';
 final String urlIconProfile = 'assets/images/ic_profile.png';
 final String urlIconLoadingImage = 'assets/images/sand_clock.png';
 final String urlIconLoading = 'assets/images/loading.gif';

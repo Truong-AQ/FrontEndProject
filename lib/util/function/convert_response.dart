@@ -73,6 +73,48 @@ dynamic convertResponse5(http.Response response) {
   return json;
 }
 
+dynamic convertResponse6(http.Response response) {
+  final html = response.body;
+  if (html.contains(cookieExpiredServer))
+    return AppError(description: cookieExpiredApp);
+  else if (html.contains(errorRoleServer))
+    return AppError(description: errorRoleApp);
+  final htmlParse = parse(html);
+  Map<String, List> checker = {};
+  List scripts = htmlParse.getElementsByTagName('script');
+  //test taker checker
+  checker['test-taker'] = [];
+  String htmlTestTaker = scripts[1].toString();
+  int l = htmlTestTaker.length;
+  int pos = htmlTestTaker.indexOf('checkedNodes');
+  for (int i = pos; i < l; i++) {
+    if (htmlTestTaker[i] == '"') {
+      for (int j = i + 1; j < l; j++)
+        if (htmlTestTaker[j] == '"') {
+          checker['test-taker'].add(htmlTestTaker.substring(i + 1, j));
+          i = j;
+          break;
+        } else if (htmlTestTaker[i] == ']') break;
+    }
+  }
+  //test checker
+  checker['test'] = [];
+  String htmlTest = scripts[2].toString();
+  l = htmlTest.length;
+  pos = htmlTest.indexOf('checkedNodes');
+  for (int i = pos; i < l; i++) {
+    if (htmlTest[i] == '"') {
+      for (int j = i + 1; j < l; j++)
+        if (htmlTest[j] == '"') {
+          checker['test'].add(htmlTest.substring(i + 1, j));
+          i = j;
+          break;
+        } else if (htmlTest[i] == ']') break;
+    }
+  }
+  return checker;
+}
+
 dynamic convertResponseException(Exception e) {
   if (e is SocketException)
     return AppError(description: noNetwork);

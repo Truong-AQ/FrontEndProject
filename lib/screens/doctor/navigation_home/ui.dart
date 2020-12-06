@@ -51,7 +51,8 @@ class NavigationHome extends StatelessWidget {
           BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Nhóm'),
           BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Bài'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person), label: 'Người làm bài')
+              icon: Icon(Icons.person), label: 'Người làm bài'),
+          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Kết quả')
         ],
         onTap: (tabIndex) {
           context.read<NavigationHomeController>().updateTabIndex(tabIndex);
@@ -59,10 +60,11 @@ class NavigationHome extends StatelessWidget {
   }
 
   final List<GlobalKey<NavigatorState>> _navigatorKeys =
-      List.generate(3, (index) => GlobalKey());
+      List.generate(4, (index) => GlobalKey());
   final List<Widget> _widgets = [
     Group(),
     Container(),
     Container(),
+    Container()
   ];
 }
