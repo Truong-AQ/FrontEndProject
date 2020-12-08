@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:project/screens/patient/navigation_home/controller.dart';
 import 'package:project/util/variable.dart';
-import 'package:project/resources/strings.dart';
 import 'package:project/screens/patient/exercise/controller.dart';
 import 'package:project/screens/patient/test/ui.dart';
-import 'package:project/util/function/logout.dart';
 import 'package:project/util/function/show_dialog_general.dart';
 import 'package:project/widgets/icon_refresh.dart';
 import 'package:project/widgets/loading.dart';
@@ -24,7 +23,6 @@ class Exercise extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: _buildDrawer(context),
         appBar: AppBar(
             title: Text('Bài kiểm tra của tôi'),
             centerTitle: true,
@@ -42,6 +40,18 @@ class Exercise extends StatelessWidget {
                     child: Container(
                         margin: EdgeInsets.only(top: 15, left: 12, right: 12),
                         child: Column(children: [
+                          Selector<ExerciseData, String>(
+                            selector: (_, dt) => dt.name,
+                            builder: (_, name, __) {
+                              Future.delayed(Duration(milliseconds: 500))
+                                  .then((_) {
+                                context
+                                    .read<NavigationHomeController>()
+                                    .updateName(name);
+                              });
+                              return Container();
+                            },
+                          ),
                           _buildExercise(),
                           _tabShowDialog = GestureDetector(
                               child: Container(),
@@ -66,46 +76,6 @@ class Exercise extends StatelessWidget {
                   );
           },
         ));
-  }
-
-  Widget _buildDrawer(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      width: MediaQuery.of(context).size.width * 0.8,
-      child: Column(children: [
-        Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.only(bottom: 0, top: 70),
-            child: Image.asset(urlIconProfile, scale: 128 / 150)),
-        Container(
-            padding: EdgeInsets.all(14),
-            margin: EdgeInsets.only(top: 15),
-            child: Selector<ExerciseData, String>(
-              selector: (_, dt) => dt.name,
-              builder: (_, name, __) {
-                return Text(name ?? "",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontFamily: 'monospace'));
-              },
-            )),
-        GestureDetector(
-          onTap: () async {
-            logout();
-          },
-          child: Container(
-            padding: EdgeInsets.all(14),
-            width: 250,
-            color: Colors.grey,
-            margin: EdgeInsets.symmetric(vertical: 15),
-            child: Text('Đăng xuất',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, fontFamily: 'monospace')),
-          ),
-        )
-      ]),
-    );
   }
 
   Widget _buildExercise() {

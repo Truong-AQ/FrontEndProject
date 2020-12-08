@@ -11,6 +11,7 @@ class SplashController extends StateNotifier<SplashData> {
     SplashData st = state;
     await Future.delayed(Duration(milliseconds: 1500));
     st.cookie = prefs.getString('cookie') ?? '';
+    st.role = prefs.getString('role') ?? '';
     cookie = st.cookie;
     st.init = true;
     if (mounted) state = st.copy();

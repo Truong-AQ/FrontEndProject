@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/screens/login/ui.dart';
-import 'package:project/screens/doctor/navigation_home/ui.dart';
+import 'package:project/screens/doctor/navigation_home/ui.dart' as doctor;
+import 'package:project/screens/patient/navigation_home/ui.dart' as patient;
 import 'package:project/screens/splash/controller.dart';
 import 'package:project/screens/splash/data.dart';
 import 'package:project/util/mixin.dart';
@@ -21,7 +22,9 @@ class Splash extends StatelessWidget with PortraitModeMixin {
     return context.select((SplashData dt) => dt.init)
         ? (context.select((SplashData dt) => dt.cookie) == ''
             ? Login.withDependency()
-            : NavigationHome.withDependency())
+            : (context.select((SplashData dt) => dt.role) == 'doctor'
+                ? doctor.NavigationHome.withDependency()
+                : patient.NavigationHome.withDependency()))
         : Scaffold(
             body: Stack(children: [
               Container(

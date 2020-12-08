@@ -10,4 +10,10 @@ class NavigationHomeController extends StateNotifier<NavigationHomeData> {
     st.tabIndex = tabIndex;
     if (mounted) state = st.copy();
   }
+
+  void updateName(String name) {
+    NavigationHomeData st = state;
+    st.name = name;
+    if (mounted) state = st.copy();
+  }
 }

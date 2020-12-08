@@ -60,16 +60,33 @@ class Login extends StatelessWidget {
           _tabShowDialog = GestureDetector(
             onTap: () async {
               showDialog(context: context, builder: (_) => Loading());
-              final error = await context.read<LoginController>().login();
-              Navigator.pop(context);
+              var error = await context.read<LoginController>().login();
               if (error == '') {
-                Navigator.pushReplacement(
-                    contextLogin,
-                    MaterialPageRoute(
-                        builder: (_) => doctor.NavigationHome.withDependency()));
-                contextLogin = null;
-                return;
+                error = await context.read<LoginController>().getRole();
+                Navigator.pop(context);
+                if (error == '') {
+                  final role = context.read<LoginData>().role;
+                  if (role == 'doctor') {
+                    Navigator.pushReplacement(
+                        contextLogin,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                doctor.NavigationHome.withDependency()));
+                    contextLogin = null;
+                  } else {
+                    Navigator.pushReplacement(
+                        contextLogin,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                patient.NavigationHome.withDependency()));
+                    contextLogin = null;
+                  }
+                  return;
+                }
+              } else {
+                Navigator.pop(context);
               }
+
               showDialogOfApp(context,
                   error: error,
                   onRetry: () => Future.delayed(Duration(milliseconds: 500))

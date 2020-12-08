@@ -1,5 +1,6 @@
 import 'package:project/resources/strings.dart';
 import 'package:project/resources/types.dart';
+import 'package:project/screens/doctor/group/api.dart';
 import 'api.dart' as api;
 import 'data.dart';
 import 'package:project/util/variable.dart';
@@ -28,6 +29,23 @@ class LoginController extends StateNotifier<LoginData> {
       prefs.setString('cookie', cookie);
       return '';
     }
+  }
+
+  Future<String> getRole() async {
+    LoginData st = state;
+    final res = await getGroup();
+    if (res is AppError && res.description != errorRoleApp) {
+      return res.description;
+    }
+    if (res is AppError && res.description == errorRoleApp) {
+      st.role = 'patient';
+      if (mounted) state = st.copy();
+    } else {
+      st.role = 'doctor';
+      if (mounted) state = st.copy();
+    }
+    prefs.setString('role', st.role);
+    return '';
   }
 
   void setName(String name) {

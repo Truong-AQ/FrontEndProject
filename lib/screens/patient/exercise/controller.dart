@@ -65,7 +65,7 @@ class ExerciseController extends StateNotifier<ExerciseData> {
         }
       }
     }
-    if (!st.equalTest(test)) {
+    if (!st.equalTest(test) || (st.test.length == 0 && test.length == 0)) {
       st.name = name;
       nameTestTaker = name;
       st.test = test;
