@@ -3,6 +3,7 @@ import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/screens/patient/result/controller.dart';
 import 'package:project/screens/patient/result/data.dart';
 import 'package:project/screens/patient/result_attempt/ui.dart';
+import 'package:project/util/function/drawer.dart';
 import 'package:project/util/function/show_dialog_general.dart';
 import 'package:project/widgets/icon_refresh.dart';
 import 'package:project/widgets/loading.dart';
@@ -22,6 +23,7 @@ class _ResultState extends State<Result> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: buildDrawerPatient(context),
         appBar: AppBar(
             title: Text('Kết quả của tôi'),
             centerTitle: true,

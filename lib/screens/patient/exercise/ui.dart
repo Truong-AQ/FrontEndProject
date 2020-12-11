@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/screens/patient/navigation_home/controller.dart';
+import 'package:project/util/function/drawer.dart';
 import 'package:project/util/variable.dart';
 import 'package:project/screens/patient/exercise/controller.dart';
 import 'package:project/screens/patient/test/ui.dart';
@@ -23,6 +24,7 @@ class Exercise extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: buildDrawerPatient(context),
         appBar: AppBar(
             title: Text('Bài kiểm tra của tôi'),
             centerTitle: true,

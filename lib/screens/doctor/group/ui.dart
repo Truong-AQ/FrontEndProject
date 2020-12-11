@@ -4,6 +4,7 @@ import 'package:project/resources/types.dart';
 import 'package:project/screens/doctor/group/controller.dart';
 import 'package:project/screens/doctor/group/data.dart';
 import 'package:project/screens/item_check/ui.dart';
+import 'package:project/util/function/drawer.dart';
 import 'package:project/util/function/show_dialog_general.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
@@ -20,12 +21,16 @@ class Group extends StatelessWidget {
   GestureDetector _tabShowDialog;
   @override
   Widget build(BuildContext context) {
-    return context.select((GroupData dt) => dt.init)
-        ? Scaffold(
-            appBar: AppBar(title: Text('Nhóm'), centerTitle: true, actions: [
-              IconRefresh(),
-            ]),
-            body: Selector<GroupData, int>(
+    return Scaffold(
+      drawer: buildDrawerDoctor(context),
+      appBar: AppBar(title: Text('Nhóm'), centerTitle: true, actions: [
+        IconRefresh(),
+      ]),
+      floatingActionButton:
+          FloatingActionButton(onPressed: () {}, child: Icon(Icons.add)),
+      body: !context.select((GroupData dt) => dt.init)
+          ? Loading()
+          : Selector<GroupData, int>(
               selector: (_, dt) => dt.items.length,
               builder: (context, l, _) {
                 return Column(
@@ -57,8 +62,7 @@ class Group extends StatelessWidget {
                 );
               },
             ),
-          )
-        : Loading();
+    );
   }
 }
 

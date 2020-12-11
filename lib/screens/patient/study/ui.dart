@@ -4,6 +4,7 @@ import 'package:project/resources/strings.dart';
 import 'package:project/screens/patient/object_study/ui.dart';
 import 'package:project/screens/patient/study/controller.dart';
 import 'package:project/screens/patient/study/data.dart';
+import 'package:project/util/function/drawer.dart';
 import 'package:project/util/function/show_dialog_general.dart';
 import 'package:project/util/variable.dart';
 import 'package:project/widgets/icon_refresh.dart';
@@ -24,6 +25,7 @@ class _StudyState extends State<Study> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: buildDrawerPatient(context),
         appBar: AppBar(actions: [
           IconRefresh(
             onPress: () => context.read<StudyController>().initStudy(),
