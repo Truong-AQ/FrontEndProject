@@ -10,9 +10,11 @@ import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class ResultTestTime extends StatelessWidget {
-  static Widget withDependency({String dataUri, String label}) {
+  static Widget withDependency(
+      {String dataUri, String label, List<String> listTestTaker}) {
     return StateNotifierProvider<ResultTestTimeController, ResultTestTimeData>(
-        create: (_) => ResultTestTimeController(dataUri),
+        create: (_) =>
+            ResultTestTimeController(dataUri, listTestTaker: listTestTaker),
         child: ResultTestTime(label: label));
   }
 

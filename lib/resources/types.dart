@@ -10,7 +10,7 @@ class CommonDataQuestion {
   }
 }
 
-enum TypeItemChecker { TESTTAKER, TEST }
+enum TypeItemChecker { TESTTAKER, TEST, GROUP }
 
 // ten loi, so lan loi
 abstract class InfoError {

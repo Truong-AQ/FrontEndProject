@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/screens/doctor/group/ui.dart';
+import 'package:project/screens/doctor/result/ui.dart';
 import 'package:project/screens/doctor/test_taker/ui.dart';
 import 'package:project/util/variable.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +51,8 @@ class NavigationHome extends StatelessWidget {
         currentIndex: index,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Nhóm'),
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Bài'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.bar_chart), label: 'Kết quả'),
           BottomNavigationBarItem(
               icon: Icon(Icons.person), label: 'Người làm bài'),
           // BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Kết quả')
@@ -59,6 +61,8 @@ class NavigationHome extends StatelessWidget {
           context.read<NavigationHomeController>().updateTabIndex(tabIndex);
           if (tabIndex == 2 && _widgets[tabIndex] is Container) {
             _widgets[2] = TestTaker.withDependency();
+          } else if (tabIndex == 1 && _widgets[tabIndex] is Container) {
+            _widgets[1] = Result.withDependency();
           }
         });
   }

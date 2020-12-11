@@ -3,7 +3,8 @@ final String wrongLogin = 'Sai tên đăng nhập hoặc mật khẩu';
 final String missLogin = 'Vui lòng điền đủ tên đăng nhập và mật khẩu';
 final String noNetwork = 'Kiểm tra kết nối mạng và thử lại';
 final String noMatchPassword = 'Mật khẩu không khớp';
-final String passwordNoValid = 'Mật khẩu phải gồm 1 ký tự in thường và ít nhất 4 ký tự';
+final String passwordNoValid =
+    'Mật khẩu phải gồm 1 ký tự in thường và ít nhất 4 ký tự';
 final String userExist = 'Tên đăng nhập đã tồn tại';
 final String cookieExpiredApp = 'Phiên đăng nhập của bạn đã hết';
 final String cookieExpiredServer =
@@ -14,6 +15,7 @@ final String errorRoleServer =
 final String errorRoleApp =
     'Bạn không có quyền xem đâu. Đừng chờ đợi nữa. A hi hi';
 final String saveSucess = 'Lưu thành công';
+final String registerSuccess = 'Đăng ký tài khoản thành công';
 final String urlIconProfile = 'assets/images/ic_profile.png';
 final String urlIconLoadingImage = 'assets/images/sand_clock.png';
 final String urlIconLoading = 'assets/images/loading.gif';

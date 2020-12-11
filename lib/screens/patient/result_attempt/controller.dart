@@ -8,8 +8,9 @@ import 'package:state_notifier/state_notifier.dart';
 import 'data.dart';
 
 class ResultTestTimeController extends StateNotifier<ResultTestTimeData> {
-  ResultTestTimeController(String dataUri)
-      : super(ResultTestTimeData(dataUri: dataUri)) {
+  ResultTestTimeController(String dataUri, {List<String> listTestTaker})
+      : super(ResultTestTimeData(
+            dataUri: dataUri, listTestTaker: listTestTaker)) {
     init();
   }
   Future<void> init() async {
@@ -29,8 +30,12 @@ class ResultTestTimeController extends StateNotifier<ResultTestTimeData> {
     final json = jsonDecode(body);
     List<dynamic> listData = json['data'];
     for (var dt in listData) {
-      if (dt['ttaker'] == nameTestTaker)
+      if (st.listTestTaker.length != 0) {
+        if (dt['ttaker'] == nameTestTaker)
+          st.list.add(ResultByTime(time: dt['time'], id: dt['id']));
+      } else {
         st.list.add(ResultByTime(time: dt['time'], id: dt['id']));
+      }
     }
     if (json['total'] > page) {
       await _getResultTesTimeByPage(st, page: page + 1);

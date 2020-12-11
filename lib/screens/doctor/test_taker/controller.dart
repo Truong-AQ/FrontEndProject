@@ -14,19 +14,18 @@ class TestTakerController extends StateNotifier<TestTakerData> {
   }
 
   Future<bool> getTestTaker(List items, {String classUri}) async {
-    if (items.length == 0) {
-      TestTakerData st = state;
-      final json = await api.getTestTaker(classUri: classUri);
-      if (!checkResponseError(json, st)) return false;
-      var children = json['tree'];
-      if (children is Map) children = children['children'];
-      for (var child in children) {
-        items.add(TesttakerItem(
-            type: child['type'],
-            data: child['data'],
-            id: child['attributes']['id'],
-            dataUri: child['attributes']['data-uri']));
-      }
+    items.clear();
+    TestTakerData st = state;
+    final json = await api.getTestTaker(classUri: classUri);
+    if (!checkResponseError(json, st)) return false;
+    var children = json['tree'];
+    if (children is Map) children = children['children'];
+    for (var child in children) {
+      items.add(TesttakerItem(
+          type: child['type'],
+          data: child['data'],
+          id: child['attributes']['id'],
+          dataUri: child['attributes']['data-uri']));
     }
     return true;
   }

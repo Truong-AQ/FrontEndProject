@@ -1,8 +1,9 @@
 import 'package:project/resources/types.dart';
 
 class ResultTestTimeData extends InfoError {
-  ResultTestTimeData({this.dataUri});
+  ResultTestTimeData({this.dataUri, this.listTestTaker});
   bool init = false;
+  List<String> listTestTaker = [];
   List<ResultByTime> list = [];
   String dataUri;
   ResultTestTimeData copy() {
@@ -10,6 +11,7 @@ class ResultTestTimeData extends InfoError {
     clone.dataUri = dataUri;
     clone.init = init;
     clone.list = list;
+    clone.listTestTaker = listTestTaker;
     clone.setValue(error: error, numOfError: numOfError);
     return clone;
   }

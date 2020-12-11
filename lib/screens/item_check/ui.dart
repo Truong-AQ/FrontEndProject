@@ -12,81 +12,87 @@ import 'package:provider/provider.dart';
 // ignore: must_be_immutable
 class ItemsCheck extends StatelessWidget {
   static Widget withDependency(
-      {TypeItemChecker type, List checker, String resourceUri, String title}) {
+      {TypeItemChecker type,
+      List checker,
+      String resourceUri,
+      String title,
+      String titleSaveSuccess}) {
     return StateNotifierProvider<ItemsCheckController, ItemsCheckData>(
         create: (_) => ItemsCheckController(
             type: type, checker: checker, resourceUri: resourceUri)
           ..initItemCheck(),
-        child: ItemsCheck(title: title));
+        child: ItemsCheck(title: title, titleSaveSuccess: titleSaveSuccess));
   }
 
-  ItemsCheck({this.title});
-  final String title;
+  ItemsCheck({this.title, this.titleSaveSuccess});
+  final String title, titleSaveSuccess;
   GestureDetector _tabShowDialog;
   @override
   Widget build(BuildContext context) {
-    return context.select((ItemsCheckData dt) => dt.init)
-        ? Scaffold(
-            appBar: AppBar(title: Text(title), centerTitle: true),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: 10),
-                  _tabShowDialog = GestureDetector(
-                      child: Container(),
-                      onTap: () {
-                        String error = context.read<ItemsCheckData>().error;
-                        showDialogOfApp(context,
-                            error: error,
-                            onRetry: () => context
-                                .read<ItemsCheckController>()
-                                .initItemCheck());
-                      }),
-                  Selector<ItemsCheckData, int>(
-                    selector: (_, dt) => dt.numOfError,
-                    builder: (_, __, ___) {
-                      Future.delayed(Duration(milliseconds: 500))
-                          .then((_) => _tabShowDialog.onTap());
-                      return Container();
-                    },
-                  ),
-                  Selector<ItemsCheckData, int>(
-                    selector: (_, dt) => dt.items.length,
-                    builder: (context, l, _) {
-                      return Column(
-                          children: context
-                              .select((ItemsCheckData dt) => dt.items)
-                              .map((e) => _ItemCheck(item: e))
-                              .toList());
-                    },
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      showDialog(
-                          useRootNavigator: false,
-                          context: context,
-                          builder: (_) => Loading());
-                      bool ok =
-                          await context.read<ItemsCheckController>().saveItem();
-                      Navigator.pop(context);
-                      if (ok) showDialogOfApp(context, message: saveSucess);
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(10),
-                      padding: EdgeInsets.all(10),
-                      color: Colors.red.withAlpha(35),
-                      child: Text('Lưu',
-                          style: TextStyle(
-                              fontFamily: 'monospace',
-                              fontSize: 18,
-                              color: Colors.black)),
+    return Scaffold(
+        appBar: AppBar(title: Text(title), centerTitle: true),
+        body: !context.select((ItemsCheckData dt) => dt.init)
+            ? Loading(backgroundColor: Colors.white)
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 10),
+                    _tabShowDialog = GestureDetector(
+                        child: Container(),
+                        onTap: () {
+                          String error = context.read<ItemsCheckData>().error;
+                          showDialogOfApp(context,
+                              error: error,
+                              onRetry: () => context
+                                  .read<ItemsCheckController>()
+                                  .initItemCheck());
+                        }),
+                    Selector<ItemsCheckData, int>(
+                      selector: (_, dt) => dt.numOfError,
+                      builder: (_, __, ___) {
+                        Future.delayed(Duration(milliseconds: 500))
+                            .then((_) => _tabShowDialog.onTap());
+                        return Container();
+                      },
                     ),
-                  ),
-                  SizedBox(height: 10),
-                ],
-              ),
-            ))
-        : Loading();
+                    Selector<ItemsCheckData, int>(
+                      selector: (_, dt) => dt.items.length,
+                      builder: (context, l, _) {
+                        return Column(
+                            children: context
+                                .select((ItemsCheckData dt) => dt.items)
+                                .map((e) => _ItemCheck(item: e))
+                                .toList());
+                      },
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        showDialog(
+                            useRootNavigator: false,
+                            context: context,
+                            builder: (_) => Loading());
+                        bool ok = await context
+                            .read<ItemsCheckController>()
+                            .saveItem();
+                        Navigator.pop(context);
+                        if (ok)
+                          showDialogOfApp(context, message: titleSaveSuccess);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(10),
+                        color: Colors.red.withAlpha(35),
+                        child: Text('Lưu',
+                            style: TextStyle(
+                                fontFamily: 'monospace',
+                                fontSize: 18,
+                                color: Colors.black)),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                  ],
+                ),
+              ));
   }
 }
 

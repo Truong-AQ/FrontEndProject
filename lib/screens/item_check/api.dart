@@ -28,7 +28,7 @@ Future<dynamic> _saveData(
     {TypeItemChecker type, List instances, String resourceUri}) async {
   final uri = Uri.http(
       baseUrl,
-      type == TypeItemChecker.TEST
+      type == TypeItemChecker.TEST || type == TypeItemChecker.GROUP
           ? '/tao/GenerisTree/setValues'
           : '/tao/GenerisTree/setReverseValues');
   final http.Response response = await http.post(uri, headers: {
@@ -48,7 +48,9 @@ Future<http.Response> _getData({TypeItemChecker type, String classUri}) async {
   final Map<String, String> queryParams = {
     'rootNode': type == TypeItemChecker.TESTTAKER
         ? 'http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject'
-        : 'http://www.tao.lu/Ontologies/TAODelivery.rdf#AssembledDelivery',
+        : (type == TypeItemChecker.GROUP
+            ? 'http://www.tao.lu/Ontologies/TAOGroup.rdf#Group'
+            : 'http://www.tao.lu/Ontologies/TAODelivery.rdf#AssembledDelivery'),
   };
   if (classUri != null) queryParams['classUri'] = classUri;
   final uri = Uri.http(baseUrl, '/tao/GenerisTree/getData', queryParams);

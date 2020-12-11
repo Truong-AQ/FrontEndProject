@@ -1,0 +1,61 @@
+import 'package:project/screens/patient/result/api.dart' as api;
+import 'package:project/util/function/convert_response.dart';
+import 'package:state_notifier/state_notifier.dart';
+
+import 'data.dart';
+
+class ResultController extends StateNotifier<ResultData> {
+  ResultController() : super(ResultData());
+  Future<void> initResult() async {
+    ResultData st = state;
+    _startProcess(st);
+    await _getData(st);
+    _doneProcess(st);
+  }
+
+  Future<void> _getData(ResultData st) async {
+    bool got = await _getResult(st.result, st);
+    if (!got) return;
+  }
+
+  Future<bool> _getResult(List<ResultTest> listResultTest, ResultData st,
+      {String classUri}) async {
+    final json = await api.getResult(classUri: classUri);
+    if (!checkResponseError(json, st)) return false;
+
+    var tree = json['tree'];
+    List<dynamic> children;
+    if (tree is List) {
+      children = tree;
+    } else {
+      children = tree['children'];
+    }
+    for (var child in children) {
+      String type = child['type'];
+      if (type == 'class') {
+        final bool got = await _getResult(listResultTest, st,
+            classUri: child['attributes']['data-uri']);
+        if (!got) {
+          return false;
+        }
+      } else {
+        listResultTest.add(ResultTest(
+            type: type,
+            label: child['data'],
+            dataUri: child['attributes']['data-uri']));
+      }
+    }
+    return true;
+  }
+
+  void _startProcess(ResultData st) {
+    st.error = '';
+    st.process = true;
+    if (mounted) state = st.copy();
+  }
+
+  void _doneProcess(ResultData st) {
+    st.process = false;
+    if (mounted) state = st.copy();
+  }
+}

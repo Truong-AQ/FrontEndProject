@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:project/resources/strings.dart';
 import 'package:project/resources/types.dart';
 import 'package:project/screens/doctor/group/controller.dart';
 import 'package:project/screens/doctor/group/data.dart';
@@ -132,6 +133,7 @@ class _GroupUI extends StatelessWidget {
                                     builder: (_) => ItemsCheck.withDependency(
                                         type: TypeItemChecker.TEST,
                                         title: item.data,
+                                        titleSaveSuccess: saveSucess,
                                         checker: item.checker['test'],
                                         resourceUri: item.dataUri)));
                           },

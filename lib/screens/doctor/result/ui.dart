@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:project/screens/patient/result/controller.dart';
-import 'package:project/screens/patient/result/data.dart';
+import 'controller.dart';
+import 'data.dart';
 import 'package:project/screens/patient/result_attempt/ui.dart';
 import 'package:project/util/function/drawer.dart';
 import 'package:project/util/function/show_dialog_general.dart';
-import 'package:project/util/variable.dart';
 import 'package:project/widgets/icon_refresh.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +23,7 @@ class _ResultState extends State<Result> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: buildDrawerPatient(context),
+        drawer: buildDrawerDoctor(context),
         appBar: AppBar(
             title: Text('Kết quả của tôi'),
             centerTitle: true,
@@ -95,9 +94,7 @@ class _ResultState extends State<Result> {
                   context,
                   MaterialPageRoute(
                       builder: (_) => ResultTestTime.withDependency(
-                          listTestTaker: [nameTestTaker],
-                          dataUri: dataUri,
-                          label: text)));
+                          listTestTaker: [], dataUri: dataUri, label: text)));
             },
             child: Container(
                 padding: EdgeInsets.all(7),

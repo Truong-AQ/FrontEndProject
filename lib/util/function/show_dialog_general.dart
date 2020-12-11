@@ -5,7 +5,11 @@ import 'package:project/util/function/logout.dart';
 import 'package:project/widgets/show_error.dart';
 
 void showDialogOfApp(BuildContext context,
-    {String error, Function onRetry, Type typeWidgetCurrent, String message}) {
+    {String error,
+    Function onRetry,
+    Function onNext,
+    Type typeWidgetCurrent,
+    String message}) {
   if (error == noNetwork)
     _showDialogNoNetwork(context, onRetry);
   else if (error == cookieExpiredApp)
@@ -19,10 +23,10 @@ void showDialogOfApp(BuildContext context,
     _showDialogWarningAccount(context, error);
   else if (error == clientError)
     _showDialogClientError(context, onRetry);
-  else if (message != null) _showDialogMsg(context, message);
+  else if (message != null) _showDialogMsg(context, message, onNext);
 }
 
-void _showDialogMsg(BuildContext context, String message) {
+void _showDialogMsg(BuildContext context, String message, Function onNext) {
   showDialog(
       context: context,
       barrierDismissible: false,
@@ -30,6 +34,7 @@ void _showDialogMsg(BuildContext context, String message) {
             TextButton(
                 onPressed: () {
                   Navigator.pop(context);
+                  if (onNext != null) onNext();
                 },
                 child: Text('OK'))
           ]));

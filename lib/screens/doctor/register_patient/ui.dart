@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project/resources/strings.dart';
+import 'package:project/resources/types.dart';
+import 'package:project/screens/item_check/ui.dart';
 import 'package:project/util/function/show_dialog_general.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
@@ -117,6 +119,17 @@ class RegisterPatient extends StatelessWidget {
                       error: error,
                       onRetry: () => Future.delayed(Duration(milliseconds: 500))
                           .then((_) => _tabShowDialog.onTap()));
+                } else {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => ItemsCheck.withDependency(
+                              type: TypeItemChecker.GROUP,
+                              titleSaveSuccess: registerSuccess,
+                              resourceUri:
+                                  context.read<RegisterPatientData>().uri,
+                              checker: [],
+                              title: 'Chọn nhóm cho bệnh nhân')));
                 }
               },
               child: Container(

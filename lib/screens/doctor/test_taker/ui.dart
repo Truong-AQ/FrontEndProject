@@ -32,11 +32,12 @@ class TestTaker extends StatelessWidget {
       ]),
       floatingActionButton: FloatingActionButton(
           heroTag: 'test-taker',
-          onPressed: () {
-            Navigator.push(
+          onPressed: () async {
+            await Navigator.push(
                 contextHome,
                 MaterialPageRoute(
                     builder: (_) => RegisterPatient.withDependency()));
+            context.read<TestTakerController>().initTestTaker();
           },
           child: Icon(Icons.add)),
       body: !context.select((TestTakerData dt) => dt.init)
