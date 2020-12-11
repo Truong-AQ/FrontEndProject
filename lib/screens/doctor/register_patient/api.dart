@@ -7,7 +7,6 @@ import 'package:project/util/function/convert_response.dart';
 Future<dynamic> addInstance() async {
   try {
     http.Response response = await _addInstance();
-    print('addInstance: ${response.body}');
     return convertResponse1(response);
   } on Exception catch (e) {
     return convertResponseException(e);
@@ -17,7 +16,6 @@ Future<dynamic> addInstance() async {
 Future<dynamic> checkLogin(String loginName) async {
   try {
     http.Response response = await _checkLogin(loginName);
-    print('checkLogin: ${response.body}');
     return convertResponse1(response);
   } on Exception catch (e) {
     return convertResponseException(e);
@@ -27,7 +25,6 @@ Future<dynamic> checkLogin(String loginName) async {
 Future<dynamic> getToken(RegisterPatientData dt) async {
   try {
     http.Response response = await _getToken(dt);
-    print('getToken: ${response.body}');
     return convertResponse8(response);
   } on Exception catch (e) {
     return convertResponseException(e);
@@ -37,7 +34,6 @@ Future<dynamic> getToken(RegisterPatientData dt) async {
 Future<dynamic> updateInfo(RegisterPatientData dt) async {
   try {
     http.Response response = await _updateInfo(dt);
-    print('updateInfo: ${response.body}');
     if (response.body == '') return '';
     return convertResponse2(response);
   } on Exception catch (e) {
@@ -48,7 +44,6 @@ Future<dynamic> updateInfo(RegisterPatientData dt) async {
 Future<dynamic> getTokenUser(RegisterPatientData dt) async {
   try {
     http.Response response = await _getTokenUser(dt);
-    print('getTokenUser: ${response.body}');
     return convertResponse8(response);
   } on Exception catch (e) {
     return convertResponseException(e);
@@ -58,7 +53,6 @@ Future<dynamic> getTokenUser(RegisterPatientData dt) async {
 Future<dynamic> updateInfoUser(RegisterPatientData dt) async {
   try {
     http.Response response = await _updateInfoUser(dt);
-    print('updateInfoUser: ${response.body}');
     if (response.body == '') return '';
     return convertResponse2(response);
   } on Exception catch (e) {
