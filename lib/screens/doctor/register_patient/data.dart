@@ -1,10 +1,13 @@
 class RegisterPatientData {
-  String name, password, role;
+  String firstName, lastName, email, loginName, password, againPassword;
   RegisterPatientData copy() {
     final clone = RegisterPatientData();
-    clone.name = name;
+    clone.firstName = firstName;
+    clone.lastName = lastName;
+    clone.email = email;
+    clone.loginName = loginName;
     clone.password = password;
-    clone.role = role;
+    clone.againPassword = againPassword;
     return clone;
   }
 }
