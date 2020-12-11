@@ -26,7 +26,9 @@ class TestTaker extends StatelessWidget {
     return Scaffold(
       drawer: buildDrawerDoctor(context),
       appBar: AppBar(title: Text('Người làm bài'), centerTitle: true, actions: [
-        IconRefresh(),
+        IconRefresh(onPress: () {
+          context.read<TestTakerController>().initTestTaker();
+        }),
       ]),
       floatingActionButton: FloatingActionButton(
           heroTag: 'test-taker',

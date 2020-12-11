@@ -10,7 +10,12 @@ void showDialogOfApp(BuildContext context,
     _showDialogNoNetwork(context, onRetry);
   else if (error == cookieExpiredApp)
     _showDialogLogout(context, typeWidgetCurrent);
-  else if (error == wrongLogin || error == missLogin || error == errorRoleApp)
+  else if (error == wrongLogin ||
+      error == missLogin ||
+      error == errorRoleApp ||
+      error == noMatchPassword ||
+      error == passwordNoValid ||
+      error == userExist)
     _showDialogWarningAccount(context, error);
   else if (error == clientError)
     _showDialogClientError(context, onRetry);

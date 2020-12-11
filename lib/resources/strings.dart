@@ -2,6 +2,9 @@ const String baseUrl = 'aigle.blife.ai';
 final String wrongLogin = 'Sai tên đăng nhập hoặc mật khẩu';
 final String missLogin = 'Vui lòng điền đủ tên đăng nhập và mật khẩu';
 final String noNetwork = 'Kiểm tra kết nối mạng và thử lại';
+final String noMatchPassword = 'Mật khẩu không khớp';
+final String passwordNoValid = 'Mật khẩu phải gồm 1 ký tự in thường và ít nhất 4 ký tự';
+final String userExist = 'Tên đăng nhập đã tồn tại';
 final String cookieExpiredApp = 'Phiên đăng nhập của bạn đã hết';
 final String cookieExpiredServer =
     'Access denied. Please renew your authentication!';

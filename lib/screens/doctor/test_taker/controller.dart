@@ -17,7 +17,6 @@ class TestTakerController extends StateNotifier<TestTakerData> {
     if (items.length == 0) {
       TestTakerData st = state;
       final json = await api.getTestTaker(classUri: classUri);
-      print(json);
       if (!checkResponseError(json, st)) return false;
       var children = json['tree'];
       if (children is Map) children = children['children'];

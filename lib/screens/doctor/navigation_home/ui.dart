@@ -57,6 +57,9 @@ class NavigationHome extends StatelessWidget {
         ],
         onTap: (tabIndex) {
           context.read<NavigationHomeController>().updateTabIndex(tabIndex);
+          if (tabIndex == 2 && _widgets[tabIndex] is Container) {
+            _widgets[2] = TestTaker.withDependency();
+          }
         });
   }
 
@@ -65,7 +68,7 @@ class NavigationHome extends StatelessWidget {
   final List<Widget> _widgets = [
     Group.withDependency(),
     Container(),
-    TestTaker.withDependency(),
+    Container(),
     // Container()
   ];
 }

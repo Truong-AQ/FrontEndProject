@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project/resources/strings.dart';
+import 'package:project/util/function/show_dialog_general.dart';
+import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 import 'controller.dart';
 import 'data.dart';
@@ -105,7 +107,18 @@ class RegisterPatient extends StatelessWidget {
                         InputDecoration(hintText: 'Nhập lại mật khẩu'))),
             SizedBox(height: 40),
             _tabShowDialog = GestureDetector(
-              onTap: () async {},
+              onTap: () async {
+                showDialog(context: context, builder: (_) => Loading());
+                String error =
+                    await context.read<RegisterPatientController>().register();
+                Navigator.pop(context);
+                if (error != '') {
+                  showDialogOfApp(context,
+                      error: error,
+                      onRetry: () => Future.delayed(Duration(milliseconds: 500))
+                          .then((_) => _tabShowDialog.onTap()));
+                }
+              },
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.symmetric(vertical: 15),

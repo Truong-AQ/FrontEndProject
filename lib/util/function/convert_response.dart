@@ -126,6 +126,26 @@ dynamic convertResponse7(http.Response response) {
     return jsonDecode(res);
 }
 
+dynamic convertResponse8(http.Response response) {
+  final res = response.body;
+  if (res.contains(cookieExpiredServer))
+    return AppError(description: cookieExpiredApp);
+  else if (res.contains(errorRoleServer)) {
+    return AppError(description: errorRoleApp);
+  } else {
+    int pos = res.indexOf("id='token'") + "id='token'".length;
+    int posToken1 = pos, posToken2;
+    while (res[posToken1] != '"') {
+      posToken1++;
+    }
+    posToken2 = posToken1 + 1;
+    while (res[posToken2] != '"') {
+      posToken2++;
+    }
+    return res.substring(posToken1 + 1, posToken2);
+  }
+}
+
 dynamic convertResponseException(Exception e) {
   if (e is SocketException)
     return AppError(description: noNetwork);
