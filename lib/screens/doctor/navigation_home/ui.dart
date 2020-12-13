@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project/screens/doctor/group/ui.dart';
 import 'package:project/screens/doctor/result/ui.dart';
+import 'package:project/screens/doctor/test/ui.dart';
 import 'package:project/screens/doctor/test_taker/ui.dart';
 import 'package:project/util/variable.dart';
 import 'package:provider/provider.dart';
@@ -48,14 +49,18 @@ class NavigationHome extends StatelessWidget {
 
   Widget _buildBottomNavigationBar(int index, BuildContext context) {
     return BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: index,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Nhóm'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.group),
+              label: 'Nhóm',
+              backgroundColor: Colors.orange),
           BottomNavigationBarItem(
               icon: Icon(Icons.bar_chart), label: 'Kết quả'),
           BottomNavigationBarItem(
               icon: Icon(Icons.person), label: 'Người làm bài'),
-          // BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Kết quả')
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Bài')
         ],
         onTap: (tabIndex) {
           context.read<NavigationHomeController>().updateTabIndex(tabIndex);
@@ -63,16 +68,18 @@ class NavigationHome extends StatelessWidget {
             _widgets[2] = TestTaker.withDependency();
           } else if (tabIndex == 1 && _widgets[tabIndex] is Container) {
             _widgets[1] = Result.withDependency();
+          } else if (tabIndex == 3 && _widgets[tabIndex] is Container) {
+            _widgets[3] = Test.withDependency();
           }
         });
   }
 
   final List<GlobalKey<NavigatorState>> _navigatorKeys =
-      List.generate(3, (index) => GlobalKey());
+      List.generate(4, (index) => GlobalKey());
   final List<Widget> _widgets = [
     Group.withDependency(),
     Container(),
     Container(),
-    // Container()
+    Container()
   ];
 }

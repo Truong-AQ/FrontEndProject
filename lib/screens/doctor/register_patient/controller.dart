@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:project/resources/strings.dart';
 import 'package:project/resources/types.dart';
 import 'package:project/screens/doctor/register_patient/api.dart';

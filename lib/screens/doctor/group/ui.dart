@@ -107,6 +107,7 @@ class _GroupUI extends StatelessWidget {
                                     builder: (_) => ItemsCheck.withDependency(
                                         type: TypeItemChecker.TESTTAKER,
                                         title: item.data,
+                                        titleSaveSuccess: saveSucess,
                                         checker: item.checker['test-taker'],
                                         resourceUri: item.dataUri)));
                           },
@@ -143,7 +144,7 @@ class _GroupUI extends StatelessWidget {
                                   color: Colors.blue.withAlpha(50)),
                               margin: EdgeInsets.all(10),
                               padding: EdgeInsets.all(10),
-                              child: Text('Giao bài cho nhóm',
+                              child: Text('Chọn bài giao cho nhóm',
                                   style: TextStyle(
                                       fontFamily: 'monospace',
                                       fontSize: 14,

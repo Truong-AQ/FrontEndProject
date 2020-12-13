@@ -10,51 +10,38 @@ class ResultController extends StateNotifier<ResultData> {
   Future<void> initResult() async {
     ResultData st = state;
     _startProcess(st);
-    await _getData(st);
+    await getResult(st.result);
     _doneProcess(st);
   }
 
-  Future<void> _getData(ResultData st) async {
-    List<ResultTest> listResultTest = [];
-    bool got = await _getResult(listResultTest, st);
-    if (!got) return;
-    //remove other test in result
-    st.result = [];
+  Future<bool> getResult(List<ResultTest> items, {String classUri}) async {
+    items.clear();
+    ResultData st = state;
+    final json = await api.getResult(classUri: classUri);
+    if (!checkResponseError(json, st)) return false;
+    var children = json['tree'];
+    if (children is Map) children = children['children'];
+    for (var child in children) {
+      items.add(ResultTest(
+          type: child['type'],
+          data: child['data'],
+          id: child['attributes']['id'],
+          dataUri: child['attributes']['data-uri']));
+    }
+    List<ResultTest> tmp = [];
     for (int i = 0; i < testOfUser.length; i++) {
-      for (int j = 0; j < listResultTest.length; j++)
-        if (testOfUser[i].label == listResultTest[j].label) {
-          st.result.add(listResultTest[j]);
+      for (int j = 0; j < items.length; j++)
+        if (testOfUser[i].label == items[j].data) {
+          tmp.add(items[j]);
           break;
         }
     }
-  }
-
-  Future<bool> _getResult(List<ResultTest> listResultTest, ResultData st,
-      {String classUri}) async {
-    final json = await api.getResult(classUri: classUri);
-    if (!checkResponseError(json, st)) return false;
-
-    var tree = json['tree'];
-    List<dynamic> children;
-    if (tree is List) {
-      children = tree;
-    } else {
-      children = tree['children'];
+    for (int i = 0; i < items.length; i++) {
+      if (items[i].type == 'class') tmp.add(items[i]);
     }
-    for (var child in children) {
-      String type = child['type'];
-      if (type == 'class') {
-        final bool got = await _getResult(listResultTest, st,
-            classUri: child['attributes']['data-uri']);
-        if (!got) {
-          return false;
-        }
-      } else {
-        listResultTest.add(ResultTest(
-            type: type,
-            label: child['data'],
-            dataUri: child['attributes']['data-uri']));
-      }
+    items.clear();
+    for (int i = 0; i < tmp.length; i++) {
+      items.add(tmp[i]);
     }
     return true;
   }

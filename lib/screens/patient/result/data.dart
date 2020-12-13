@@ -13,6 +13,7 @@ class ResultData extends InfoError {
 }
 
 class ResultTest {
-  String type, label, dataUri;
-  ResultTest({this.type, this.label, this.dataUri});
+  String type, data, dataUri, id;
+  List<ResultTest> items = [];
+  ResultTest({this.type, this.data, this.dataUri, this.id});
 }

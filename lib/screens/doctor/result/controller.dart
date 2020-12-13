@@ -9,41 +9,23 @@ class ResultController extends StateNotifier<ResultData> {
   Future<void> initResult() async {
     ResultData st = state;
     _startProcess(st);
-    await _getData(st);
+    await getResult(st.result);
     _doneProcess(st);
   }
 
-  Future<void> _getData(ResultData st) async {
-    bool got = await _getResult(st.result, st);
-    if (!got) return;
-  }
-
-  Future<bool> _getResult(List<ResultTest> listResultTest, ResultData st,
-      {String classUri}) async {
+  Future<bool> getResult(List<ResultTest> items, {String classUri}) async {
+    items.clear();
+    ResultData st = state;
     final json = await api.getResult(classUri: classUri);
     if (!checkResponseError(json, st)) return false;
-
-    var tree = json['tree'];
-    List<dynamic> children;
-    if (tree is List) {
-      children = tree;
-    } else {
-      children = tree['children'];
-    }
+    var children = json['tree'];
+    if (children is Map) children = children['children'];
     for (var child in children) {
-      String type = child['type'];
-      if (type == 'class') {
-        final bool got = await _getResult(listResultTest, st,
-            classUri: child['attributes']['data-uri']);
-        if (!got) {
-          return false;
-        }
-      } else {
-        listResultTest.add(ResultTest(
-            type: type,
-            label: child['data'],
-            dataUri: child['attributes']['data-uri']));
-      }
+      items.add(ResultTest(
+          type: child['type'],
+          data: child['data'],
+          id: child['attributes']['id'],
+          dataUri: child['attributes']['data-uri']));
     }
     return true;
   }
