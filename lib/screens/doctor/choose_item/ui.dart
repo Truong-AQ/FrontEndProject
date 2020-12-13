@@ -41,10 +41,13 @@ class ChooseItemUI extends StatelessWidget {
                         .then((_) => saveBT.onPressed()));
                 return;
               }
-              showDialogOfApp(context,
-                  error: error,
-                  onRetry: () => Future.delayed(Duration(milliseconds: 500))
-                      .then((_) => saveBT.onPressed()));
+              showDialog(context: context, builder: (_) => Material(
+                child: TextFormField(decoration: InputDecoration(
+                  hintText: error
+                ),
+                maxLines: 30,
+                initialValue: error,),
+              ));
             })
       ]),
       body: !context.select((ChooseItemData dt) => dt.init)
