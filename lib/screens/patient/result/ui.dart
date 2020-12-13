@@ -25,7 +25,7 @@ class _ResultState extends State<Result> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: buildDrawerDoctor(context),
+        drawer: buildDrawerPatient(context),
         appBar: AppBar(title: Text('Kết quả của tôi'), centerTitle: true, actions: [
           IconRefresh(
               onPress: () => context.read<ResultController>().initResult())
