@@ -15,6 +15,7 @@ final String errorRoleServer =
 final String errorRoleApp =
     'Bạn không có quyền xem đâu. Đừng chờ đợi nữa. A hi hi';
 final String saveSucess = 'Lưu thành công';
+final String createTestSuccess = 'Tạo bài kiểm tra thành công';
 final String registerSuccess = 'Đăng ký tài khoản thành công';
 final String urlIconProfile = 'assets/images/ic_profile.png';
 final String urlIconLoadingImage = 'assets/images/sand_clock.png';

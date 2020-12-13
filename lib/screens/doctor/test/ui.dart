@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/resources/strings.dart';
+import 'package:project/screens/doctor/new_test/ui.dart';
 import 'package:project/util/variable.dart';
 import 'data.dart';
 import 'controller.dart';
@@ -15,8 +16,7 @@ import 'package:project/widgets/icon_refresh.dart';
 class Test extends StatelessWidget {
   static Widget withDependency() {
     return StateNotifierProvider<TestController, TestData>(
-        create: (_) => TestController()..initTest(),
-        child: Test());
+        create: (_) => TestController()..initTest(), child: Test());
   }
 
   GestureDetector _tabShowDialog;
@@ -32,6 +32,9 @@ class Test extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
           heroTag: 'test',
           onPressed: () async {
+            await Navigator.push(contextHome,
+                MaterialPageRoute(builder: (_) => NewTest.withDependency()));
+            context.read<TestController>().initTest();
           },
           child: Icon(Icons.add)),
       body: !context.select((TestData dt) => dt.init)
@@ -49,9 +52,8 @@ class Test extends StatelessWidget {
                             String error = context.read<TestData>().error;
                             showDialogOfApp(context,
                                 error: error,
-                                onRetry: () => context
-                                    .read<TestController>()
-                                    .initTest());
+                                onRetry: () =>
+                                    context.read<TestController>().initTest());
                           }),
                       Selector<TestData, int>(
                         selector: (_, dt) => dt.numOfError,
