@@ -53,6 +53,7 @@ class ChooseItemController extends StateNotifier<ChooseItemData> {
       sectionParts.add(createModelSaveTestItem(st.checker[i], i + 1));
     }
     res = addQuotes(res, {});
+    res['"testParts"'][0]['"index"'] = 0;
     res['"testParts"'][0]['"assessmentSections"'][0]['"sectionParts"'] =
         sectionParts;
     // return res.toString();
@@ -91,7 +92,7 @@ class ChooseItemController extends StateNotifier<ChooseItemData> {
     "outcomeProcessing": "none",
     "qti-type": "scoring"
     }'''), {});
-    return res.toString();
+    // return res.toString();
     res = await api.saveQuestions(model: res.toString(), dataUri: st.uri);
     if (res is AppError) return res.description;
     return '';
