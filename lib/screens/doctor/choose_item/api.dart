@@ -25,7 +25,6 @@ Future<dynamic> saveQuestions({String model, String dataUri}) async {
   try {
     http.Response response =
         await _saveQuestions(dataUri: dataUri, model: model);
-    print(response.body);
     return convertResponse1(response);
   } on Exception catch (e) {
     return convertResponseException(e);
@@ -55,10 +54,13 @@ Future<http.Response> _geItems({String classUri}) async {
 }
 
 Future<http.Response> _saveQuestions({String model, String dataUri}) async {
-  final Map<String, String> queryParams = {'uri': dataUri};
-  final uri = Uri.http(baseUrl, '/taoQtiTest/Creator/saveTest', queryParams);
-  final http.Response response = await http.post(uri,
-      headers: {'X-Requested-With': 'XMLHttpRequest', 'Cookie': cookie},
-      body: {'model': model});
-  return response;
+  Map<String, String> params = {'uri': dataUri};
+  final url = Uri.http(baseUrl, '/taoQtiTest/Creator/saveTest', params);
+  return http.post(url, headers: {
+    'Cookie': cookie,
+    'X-Requested-With': 'XMLHttpRequest',
+    'Accept': '*/*'
+  }, body: {
+    'model': model
+  });
 }
