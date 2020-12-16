@@ -26,10 +26,13 @@ class _ResultState extends State<Result> {
   Widget build(BuildContext context) {
     return Scaffold(
         drawer: buildDrawerPatient(context),
-        appBar: AppBar(title: Text('Kết quả của tôi'), centerTitle: true, actions: [
-          IconRefresh(
-              onPress: () => context.read<ResultController>().initResult())
-        ]),
+        appBar: AppBar(
+            title: Text('Kết quả của tôi'),
+            centerTitle: true,
+            actions: [
+              IconRefresh(
+                  onPress: () => context.read<ResultController>().initResult())
+            ]),
         body: Selector<ResultData, bool>(
           selector: (_, dt) => dt.process,
           builder: (_, process, __) {
@@ -106,7 +109,9 @@ class _ResultItemState extends State<_ResultItem> {
     return Column(
       children: [
         Container(
-          decoration: BoxDecoration(color: Colors.blue.withAlpha(30)),
+          decoration: BoxDecoration(
+              color: Colors.blue.withAlpha(30),
+              borderRadius: BorderRadius.circular(10)),
           margin: level == 1
               ? EdgeInsets.all(10)
               : EdgeInsets.only(top: 5, bottom: 5, right: 10, left: 30),

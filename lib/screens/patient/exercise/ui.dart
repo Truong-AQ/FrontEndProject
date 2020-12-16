@@ -111,7 +111,9 @@ class Exercise extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(10),
       margin: EdgeInsets.only(bottom: 15),
-      decoration: BoxDecoration(color: Colors.blue.withAlpha(30)),
+      decoration: BoxDecoration(
+          color: Colors.blue.withAlpha(30),
+          borderRadius: BorderRadius.circular(10)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(text, style: TextStyle(fontFamily: 'monospace')),
         SizedBox(height: 4),

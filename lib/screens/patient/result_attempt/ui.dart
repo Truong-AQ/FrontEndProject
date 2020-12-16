@@ -67,7 +67,9 @@ class ResultTestTime extends StatelessWidget {
 
   Widget _buildResultByTimeItem(BuildContext context, ResultByTime rs) {
     return Container(
-      decoration: BoxDecoration(color: Colors.blue.withAlpha(30)),
+      decoration: BoxDecoration(
+          color: Colors.blue.withAlpha(30),
+          borderRadius: BorderRadius.circular(10)),
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.all(10),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

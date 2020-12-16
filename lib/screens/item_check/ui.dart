@@ -82,7 +82,10 @@ class ItemsCheck extends StatelessWidget {
                         margin: EdgeInsets.all(10),
                         padding:
                             EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                        color: Colors.red.withAlpha(35),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.red.withAlpha(35),
+                        ),
                         child: Text('Lưu',
                             style: TextStyle(
                                 fontFamily: 'monospace',
@@ -121,7 +124,9 @@ class __ItemCheckState extends State<_ItemCheck> {
     return Column(
       children: [
         Container(
-          decoration: BoxDecoration(color: Colors.blue.withAlpha(30)),
+          decoration: BoxDecoration(
+              color: Colors.blue.withAlpha(30),
+              borderRadius: BorderRadius.circular(10)),
           margin: level == 1
               ? EdgeInsets.all(10)
               : EdgeInsets.only(top: 5, bottom: 5, right: 10, left: 30),

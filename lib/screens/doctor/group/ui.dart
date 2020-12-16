@@ -114,6 +114,7 @@ class _GroupUI extends StatelessWidget {
                           child: Container(
                               width: 320,
                               decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
                                   color: Colors.blue.withAlpha(50)),
                               margin: EdgeInsets.all(10),
                               padding: EdgeInsets.all(10),
@@ -141,6 +142,7 @@ class _GroupUI extends StatelessWidget {
                           child: Container(
                               width: 320,
                               decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
                                   color: Colors.blue.withAlpha(50)),
                               margin: EdgeInsets.all(10),
                               padding: EdgeInsets.all(10),
@@ -161,7 +163,9 @@ class _GroupUI extends StatelessWidget {
             });
       },
       child: Container(
-        decoration: BoxDecoration(color: Colors.blue.withAlpha(30)),
+        decoration: BoxDecoration(
+            color: Colors.blue.withAlpha(30),
+            borderRadius: BorderRadius.circular(10)),
         margin: EdgeInsets.all(10),
         padding: EdgeInsets.all(10),
         child: Row(children: [

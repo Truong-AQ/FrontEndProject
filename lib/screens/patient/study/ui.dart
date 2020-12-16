@@ -102,7 +102,9 @@ class __StudyItemState extends State<_StudyItem> {
     return Column(
       children: [
         Container(
-          decoration: BoxDecoration(color: Colors.blue.withAlpha(30)),
+          decoration: BoxDecoration(
+              color: Colors.blue.withAlpha(30),
+              borderRadius: BorderRadius.circular(10)),
           margin: level == 1
               ? EdgeInsets.all(10)
               : EdgeInsets.only(top: 5, bottom: 5, right: 10, left: 30),
