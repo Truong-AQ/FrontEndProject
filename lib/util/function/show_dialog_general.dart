@@ -19,6 +19,7 @@ void showDialogOfApp(BuildContext context,
       error == errorRoleApp ||
       error == noMatchPassword ||
       error == passwordNoValid ||
+      error == nameTestError ||
       error == userExist)
     _showDialogWarningAccount(context, error);
   else if (error == clientError)

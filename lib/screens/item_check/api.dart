@@ -39,7 +39,9 @@ Future<dynamic> _saveData(
     'resourceUri': resourceUri,
     'propertyUri': type == TypeItemChecker.TEST
         ? 'http://www.tao.lu/Ontologies/TAOGroup.rdf#Deliveries'
-        : 'http://www.tao.lu/Ontologies/TAOGroup.rdf#member'
+        : (type == TypeItemChecker.TESTGROUP
+            ? 'http://www.tao.lu/Ontologies/TAOGroup.rdf#Deliveries'
+            : 'http://www.tao.lu/Ontologies/TAOGroup.rdf#member')
   });
   return response;
 }
@@ -48,7 +50,7 @@ Future<http.Response> _getData({TypeItemChecker type, String classUri}) async {
   final Map<String, String> queryParams = {
     'rootNode': type == TypeItemChecker.TESTTAKER
         ? 'http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject'
-        : (type == TypeItemChecker.GROUP
+        : (type == TypeItemChecker.GROUP || type == TypeItemChecker.TESTGROUP
             ? 'http://www.tao.lu/Ontologies/TAOGroup.rdf#Group'
             : 'http://www.tao.lu/Ontologies/TAODelivery.rdf#AssembledDelivery'),
   };

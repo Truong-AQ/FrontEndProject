@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/screens/doctor/register_patient/ui.dart';
+import 'package:project/screens/doctor/test_taker/ui.dart';
 import 'package:project/util/variable.dart';
 import 'package:provider/provider.dart';
 import 'package:project/resources/strings.dart';
@@ -62,6 +63,22 @@ Widget buildDrawerDoctor(BuildContext context) {
                   fontWeight: FontWeight.bold, fontFamily: 'monospace')),
         ),
       ),
+      GestureDetector(
+        onTap: () {
+          Navigator.push(contextHome,
+              MaterialPageRoute(builder: (_) => TestTaker.withDependency()));
+        },
+        child: Container(
+          padding: EdgeInsets.all(14),
+          width: 250,
+          color: Colors.grey,
+          margin: EdgeInsets.symmetric(vertical: 15),
+          child: Text('Người làm bài',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontFamily: 'monospace')),
+        ),
+      )
     ]),
   );
 }

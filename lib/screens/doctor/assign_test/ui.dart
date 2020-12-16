@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:project/resources/strings.dart';
-import 'package:project/screens/doctor/register_patient/ui.dart';
+import 'package:project/screens/doctor/new_assign_test/ui.dart';
 import 'package:project/util/variable.dart';
 import 'data.dart';
 import 'controller.dart';
+import 'package:project/util/function/drawer.dart';
 import 'package:project/util/function/show_dialog_general.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
@@ -12,36 +13,36 @@ import 'package:provider/provider.dart';
 import 'package:project/widgets/icon_refresh.dart';
 
 // ignore: must_be_immutable
-class TestTaker extends StatelessWidget {
+class AssignTest extends StatelessWidget {
   static Widget withDependency() {
-    return StateNotifierProvider<TestTakerController, TestTakerData>(
-        create: (_) => TestTakerController()..initTestTaker(),
-        child: TestTaker());
+    return StateNotifierProvider<AssignTestController, AssignTestData>(
+        create: (_) => AssignTestController()..initTest(), child: AssignTest());
   }
 
   GestureDetector _tabShowDialog;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Người làm bài'), centerTitle: true, actions: [
+      drawer: buildDrawerDoctor(context),
+      appBar: AppBar(title: Text('Bài kiểm tra'), centerTitle: true, actions: [
         IconRefresh(onPress: () {
-          context.read<TestTakerController>().initTestTaker();
+          context.read<AssignTestController>().initTest();
         }),
       ]),
       floatingActionButton: FloatingActionButton(
-          heroTag: 'test-taker',
+          heroTag: 'new_test',
           onPressed: () async {
             await Navigator.push(
-                context,
+                contextHome,
                 MaterialPageRoute(
-                    builder: (_) => RegisterPatient.withDependency()));
-            context.read<TestTakerController>().initTestTaker();
+                    builder: (_) => NewAssignTest.withDependency()));
+            context.read<AssignTestController>().initTest();
           },
           child: Icon(Icons.add)),
-      body: !context.select((TestTakerData dt) => dt.init)
+      body: !context.select((AssignTestData dt) => dt.init)
           ? Loading()
           : SingleChildScrollView(
-              child: Selector<TestTakerData, int>(
+              child: Selector<AssignTestData, int>(
                 selector: (_, dt) => dt.items.length,
                 builder: (context, l, _) {
                   return Column(
@@ -50,14 +51,14 @@ class TestTaker extends StatelessWidget {
                       _tabShowDialog = GestureDetector(
                           child: Container(),
                           onTap: () {
-                            String error = context.read<TestTakerData>().error;
+                            String error = context.read<AssignTestData>().error;
                             showDialogOfApp(context,
                                 error: error,
                                 onRetry: () => context
-                                    .read<TestTakerController>()
-                                    .initTestTaker());
+                                    .read<AssignTestController>()
+                                    .initTest());
                           }),
-                      Selector<TestTakerData, int>(
+                      Selector<AssignTestData, int>(
                         selector: (_, dt) => dt.numOfError,
                         builder: (_, __, ___) {
                           Future.delayed(Duration(milliseconds: 500))
@@ -67,8 +68,8 @@ class TestTaker extends StatelessWidget {
                       ),
                       Column(
                           children: context
-                              .select((TestTakerData dt) => dt.items)
-                              .map((item) => _TestTakerUI(item: item))
+                              .select((AssignTestData dt) => dt.items)
+                              .map((item) => _AssignTestUI(item: item))
                               .toList())
                     ],
                   );
@@ -80,22 +81,22 @@ class TestTaker extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class _TestTakerUI extends StatefulWidget {
-  _TestTakerUI({Key key, this.item, this.level = 1}) : super(key: key);
-  final TesttakerItem item;
+class _AssignTestUI extends StatefulWidget {
+  _AssignTestUI({Key key, this.item, this.level = 1}) : super(key: key);
+  final AssignTestItem item;
   int level;
   bool init = false;
   @override
-  __TestTakerUIState createState() => __TestTakerUIState();
+  _AssignTestUIState createState() => _AssignTestUIState();
 }
 
-class __TestTakerUIState extends State<_TestTakerUI> {
+class _AssignTestUIState extends State<_AssignTestUI> {
   bool open = false;
-  TesttakerItem get item => widget.item;
+  AssignTestItem get item => widget.item;
   String get typeItem => widget.item.type;
   int get level => widget.level;
   bool get init => widget.init;
-  List<TesttakerItem> get listItem => item.items;
+  List<AssignTestItem> get listItem => item.items;
   set init(init) => widget.init = init;
 
   @override
@@ -123,8 +124,8 @@ class __TestTakerUIState extends State<_TestTakerUI> {
                             context: context,
                             builder: (_) => Loading());
                         got = await context
-                            .read<TestTakerController>()
-                            .getTestTaker(item.items, classUri: item.dataUri);
+                            .read<AssignTestController>()
+                            .getAssignTest(item.items, classUri: item.dataUri);
                         Navigator.pop(context);
                         init = got;
                       }
@@ -141,7 +142,7 @@ class __TestTakerUIState extends State<_TestTakerUI> {
             visible: open,
             child: Column(
               children: listItem
-                  .map((item) => _TestTakerUI(item: item, level: 2))
+                  .map((item) => _AssignTestUI(item: item, level: 2))
                   .toList(),
             ))
       ],

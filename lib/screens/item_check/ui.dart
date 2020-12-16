@@ -80,7 +80,8 @@ class ItemsCheck extends StatelessWidget {
                       },
                       child: Container(
                         margin: EdgeInsets.all(10),
-                        padding: EdgeInsets.all(10),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                         color: Colors.red.withAlpha(35),
                         child: Text('Lưu',
                             style: TextStyle(

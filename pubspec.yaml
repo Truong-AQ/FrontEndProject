@@ -38,6 +38,8 @@ dependencies:
   assets_audio_player: ^2.0.12
   flip_card: ^0.4.4
   flutter_advanced_networkimage: ^0.7.0
+  flutter_datetime_picker: ^1.4.0
+  autocomplete_textfield: ^1.7.3
 
 dependency_overrides:
   flutter_svg: 0.18.0
