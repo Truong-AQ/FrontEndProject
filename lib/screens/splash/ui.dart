@@ -30,7 +30,7 @@ class Splash extends StatelessWidget with PortraitModeMixin {
               Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
-                  child: Image.asset('assets/images/splash.png',
+                  child: Image.asset('assets/images/Bgsplash.png',
                       fit: BoxFit.fill)),
               Positioned(
                   bottom: 40,
