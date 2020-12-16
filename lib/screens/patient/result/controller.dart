@@ -29,17 +29,10 @@ class ResultController extends StateNotifier<ResultData> {
           dataUri: child['attributes']['data-uri']));
     }
     List<ResultTest> tmp = [];
-    for (int i = 0; i < testOfUser.length; i++) {
-      for (int j = 0; j < items.length; j++)
-        if (testOfUser[i].label == items[j].data) {
-          tmp.add(items[j]);
-          break;
-        }
-    }
-    for (int i = 0; i < items.length; i++) {
-      if (items[i].type == 'class') tmp.add(items[i]);
-    }
-    items.clear();
+    // for (int i = 0; i < items.length; i++) {
+    //   if (items[i].type == 'class') tmp.add(items[i]);
+    // }
+    // items.clear();
     for (int i = 0; i < tmp.length; i++) {
       items.add(tmp[i]);
     }

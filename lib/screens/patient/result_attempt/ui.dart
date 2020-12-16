@@ -5,6 +5,7 @@ import 'package:project/screens/patient/result_attempt/controller.dart';
 import 'package:project/screens/patient/result_attempt/data.dart';
 import 'package:project/screens/patient/result_detail/ui.dart';
 import 'package:project/util/function/show_dialog_general.dart';
+import 'package:project/util/variable.dart';
 import 'package:project/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +25,7 @@ class ResultTestTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(label), centerTitle: true),
+      appBar: AppBar(title: Text(unescape.convert(label)), centerTitle: true),
       body: context.select((ResultTestTimeData dt) => dt.init)
           ? SingleChildScrollView(
               child: Column(
