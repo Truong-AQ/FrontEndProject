@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project/screens/splash/ui.dart';
 
@@ -25,3 +24,4 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false);
   }
 }
+// C:\Users\truong.nguyenvan\AppData\Local\Android\Sdk

@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
-import 'package:flutter_advanced_networkimage/transition.dart';
+import 'package:flutter_advanced_networkimage_2/provider.dart';
+import 'package:flutter_advanced_networkimage_2/transition.dart';
 import 'package:project/resources/strings.dart';
 import 'package:project/screens/questions/pairing/controller.dart';
 import 'package:project/screens/questions/pairing/data.dart';
@@ -64,7 +63,9 @@ class Pairing extends StatelessWidget {
         child: Text(label,
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)),
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 16)),
       ),
     );
   }
@@ -118,7 +119,9 @@ class Pairing extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
               child: Text(answer.data,
                   style: TextStyle(
-                      color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold),
+                      color: Colors.black,
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center),
             ),
     );

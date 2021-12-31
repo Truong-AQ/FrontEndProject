@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project/resources/strings.dart';
 import 'package:project/screens/navigation_home/ui.dart';
@@ -80,7 +79,8 @@ class Login extends StatelessWidget {
               margin: EdgeInsets.only(left: 60, right: 60),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15), color: Color(0xFF1C18EF)),
+                  borderRadius: BorderRadius.circular(15),
+                  color: Color(0xFF1C18EF)),
               child: Text('ĐĂNG NHẬP',
                   style: TextStyle(
                       color: Colors.white,

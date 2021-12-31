@@ -27,20 +27,19 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.0
-  http: ^0.12.2
-  async: ^2.4.2
-  state_notifier: ^0.6.0
-  flutter_state_notifier: ^0.6.1
-  shared_preferences: ^0.5.12+2
-  html_unescape: ^1.0.2
-  html: ^0.14.0+4
-  assets_audio_player: ^2.0.12
-  flip_card: ^0.4.4
-  flutter_advanced_networkimage: ^0.7.0
+  cupertino_icons: ^1.0.4
+  http: ^0.13.4
+  async: ^2.8.2
+  state_notifier: ^0.7.1
+  flutter_state_notifier: ^0.7.1
+  shared_preferences: ^2.0.11
+  html_unescape: ^2.0.0
+  html: ^0.15.0
+  assets_audio_player: ^3.0.3+9
+  flip_card: ^0.6.0
+  flutter_advanced_networkimage_2: ^2.0.1
+  flutter_svg: ^1.0.0
 
-dependency_overrides:
-  flutter_svg: 0.18.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

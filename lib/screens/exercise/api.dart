@@ -13,6 +13,7 @@ Future<dynamic> getTests() async {
 }
 
 Future<http.Response> _getTests() async {
-  return await http.get('http://$baseUrl/taoDelivery/DeliveryServer/index',
+  return await http.get(
+      Uri.parse('http://$baseUrl/taoDelivery/DeliveryServer/index'),
       headers: {'Cookie': cookie});
 }

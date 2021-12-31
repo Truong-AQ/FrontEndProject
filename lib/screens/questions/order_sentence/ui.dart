@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
-import 'package:flutter_advanced_networkimage/transition.dart';
+import 'package:flutter_advanced_networkimage_2/provider.dart';
+import 'package:flutter_advanced_networkimage_2/transition.dart';
 import 'package:project/resources/strings.dart';
 import 'package:project/screens/questions/order_sentence/controller.dart';
 import 'package:project/screens/questions/order_sentence/data.dart';
@@ -64,7 +63,9 @@ class OrderSentence extends StatelessWidget {
         child: Text(label,
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)),
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 16)),
       ),
     );
   }
@@ -97,7 +98,9 @@ class OrderSentence extends StatelessWidget {
         width: 14.0 * answer.data.length,
         child: Text(answer.data,
             style: TextStyle(
-                color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.bold),
+                color: Colors.black,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold),
             textAlign: TextAlign.center),
       ),
     );
@@ -107,8 +110,7 @@ class OrderSentence extends StatelessWidget {
     return Container(
         width: MediaQuery.of(context).size.width,
         alignment: Alignment.center,
-        padding:
-            EdgeInsets.only(left: 12.0, right: 12.0, top: 45, bottom: 45),
+        padding: EdgeInsets.only(left: 12.0, right: 12.0, top: 45, bottom: 45),
         child: Consumer<OrderSentenceData>(builder: (_, dt, __) {
           List<AnswerChoice> userAnswer = dt.userAnswer;
           return Wrap(children: [
@@ -135,8 +137,8 @@ class OrderSentence extends StatelessWidget {
                   context.read<OrderSentenceController>().removeAnswer(index);
                 },
                 child: Text(answer.data,
-                    style: TextStyle(
-                        fontSize: 18.0, fontWeight: FontWeight.bold)),
+                    style:
+                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
               ));
   }
 }

@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
-import 'package:flutter_advanced_networkimage/transition.dart';
+import 'package:flutter_advanced_networkimage_2/provider.dart';
+import 'package:flutter_advanced_networkimage_2/transition.dart';
 import 'package:project/resources/strings.dart';
 import 'package:project/screens/test/data.dart';
 import 'package:project/widgets/play_audio.dart';
@@ -63,7 +62,9 @@ class Choice extends StatelessWidget {
         child: Text(label,
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)),
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 16)),
       ),
     );
   }
@@ -125,8 +126,7 @@ class __CellRowState extends State<_CellRow> {
               child: answer.type == 'image'
                   ? TransitionToImage(
                       enableRefresh: true,
-                      loadingWidget:
-                          Image.asset(urlIconLoadingImage),
+                      loadingWidget: Image.asset(urlIconLoadingImage),
                       placeholder: Icon(Icons.refresh),
                       image: AdvancedNetworkImage(answer.data,
                           useDiskCache: true, loadedCallback: () {

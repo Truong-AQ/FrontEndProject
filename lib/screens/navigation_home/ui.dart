@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project/util/variable.dart';
 import 'package:project/screens/exercise/ui.dart';

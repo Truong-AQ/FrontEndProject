@@ -12,7 +12,7 @@ Future<dynamic> login({String login, String password}) async {
 }
 
 Future<http.Response> _login({String login, String password}) async {
-  return await http.post('http://$baseUrl/tao/Main/login', body: {
+  return await http.post(Uri.parse('http://$baseUrl/tao/Main/login'), body: {
     'loginForm_sent': "1",
     'login': login ?? '',
     'password': password ?? '',

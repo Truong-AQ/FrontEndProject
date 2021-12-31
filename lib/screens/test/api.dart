@@ -55,7 +55,7 @@ Future<dynamic> moveItem(
 }
 
 Future<http.Response> _getBasicInfo({String url}) async {
-  final response = await http.get(url, headers: {'Cookie': cookie});
+  final response = await http.get(Uri.parse(url), headers: {'Cookie': cookie});
   return response;
 }
 

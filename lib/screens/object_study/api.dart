@@ -27,7 +27,7 @@ Future<dynamic> getInfoObjectItem({String link}) async {
 
 Future<http.Response> _getLink({String uri}) async {
   final http.Response response = await http.post(
-      'http://$baseUrl/taoItems/ItemPreview/forwardMe',
+      Uri.parse('http://$baseUrl/taoItems/ItemPreview/forwardMe'),
       headers: {'X-Requested-With': 'XMLHttpRequest', 'Cookie': cookie},
       body: {'uri': uri});
   return response;
@@ -35,6 +35,6 @@ Future<http.Response> _getLink({String uri}) async {
 
 Future<http.Response> _getInfoObjectItem({String link}) async {
   final http.Response response =
-      await http.get(link, headers: {'Cookie': cookie});
+      await http.get(Uri.parse(link), headers: {'Cookie': cookie});
   return response;
 }
